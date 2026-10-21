@@ -35,7 +35,6 @@ final class Russian {
             case ", tab ": return ", вкладка ";
             case " of 3": return " из 3";
             case "Dollar": return "Доллар";
-            case "Photo": return "Фото";
             case "Good morning": return "Доброе утро";
             case "Good afternoon": return "Добрый день";
             case "Good evening": return "Добрый вечер";
@@ -108,10 +107,7 @@ final class Russian {
             case "Accept “Allow USB debugging?” on the TV (tick “Always allow”).": return "На телевизоре разрешите отладку по USB и отметьте «Всегда разрешать».";
             case "Language": return "Язык";
             case "Temperature": return "Температура";
-            case "Theme": return "Тема";
             case "Automatic": return "Автоматически";
-            case "Light": return "Светлая";
-            case "Dark": return "Тёмная";
             case "Weather widget": return "Виджет погоды";
             // What TalkBack reads on the drawer's weather card (#47)
             case ". High ": return ". Максимум ";

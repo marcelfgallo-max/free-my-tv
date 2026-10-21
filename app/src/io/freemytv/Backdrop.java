@@ -34,10 +34,9 @@ final class Backdrop {
     final Bitmap lightImage;            // by day: the background (the lightened frosted version, scaled up on screen)
     final int[] nightFrost, nightGlass; // at night: frosted (the bottom drawer's frosted glass) and glass, darkened
     final Bitmap nightImage;            // at night: the background (the darkened frosted version)
-    final Bitmap photoImage;            // "Photo" theme: the background (the glass version, only a little darkened)
 
     private Backdrop(Bitmap image, int[] frost, int[] glass, Bitmap wide, Bitmap tall, int[] light, int[] lightGlass,
-                     int[] night, int[] nightGlass, int[] photo) {
+                     int[] night, int[] nightGlass) {
         this.image = image;
         this.frost = frost;
         this.glass = glass;
@@ -49,7 +48,6 @@ final class Backdrop {
         this.nightGlass = nightGlass;
         lightImage = light == null ? null : Bitmap.createBitmap(light, FW, FH, Bitmap.Config.ARGB_8888);
         nightImage = night == null ? null : Bitmap.createBitmap(night, FW, FH, Bitmap.Config.ARGB_8888);
-        photoImage = photo == null ? null : Bitmap.createBitmap(photo, GW, GH, Bitmap.Config.ARGB_8888);
     }
 
     static Backdrop make(Bitmap src, boolean forLight) {
@@ -57,7 +55,7 @@ final class Backdrop {
             // Modern 80s: the background is a field, so only the two card crops, straight from the image.
             Bitmap wide = card(src, WIDE_W, WIDE_H), tall = card(src, TALL_W, TALL_H);
             src.recycle();
-            return new Backdrop(null, null, null, wide, tall, null, null, null, null, null);
+            return new Backdrop(null, null, null, wide, tall, null, null, null, null);
         }
         Bitmap out = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(out);
@@ -66,22 +64,6 @@ final class Backdrop {
         float sw = src.getWidth() * scale, sh = src.getHeight() * scale;
         c.drawBitmap(src, null, new RectF((W - sw) / 2, (H - sh) / 2, (W + sw) / 2, (H + sh) / 2), photo);
         src.recycle();
-        if (forLight) {
-            // Light design: everything comes from the photo without scrims.
-            Bitmap wide = card(out, WIDE_W, WIDE_H), tall = card(out, TALL_W, TALL_H);
-            int[] frost = reduce(out, FW, FH, 3, 3);
-            int[] light = whiten(frost.clone(), 0.82f);
-            int[] glass = reduce(out, GW, GH, 2, 2);
-            int[] lightGlass = whiten(glass.clone(), 0.74f);
-            // "Photo" theme: less blurred and only darkened enough for white text.
-            int[] photoBg = darken(glass.clone(), 0.5f);
-            // Night: almost black, the photo only a hint of color.
-            int[] night = darken(frost.clone(), 0.88f);
-            int[] nightGlass = darken(glass, 0.7f);
-            out.recycle();
-            return new Backdrop(null, frost, null, wide, tall, light, lightGlass, night, nightGlass, photoBg);
-        }
-
         float boost = Math.max(0, Math.min(0.3f, (luminance(out, 0, 0.22f, 0.5f, 0.62f) - 0.22f) * 1.1f));
         Paint scrim = new Paint(Paint.DITHER_FLAG);
         scrim.setShader(new LinearGradient(0, 0, W * 0.68f, 0,
@@ -106,7 +88,7 @@ final class Backdrop {
 
         int[] frost = reduce(out, FW, FH, 3, 3);
         int[] glass = reduce(out, GW, GH, 2, 2);
-        return new Backdrop(gpu(out), frost, glass, null, null, null, null, null, null, null);
+        return new Backdrop(gpu(out), frost, glass, null, null, null, null, null, null);
     }
 
     /** How many times smaller the screensaver photo's frosted version is (the glass math uses the same number). */

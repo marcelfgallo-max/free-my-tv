@@ -49,9 +49,8 @@ import java.util.function.Consumer;
  *    buttons (Live TV, HDMI Inputs, Settings), with the focused one's name below it, and the small crypto quotes
  *    (logo + price) at the right end of the tab row;
  *  - three cards with the titles recommended for right now in the selected tab (Recs, from TMDB), or the last ones
- *    watched in your apps (Continue: WatchNext), or what's on each service (Catalog); the background is
- *    the focused card's photo (the first card's, with the focus elsewhere), heavily blurred and almost white
- *    (Backdrop); without one, a light gradient;
+ *    watched in your apps (Continue: WatchNext), or what's on each service (Catalog); behind everything, the
+ *    Modern 80s fields (Ember here, Ultramarine with the drawer open);
  *  - at the bottom, the glass shelf with the apps (icons in each brand's color, like the tvOS Dock; the focused one
  *    grows);
  *  - ↓ on the shelf: everything moves up and the bottom drawer appears (inputs, shortcuts, weather for the next hours
@@ -136,14 +135,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private int zone = Z_SHELF;
 
     // Night look (like Apple's "Automatic" appearance): darker from sunset to sunrise, with a 2 s transition.
-    private static final long NIGHT_MS = 2000;
     private boolean nightTarget;
-    private float night, nightFrom;     // 0 = day, 1 = night
-    private long nightAt;
-    private final int[] glassNight = new int[Backdrop.GW * Backdrop.GH], frostNight = new int[Backdrop.FW * Backdrop.FH];
+    private float night = 1;            // Modern 80s is always dark: 1 (tone() picks the dark color)
     private final int[] neutralGlassPx = new int[Backdrop.GW * Backdrop.GH], neutralFrostPx = new int[Backdrop.FW * Backdrop.FH];
-    private boolean nightPair;          // the glass holds both photos (day and night), blended by `night`
-    private Shader nightGradient;
 
     // At the top: tabs (0 to 2) and icon-only buttons (3 to 5); the three cards
     private int tab, topIndex, cardIndex;
@@ -167,7 +161,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private Paint lGreeting;
     private String greetingText = "";
     private Paint lTitle, lTab, lTabOn, lCardTitle, lCardMeta, lQuote, lTip, lDate, lClock, lWeather, lClockQuote;
-    private Shader lightGradient;
 
     // Shelf
     private List<HomeApps.Item> shelf = new ArrayList<>();
@@ -215,11 +208,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private List<Recs.Pick> picks = new ArrayList<>();
     private int pickIndex, heroSlide = 1;
     private Hero hero, heroFrom;
-    private long heroFadeAt, bgFadeAt;
+    private long heroFadeAt;
     private final Spring heroFocus = new Spring(0.28f, 0.85f, 0);
     private final RectF heroButton = new RectF();
-    private Backdrop bgFrom, bgTo;     // null = gradient (no photo)
-    private final int[] frostMix = new int[Backdrop.FW * Backdrop.FH];
 
     // Bottom drawer
     private List<HomeApps.Item> drawerItems = new ArrayList<>();
@@ -288,9 +279,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private float tileShaderH, cardSheenH;
     private LinearGradient[] lightSheens = new LinearGradient[0], lightRims = new LinearGradient[0];
     private float[] lightShaderW = new float[0];
-    private android.graphics.ColorFilter veilFilter;
-    private float veilAmount = -1;
-    private int veilColor;
     private HomeData.Weather textWeather;
     private long textPricesAt = -1, textMinute = -1;
     private int textPrefs = -1;
@@ -635,7 +623,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         lClock.setLetterSpacing(-0.01f);
         lWeather = Ui.text(Ui.medium, 34 * k, L_DIM);
         lClockQuote = Ui.numbers(Ui.medium, 28 * k, L_DIM);
-        lightGradient = null;
         buttonPaint = Ui.text(Ui.semibold, 29 * k, INK);
         capsuleText = Ui.numbers(Ui.medium, 29 * k, 0xF2FFFFFF);
         tipPaint = Ui.text(Ui.semibold, 25 * k, 0xF2FFFFFF);
@@ -784,8 +771,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         boolean sheetMoving = sheet.step(dt);
         boolean toastFading = tickToast(up);
         boolean heroFading = tickHeroFade(up);
-        boolean bgFading = tickBackgroundFade(up);
-        boolean nightMoving = tickNight(up);
 
         if (drawerMoving || sheetMoving || motionDirty) updateMotion();
         // Opening and closing the drawer only moves the cached layers: redrawing the glass on every frame made the TV
@@ -793,12 +778,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         // they rise; the drawer is drawn resting in place; the glass shelf is redrawn once the drawer stops, so the
         // glass shows the background where it ended up.
         if (tilesMoving || tilesDirty) tiles.invalidate();
-        if (statusMoving || statusDirty || bgFading) status.invalidate();
+        if (statusMoving || statusDirty) status.invalidate();
         if (heroMoving || heroDirty || heroFading) heroLayer.invalidate();
-        if (drawerItemsMoving || drawerDirty || bgFading) drawerLayer.invalidate();
+        if (drawerItemsMoving || drawerDirty) drawerLayer.invalidate();
         if (gridMoving || gridDirty) sheetLayer.invalidate();
-        if (drawerMoving || bgFading) sky.invalidate();
-        if (bgFading || (drawerWasMoving && !drawerMoving)) platter.invalidate();
+        if (drawerMoving) sky.invalidate();   // the fields cross-fade with the drawer
+        if (drawerWasMoving && !drawerMoving) platter.invalidate();
         drawerWasMoving = drawerMoving;
         tilesDirty = statusDirty = heroDirty = drawerDirty = gridDirty = motionDirty = false;
         if (updateClock()) {
@@ -814,7 +799,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
         // Busy: something is moving, or the sheet or the drawer is open.
         boolean busy = tilesMoving || statusMoving || heroMoving || drawerItemsMoving || gridMoving || drawerMoving
-                || sheetMoving || toastFading || heroFading || bgFading || nightMoving || sheetOpen || sheet.value > 0.001f
+                || sheetMoving || toastFading || heroFading || sheetOpen || sheet.value > 0.001f
                 || drawerOpen || drawer.value > 0.001f || toast != null || !toasts.isEmpty();
         idle = !busy;
         if (busy) Choreographer.getInstance().postFrameCallback(this);
@@ -961,96 +946,30 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         pickIndex = next;
         heroSlide = dir;
         refreshHero(true);
-        Backdrop b = recs.backdrop(currentPick());
-        if (b != null) showBackdrop(b);
         spoken.focusMoved();
         return true;
     }
 
-    /**
-     * Swapped the background to a pick's photo. Modern 80s keeps its field behind everything, and the photos no longer
-     * carry the frosted versions it used, so it does nothing (the fade and glass code goes in the cleanup step).
-     */
-    private void showBackdrop(Backdrop b) {
-    }
-
-    /** What the glass shows: the photo lightened (by day), darkened (at night) or blended in between. */
-    private int[] glassOf(Backdrop b) {
-        if (b.nightGlass == null || night <= 0.001f) return b.lightGlass;
-        if (night >= 0.999f) return b.nightGlass;
-        // During the transition, the blend (only for the current background; a photo fading in uses the nearer side).
-        if (b != bgTo) return night < 0.5f ? b.lightGlass : b.nightGlass;
-        for (int i = 0; i < glassNight.length; i++) glassNight[i] = mix(b.lightGlass[i], b.nightGlass[i], night);
-        return glassNight;
-    }
-
-    /** No photo: the glass reads the background's own gray (not Scene's default aurora, which isn't on screen). */
+    /** The glass the toasts and the All Apps sheet are drawn with: a plain dark tone (there's no photo behind). */
     private void neutralGlass() {
         int color = blend(0xFFEBEBF0, 0xFF141416, night);
         java.util.Arrays.fill(neutralFrostPx, color);
         java.util.Arrays.fill(neutralGlassPx, color);
         scene.setFrost(neutralFrostPx);
         scene.setGlassImage(neutralGlassPx);
-        nightPair = false;
     }
 
-    /** What the frosted glass shows (drawer, toasts): the blurred photo, darkened at night. */
-    private int[] frostOf(Backdrop b) {
-        if (b.nightFrost == null || night <= 0.001f) return b.frost;
-        if (night >= 0.999f) return b.nightFrost;
-        if (b != bgTo) return night < 0.5f ? b.frost : b.nightFrost;
-        for (int i = 0; i < frostNight.length; i++) frostNight[i] = mix(b.frost[i], b.nightFrost[i], night);
-        return frostNight;
-    }
-
-    // MARK: - Night look
-
-    /** Day or night right now (from the sun at your location); `animate`: with the transition. */
-    /** Modern 80s has no light theme: always the dark palette (white type). */
+    /** Modern 80s has no light theme: the palette stays dark. Only the glass of the All Apps sheet needs setting up. */
     private void checkNight(boolean animate) {
-        if (nightTarget && night == 1 && nightAt == 0) return;
+        if (nightTarget) return;
         nightTarget = true;
-        night = 1;
-        nightAt = 0;
-        nightChanged();
-    }
-
-    /** Advances the day ⇄ night transition; true while it runs. */
-    private boolean tickNight(long up) {
-        if (nightAt == 0) return false;
-        float t = Ui.clamp((up - nightAt) / NIGHT_MS), to = nightTarget ? 1 : 0;
-        night = nightFrom + (to - nightFrom) * t * t * (3 - 2 * t);
-        if (t >= 1) {
-            night = to;
-            nightAt = 0;
-        }
-        nightChanged();
-        return true;
-    }
-
-    /** Redraws for the current night value (the glass now reads the lightened, blended or darkened photo). */
-    private void nightChanged() {
-        if (bgFadeAt == 0 && bgTo != null && bgTo.lightGlass != null) {
-            scene.setFrost(frostOf(bgTo));
-            if (nightAt != 0 && bgTo.nightGlass != null) {
-                if (!nightPair) {
-                    scene.setGlassImages(bgTo.lightGlass, bgTo.nightGlass);
-                    nightPair = true;
-                }
-                scene.setGlassMix(night);
-            } else {
-                scene.setGlassImage(glassOf(bgTo));
-                nightPair = false;
-            }
-        } else if (bgFadeAt == 0 && bgTo == null) {
-            neutralGlass();
-        }
+        neutralGlass();
         heroDirty = statusDirty = tilesDirty = drawerDirty = true;
         sky.invalidate();
         platter.invalidate();
     }
 
-    /** How dark it is: 0 = day, 1 = night (in between during the transition). */
+    /** How dark it is: always 1 (Modern 80s has no light theme). */
     private float dark() {
         return night;
     }
@@ -1079,30 +998,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         lWeather.setColor(tone(L_DIM, 0xFF98989D));
         lClockQuote.setColor(tone(L_DIM, 0xFF98989D));
         staleQuote.setColor(tone(L_FAINT, 0x99FFFFFF));
-    }
-
-    private boolean tickBackgroundFade(long up) {
-        if (bgFadeAt == 0) return false;
-        float e = fadeEase(bgFadeAt, up);
-        if (bgTo != null && bgFrom != null && glassOf(bgFrom) != null && glassOf(bgTo) != null) {
-            if (drawerLayer.getVisibility() == VISIBLE || toast != null) {
-                int[] from = frostOf(bgFrom), to = frostOf(bgTo);
-                for (int i = 0; i < frostMix.length; i++) frostMix[i] = mix(from[i], to[i], e);
-                scene.setFrost(frostMix);
-            }
-            scene.setGlassMix(e);
-        }
-        if (e >= 1) {
-            bgFadeAt = 0;
-            bgFrom = null;
-            if (bgTo == null) {
-                neutralGlass();
-            } else {
-                scene.setFrost(frostOf(bgTo));
-                if (glassOf(bgTo) != null) scene.setGlassImage(glassOf(bgTo));
-            }
-        }
-        return true;
     }
 
     private boolean tickHeroFade(long up) {
@@ -1134,21 +1029,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     private void drawSky(Canvas c) {
         drawLightSky(c);
-    }
-
-    /** Blends a color on top (the drawer's veil) as part of drawing the image, without another layer. */
-    private android.graphics.ColorFilter veil(float amount, int color) {
-        if (amount <= 0.002f) return null;
-        amount = Math.round(amount * 255) / 255f;
-        if (amount == veilAmount && color == veilColor) return veilFilter;
-        veilAmount = amount;
-        veilColor = color;
-        float keep = 1 - amount;
-        return veilFilter = new android.graphics.ColorMatrixColorFilter(new float[] {
-            keep, 0, 0, 0, ((color >> 16) & 255) * amount,
-            0, keep, 0, 0, ((color >> 8) & 255) * amount,
-            0, 0, keep, 0, (color & 255) * amount,
-            0, 0, 0, 1, 0});
     }
 
     private void drawImage(Canvas c, Bitmap image, float alpha) {
@@ -1914,11 +1794,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         statusDirty |= snap || statusChanged;
         heroDirty |= snap || heroChanged;
         drawerDirty |= snap || drawerChanged;
-        // Like the Apple TV app: the background follows the focused card (once its photo is ready).
-        if (zone == Z_CARDS && cardIndex < cards.size()) {
-            Backdrop b = recs.backdrop(cards.get(cardIndex));
-            if (b != null) showBackdrop(b);
-        }
         spoken.focusMoved();
     }
 
@@ -2841,7 +2716,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         heroDirty = statusDirty = true;
     }
 
-    /** The three cards of the current tab (Explore, Movies, Shows, Continue) and the background taken from the first one. */
+    /** The three cards of the current tab (Explore, Movies, Shows, Continue, Catalog). */
     private void updateCards() {
         List<Recs.Pick> paged = pagedSource();
         List<Recs.Pick> list;
@@ -2866,9 +2741,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             int from = more == paged ? page * 3 : 0, to = more == paged ? page * 3 + 6 : 3;
             for (int i = from; i < more.size() && i < to; i++) recs.backdrop(more.get(i));
         }
-        // The background is the focused card's photo (the first card's, with the focus elsewhere).
-        Backdrop b = cards.isEmpty() ? null : recs.backdrop(cards.get(zone == Z_CARDS ? Math.min(cardIndex, cards.size() - 1) : 0));
-        if (cards.isEmpty() || b != null) showBackdrop(b);
         heroDirty = true;
         spoken.focusMoved();    // new picks under the focused card
     }

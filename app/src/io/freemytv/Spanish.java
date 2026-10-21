@@ -26,7 +26,6 @@ final class Spanish {
             case ", tab ": return ", pestaña ";
             case " of 3": return " de 3";
             case "Dollar": return "Dólar";
-            case "Photo": return "Foto";
             case "Good morning": return "Buenos días";
             case "Good afternoon": return "Buenas tardes";
             case "Good evening": return "Buenas noches";
@@ -91,10 +90,7 @@ final class Spanish {
             // Home Settings, Shelf and Remote Buttons (#15, #16, #17)
             case "Language": return "Idioma";
             case "Temperature": return "Temperatura";
-            case "Theme": return "Tema";
             case "Automatic": return "Automático";
-            case "Light": return "Claro";
-            case "Dark": return "Oscuro";
             case "Weather widget": return "Widget del clima";
             // What TalkBack reads on the drawer's weather card (#47)
             case ". High ": return ". Máxima ";

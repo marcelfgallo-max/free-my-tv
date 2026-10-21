@@ -624,15 +624,14 @@ public class SettingsActivity extends Activity {
 
         // MARK: - Home Settings and Remote Buttons
 
-        private static final String[] LANGUAGES = {"auto", "pt", "en", "es", "de", "ru"}, UNITS = {"auto", "C", "F"}, THEMES = {"auto", "light", "dark", "photo"};
-        /** Home Settings: language, temperature, theme, weather, quotes, then one row per coin. */
-        private static final int CITY_ROW = 4, COIN_ROWS = 6;
+        private static final String[] LANGUAGES = {"auto", "pt", "en", "es", "de", "ru"}, UNITS = {"auto", "C", "F"};
+        /** Home Settings: language, temperature, weather, city, quotes, then one row per coin. */
+        private static final int WEATHER_ROW = 2, CITY_ROW = 3, QUOTES_ROW = 4, COIN_ROWS = 5;
 
         private String[] settingLabels() {
             List<String> l = new ArrayList<>();
             l.add(Ui.tr("Idioma", "Language"));
             l.add(Ui.tr("Temperatura", "Temperature"));
-            l.add(Ui.tr("Tema", "Theme"));
             l.add(Ui.tr("Widget do clima", "Weather widget"));
             l.add(Ui.tr("Cidade", "City"));
             l.add(Ui.tr("Widget de cotações", "Quotes widget"));
@@ -648,18 +647,15 @@ public class SettingsActivity extends Activity {
                     : lang.equals("de") ? "Deutsch" : lang.equals("ru") ? "Русский" : Ui.tr("Automático", "Automatic");
             String unit = Prefs.temperature();
             v[1] = unit.equals("C") ? "°C" : unit.equals("F") ? "°F" : Ui.tr("Automática", "Automatic");
-            String theme = Prefs.theme();
-            v[2] = theme.equals("light") ? Ui.tr("Claro", "Light") : theme.equals("dark") ? Ui.tr("Escuro", "Dark")
-                    : theme.equals("photo") ? Ui.tr("Foto", "Photo") : Ui.tr("Automático", "Automatic");
-            v[3] = onOff(Prefs.weather());
+            v[WEATHER_ROW] = onOff(Prefs.weather());
             v[CITY_ROW] = !cityStatus.isEmpty() ? cityStatus : Prefs.city().isEmpty() ? "—" : Prefs.city();
-            v[5] = !Prefs.quotes() ? onOff(false) : Prefs.quotesTop() ? onOff(true) : Ui.tr("Só na gaveta", "Drawer only");
+            v[QUOTES_ROW] = !Prefs.quotes() ? onOff(false) : Prefs.quotesTop() ? onOff(true) : Ui.tr("Só na gaveta", "Drawer only");
             // No quotes widget, nowhere to show prices: the coins read as off (and stay locked) until it is back on.
             for (int i = COIN_ROWS; i < v.length; i++) v[i] = onOff(Prefs.quotes() && Prefs.coin(HomeData.ORDER[i - COIN_ROWS]));
             return v;
         }
 
-        /** Home Settings in reais has 12 rows: shorter ones, so they all fit on the screen. */
+        /** Home Settings in reais has 11 rows: shorter ones, so they all fit on the screen. */
         private float listRowH() {
             return screen == HOME_SETTINGS && settingLabels().length > 10 ? 60 : LIST_ROW_H;
         }
@@ -725,14 +721,9 @@ public class SettingsActivity extends Activity {
                     Prefs.setTemperature(UNITS[(at + dir + UNITS.length) % UNITS.length]);
                     break;
                 }
-                case 2: {
-                    int at = java.util.Arrays.asList(THEMES).indexOf(Prefs.theme());
-                    Prefs.setTheme(THEMES[(at + dir + THEMES.length) % THEMES.length]);
-                    break;
-                }
-                case 3: Prefs.setWeather(!Prefs.weather()); break;
+                case WEATHER_ROW: Prefs.setWeather(!Prefs.weather()); break;
                 case CITY_ROW: return;
-                case 5: {
+                case QUOTES_ROW: {
                     // Off → On → Drawer only (the card, not the top row and the screensaver) → Off.
                     int at = !Prefs.quotes() ? 0 : Prefs.quotesTop() ? 1 : 2;
                     at = (at + dir + 3) % 3;

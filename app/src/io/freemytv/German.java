@@ -28,7 +28,6 @@ final class German {
             case ", tab ": return ", Tab ";
             case " of 3": return " von 3";
             case "Dollar": return "Dollar";
-            case "Photo": return "Foto";
             case "Good morning": return "Guten Morgen";
             case "Good afternoon": return "Guten Tag";
             case "Good evening": return "Guten Abend";
@@ -109,10 +108,7 @@ final class German {
             // Home Settings, Shelf and Remote Buttons
             case "Language": return "Sprache";
             case "Temperature": return "Temperatur";
-            case "Theme": return "Design";
             case "Automatic": return "Automatisch";
-            case "Light": return "Hell";
-            case "Dark": return "Dunkel";
             case "Weather widget": return "Wetter-Widget";
             // What TalkBack reads on the drawer's weather card (#47)
             case ". High ": return ". Höchstwert ";

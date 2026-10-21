@@ -73,13 +73,6 @@ final class Prefs {
 
     static void setTemperature(String v) { put("temperature", v); }
 
-    /** "auto" (dark from sunset to sunrise), "light", "dark" or "photo" (dark, over the focused title's photo). */
-    static String theme() {
-        String v = sp().getString("theme", "auto");
-        return v.equals("light") || v.equals("dark") || v.equals("photo") ? v : "auto";
-    }
-
-    static void setTheme(String v) { put("theme", v); }
 
     // MARK: - City
 
