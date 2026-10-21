@@ -36,6 +36,9 @@ final class Russian {
             case " of 3": return " из 3";
             case "Dollar": return "Доллар";
             case "Photo": return "Фото";
+            case "Good morning": return "Доброе утро";
+            case "Good afternoon": return "Добрый день";
+            case "Good evening": return "Добрый вечер";
             case "Sleep Timer": return "Таймер сна";
             case "Off in ": return "Выкл. через ";
             case "Sleep timer off.": return "Таймер сна выключен.";

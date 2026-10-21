@@ -27,6 +27,9 @@ final class Spanish {
             case " of 3": return " de 3";
             case "Dollar": return "Dólar";
             case "Photo": return "Foto";
+            case "Good morning": return "Buenos días";
+            case "Good afternoon": return "Buenas tardes";
+            case "Good evening": return "Buenas noches";
             case "Sleep Timer": return "Temporizador";
             case "Euro": return "Euro";
             case "Drawer only": return "Solo en el panel inferior";

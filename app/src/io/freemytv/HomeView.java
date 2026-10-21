@@ -157,6 +157,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private final RectF[] cardRects = new RectF[3];
     private final List<HomeApps.Item> lightButtons = new ArrayList<>();
     private Paint badgePaint;
+    private Paint lGreeting;
+    private String greetingText = "";
     private Paint lTitle, lTab, lTabOn, lCardTitle, lCardMeta, lQuote, lTip, lDate, lClock, lWeather, lClockQuote;
     private Shader lightGradient;
 
@@ -602,6 +604,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         for (Paint p : new Paint[] {labelPaint, titlePaint, metaPaint, clockPaint}) p.setShadowLayer(22 * k, 0, 2 * k, 0x59000000);
         lTitle = Ui.text(Ui.displaySemibold, 76 * k, L_INK);
         lTitle.setLetterSpacing(0.004f);
+        lGreeting = Ui.text(Ui.medium, 34 * k, L_DIM);
         lTab = Ui.text(Ui.medium, 30 * k, L_DIM);
         lTabOn = Ui.text(Ui.semibold, 30 * k, L_INK);
         lCardTitle = Ui.text(Ui.semibold, 31 * k, L_INK);
@@ -764,8 +767,20 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if (minute == clockMinute || clockPaint == null) return false;
         clockMinute = minute;
         clockText = Ui.clock(now);
+        greetingText = greeting(now);
         dateText = Ui.date(now);
         return true;
+    }
+
+    /** "Good evening, Ana" (the name from config.properties, if any): morning from 5, afternoon from 12, evening from 18. */
+    private static String greeting(long now) {
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.setTimeInMillis(now);
+        int h = cal.get(java.util.Calendar.HOUR_OF_DAY);
+        String hello = h >= 5 && h < 12 ? Ui.tr("Bom dia", "Good morning")
+                : h >= 12 && h < 18 ? Ui.tr("Boa tarde", "Good afternoon") : Ui.tr("Boa noite", "Good evening");
+        String name = Config.NAME.trim();
+        return name.isEmpty() ? hello : hello + ", " + name;
     }
 
     private void updatePalette() {
@@ -978,6 +993,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     /** Text colors for the current night value (dark by day, white at night). */
     private void applyTone() {
         lTitle.setColor(tone(L_INK, WHITE));
+        lGreeting.setColor(tone(L_DIM, 0xFF98989D));
         lTab.setColor(tone(L_DIM, 0xFF8E8E93));
         lTabOn.setColor(tone(L_INK, WHITE));
         lCardTitle.setColor(tone(L_INK, WHITE));
@@ -2843,6 +2859,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         }
         // The time, large, where a title would be.
         c.drawText(clockText, MARGIN * k - Ui.leftBearing(lTitle, clockText), L_TITLE_BASE * k, lTitle);
+        c.drawText(greetingText, MARGIN * k + lTitle.measureText(clockText) + 28 * k, L_TITLE_BASE * k, lGreeting);
         // Text tabs (the selected one in bold, in the main text color); with focus on the tabs, the selected one gets
         // the white pill with a shadow and grows a little (the tvOS focus).
         float focus = Ui.clamp(topFocus[tab].value);

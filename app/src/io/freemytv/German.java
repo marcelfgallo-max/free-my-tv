@@ -29,6 +29,9 @@ final class German {
             case " of 3": return " von 3";
             case "Dollar": return "Dollar";
             case "Photo": return "Foto";
+            case "Good morning": return "Guten Morgen";
+            case "Good afternoon": return "Guten Tag";
+            case "Good evening": return "Guten Abend";
             case "Sleep Timer": return "Sleep-Timer";
             case "Off in ": return "Aus in ";
             case "Sleep timer off.": return "Sleep-Timer aus.";
