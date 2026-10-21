@@ -72,6 +72,13 @@ final class HomeMode {
         // Xiaomi
         "com.miui.tv.analytics", "com.xiaomi.statistic",                              // telemetry
         "com.mitv.tvhome.mitvplus", "com.xm.webcontent",                              // Mi TV+ promo channels, promo web content
+        // Sony BRAVIA (Android TV 9, MediaTek)
+        "tv.samba.ssm",                                                               // Samba TV: watches what's on screen
+        "com.qterics.da.product", "com.sony.dtv.da.service",                          // telemetry
+        "com.sony.dtv.sonyselect", "com.sony.dtv.discovery",                          // Sony Select promo apps, Discover bar
+        "com.sony.dtv.demomode", "com.sony.dtv.demosupport", "com.sony.dtv.multiscreendemo", // store demo
+        "com.sony.dtv.imanual", "com.sony.dtv.smarthelp", "com.sony.dtv.customersupport",   // manual, help
+        "com.google.android.videos",                                                  // Google Play Movies (discontinued)
     };
 
     /** The voice assistant, only with disable_assistant=true in config.properties (the mic button stops working). */
@@ -106,7 +113,25 @@ final class HomeMode {
         "mitv.service", "com.mi.bluetooth", "com.mitv.livetv.ci_mediatek", "com.xiaomi.tvqs.overseas",
         "com.mitv.tvlock", "com.xiaomi.mitv.updateservice", "com.xiaomi.android.tvsetup.partnercustomizer",
         "com.mitv.overseaservice", "com.xiaomi.mitv.tvmanager", "com.xiaomi.wfdsinkhelperservice",
-        "com.mitv.milinkservice", "com.xiaomi.mitv.smartshare", "android.autoinstalls.config.xiaomi.amelie"));
+        "com.mitv.milinkservice", "com.xiaomi.mitv.smartshare", "android.autoinstalls.config.xiaomi.amelie",
+        // Sony BRAVIA: system service, picture and panel, sound and soundbar (BRAVIA Sync / CEC), inputs, tuner and
+        // live TV, remote and pairing, setup, updates, network, casting, temperature, service menu
+        "com.sony.dtv.sonysystemservice", "com.sony.dtv.settingsprovider", "com.sony.dtv.configsettings",
+        "com.sony.dtv.provider.modelvariation", "com.sony.dtv.panelsettings", "com.sony.dtv.videoframeserver",
+        "com.sony.dtv.osdplanevisibilitymanager", "com.sony.dtv.tvpositionscreen", "com.sony.dtv.audiooutput",
+        "com.sony.dtv.HomeTheatreControl", "com.sony.dtv.braviasyncmenu", "com.sony.dtv.braviasyncservice",
+        "com.sony.dtv.braviasyncsetting", "com.sony.dtv.tvinput.external", "com.sony.dtv.tvinput.provider",
+        "com.sony.dtv.tvinput.tuner", "com.sony.dtv.tvx", "com.sony.dtv.tvxlauncher.programguide",
+        "com.sony.dtv.tuningconfirmation_nondvb", "com.sony.dtv.broadcasttimezonereceiver", "com.sony.dtv.timers",
+        "com.sony.dtv.interactivetvutil", "com.sony.dtv.interactivetvutil.output", "com.sony.dtv.serviceinformation",
+        "com.sony.dtv.remotepairing", "com.sony.dtv.remotecontrolsettings", "com.sony.dtv.rcpowerkey",
+        "com.sony.dtv.uinputservice", "com.sony.dtv.imeproxy", "com.sony.dtv.quicksetup",
+        "com.sony.dtv.QuickSetupCustomizer", "com.sony.dtv.countrysetting", "com.sony.dtv.systemupdate",
+        "com.sony.dtv.networksettings", "com.sony.dtv.networkapp.wifidirect", "com.sony.dtv.homenetwork",
+        "com.sony.dtv.dialservice", "com.sony.dtv.webapi.core", "com.sony.dtv.tvsettingsbroadcast",
+        "com.sony.dtv.usbmsgservice", "com.sony.dtv.hddmgr", "com.sony.dtv.heatcontrol", "com.sony.dtv.servicemode",
+        "com.sony.dtv.seconddispsetting", "com.sony.dtv.common.base.AccessibilityText", "com.sony.dtv.b2b.frameworkextension",
+        "com.mediatek.agent", "mtktvapi.agent", "screnmirroring.com"));
 
     /** One switch at a time (jobs can overlap: a boot check and a button press). */
     private static final Object RUN = new Object();
