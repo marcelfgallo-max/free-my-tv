@@ -54,6 +54,8 @@ final class Recs {
 
     private static final String API = "https://api.themoviedb.org/3";
     private static final String IMAGES = "https://image.tmdb.org/t/p/original";
+    /** The cards' size: 1280 wide is more than the widest card needs and 5-10× lighter than the original. */
+    private static final String CARD_IMAGES = "https://image.tmdb.org/t/p/w1280";
     private static final long LIST_EVERY = 6 * 3600_000L;
     /** Bump when what is saved for each title changes (the saved list is discarded and fetched again). */
     private static final int CACHE_VERSION = 3;
@@ -100,6 +102,8 @@ final class Recs {
     private final Context context;
     private final SharedPreferences cache;
     private final ExecutorService io = Executors.newSingleThreadExecutor();
+    /** The cards' images: three at a time, apart from the list (a slow download doesn't hold up the others). */
+    private final ExecutorService imageIo = Executors.newFixedThreadPool(3);
     private final Handler main = new Handler(Looper.getMainLooper());
     private final List<Listener> listeners = new ArrayList<>();
     private final Map<String, Backdrop> images = new LinkedHashMap<>();   // this hour's, built and ready to draw
@@ -222,7 +226,7 @@ final class Recs {
             if (b != null) return b;
             if (!pending.add(key)) return null;
         }
-        io.execute(() -> {
+        imageIo.execute(() -> {
             try {
                 loadImage(p);
             } finally {
@@ -236,12 +240,19 @@ final class Recs {
         return p.backdrop != null && imageFile(p).exists();
     }
 
+    /** The card-size image (TMDB's w1280; an app's own image as it comes). */
     private File imageFile(Pick p) {
         // An app's own image (continue watching) is a whole, long URL: named by its hash.
         String name = p.backdrop.startsWith("http")
                 ? "app-" + java.util.UUID.nameUUIDFromBytes(p.backdrop.getBytes(java.nio.charset.StandardCharsets.UTF_8))
-                : p.backdrop.replace("/", "");
+                : "w1280" + p.backdrop.replace("/", "");
         return new File(new File(context.getCacheDir(), "recs"), name);
+    }
+
+    /** The original, for the screensaver's whole screen (an app's own image is only the one file). */
+    private File originalFile(Pick p) {
+        if (p.backdrop.startsWith("http")) return imageFile(p);
+        return new File(new File(context.getCacheDir(), "recs"), p.backdrop.replace("/", ""));
     }
 
     /** With a key: fetches the list if stale or the time of day (morning/afternoon/night) changed; then the details. */
@@ -270,7 +281,7 @@ final class Recs {
                     tried++;
                     try {
                         if (!pick.detailed) fetchDetails(pick);
-                        if (pick.pkg != null) download(pick);
+                        if (pick.pkg != null) download(pick, false);
                     } catch (Exception e) {
                         failures++;
                         last = e.getMessage() == null ? e.toString() : e.getMessage();
@@ -318,8 +329,10 @@ final class Recs {
         return out;
     }
 
-    /** The pick's original image if it's already on disk (the screensaver loads it in its own way), or null. */
+    /** The pick's original image if it's on disk, else its card-size one, or null (the screensaver loads it its own way). */
     File readyImage(Pick p) {
+        File original = originalFile(p);
+        if (original.exists()) return original;
         return hasImage(p) ? imageFile(p) : null;
     }
 
@@ -332,7 +345,7 @@ final class Recs {
         long sinceFail = System.currentTimeMillis() - failedAt;
         if (failedAt != 0 && sinceFail >= 0 && sinceFail < 10 * 60_000L) return;
         List<Pick> todo = new ArrayList<>();
-        for (Pick p : picks) if (!p.detailed || (p.pkg != null && !hasImage(p))) todo.add(p);
+        for (Pick p : picks) if (!p.detailed || (p.pkg != null && (!hasImage(p) || !originalFile(p).exists()))) todo.add(p);
         if (todo.isEmpty()) return;
         fetching = true;
         io.execute(() -> {
@@ -343,7 +356,10 @@ final class Recs {
                 for (Pick p : todo) {
                     try {
                         if (!p.detailed) fetchDetails(p);
-                        if (p.pkg != null) download(p);
+                        if (p.pkg != null) {
+                            download(p, false);
+                            download(p, true);   // the screensaver fills the screen: the original
+                        }
                     } catch (Exception e) {
                         failures++;
                         last = e.getMessage() == null ? e.toString() : e.getMessage();
@@ -613,15 +629,18 @@ final class Recs {
         return key.isEmpty() ? null : key;
     }
 
-    // MARK: - Images (TMDB originals on disk, up to 24 so the whole list fits; this hour's kept ready in memory)
+    // MARK: - Images (TMDB's on disk: the cards' size, and the originals the screensaver asked for; this hour's in memory)
 
-    private void download(Pick p) throws IOException {
-        File f = imageFile(p);
+    /** Downloads the card-size image, or with `original` the original (for the screensaver). */
+    private void download(Pick p, boolean original) throws IOException {
+        File f = original ? originalFile(p) : imageFile(p);
         if (f.exists()) return;
         //noinspection ResultOfMethodCallIgnored
         f.getParentFile().mkdirs();
-        File part = new File(f.getPath() + ".part");
-        HttpURLConnection c = (HttpURLConnection) new URL(p.backdrop.startsWith("http") ? p.backdrop : IMAGES + p.backdrop).openConnection();
+        // One part file per thread: the list and a card can ask for the same image at once.
+        File part = new File(f.getPath() + "." + Thread.currentThread().getId() + ".part");
+        String url = p.backdrop.startsWith("http") ? p.backdrop : (original ? IMAGES : CARD_IMAGES) + p.backdrop;
+        HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
         c.setConnectTimeout(8000);
         c.setReadTimeout(20000);
         try (InputStream in = c.getInputStream(); FileOutputStream out = new FileOutputStream(part)) {
@@ -635,24 +654,24 @@ final class Recs {
         } finally {
             c.disconnect();
         }
-        if (!part.renameTo(f)) throw new IOException("couldn't save the image");
+        if (!part.renameTo(f) && !f.exists()) throw new IOException("couldn't save the image");
         prune(f.getParentFile());
     }
 
-    /** Reads the original (≥ 1920 wide) and builds the backdrop (Backdrop: cards plus frosted and glass versions). */
+    /** Reads the card-size image and builds the backdrop (Backdrop: the two card crops). */
     private void loadImage(Pick p) {
         synchronized (images) {
             if (images.containsKey(p.backdrop)) return;
         }
         File f = imageFile(p);
         try {
-            download(p);
+            download(p, false);
             BitmapFactory.Options bounds = new BitmapFactory.Options();
             bounds.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(f.getPath(), bounds);
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inSampleSize = 1;
-            while (bounds.outWidth / (opts.inSampleSize * 2) >= Backdrop.W) opts.inSampleSize *= 2;
+            while (bounds.outWidth / (opts.inSampleSize * 2) >= Backdrop.WIDE_W) opts.inSampleSize *= 2;
             Bitmap b = BitmapFactory.decodeFile(f.getPath(), opts);
             if (b == null) throw new IOException("unreadable image");
             AppLog.w("backdrop \u201c" + p.title + "\u201d: " + bounds.outWidth + "×" + bounds.outHeight);
@@ -691,9 +710,10 @@ final class Recs {
         }
         File[] files = dir.listFiles((d, name) -> !name.endsWith(".part"));
         // The tabs' picks, Continue watching and a few pages of the catalog.
-        if (files == null || files.length <= 48) return;
+        // The cards' images and some originals for the screensaver.
+        if (files == null || files.length <= 72) return;
         Arrays.sort(files, (a, b) -> Long.compare(a.lastModified(), b.lastModified()));
-        for (int i = 0; i < files.length - 48; i++) {
+        for (int i = 0; i < files.length - 72; i++) {
             //noinspection ResultOfMethodCallIgnored
             files[i].delete();
         }

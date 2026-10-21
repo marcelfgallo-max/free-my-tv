@@ -232,8 +232,8 @@ final class HomeData {
 
     private static final long SPARK_EVERY = 15 * 60_000L;
     /**
-     * The drawer card's mini charts: the coins' last 24 h (hourly, like their change), the others' day so far (every
-     * 30 min, like theirs). Null until fetched.
+     * The drawer card's mini charts: the coins' and the currencies' last 24 h (hourly; every 30 min), the Ibovespa's
+     * session. Null until fetched.
      */
     final float[][] spark = new float[COINS.length][];
     volatile long sparkAt;
@@ -242,7 +242,9 @@ final class HomeData {
     private static String sparkUrl(int i) {
         if (i < CRYPTO) return "https://api.binance.com/api/v3/klines?interval=1h&limit=24&symbol=" + COINS[i] + QUOTE;
         String symbol = i == USD ? "USDBRL%3DX" : i == EUR ? "EURBRL%3DX" : "%5EBVSP";
-        return "https://query1.finance.yahoo.com/v8/finance/chart/" + symbol + "?range=1d&interval=30m";
+        // The currencies trade around the clock and Yahoo's "1d" is empty for hours after its day turns: two days,
+        // cut to the last 24 h below.
+        return "https://query1.finance.yahoo.com/v8/finance/chart/" + symbol + "?range=" + (i == IBOV ? "1d" : "2d") + "&interval=30m";
     }
 
     /** The mini charts of the quotes the card shows; one that fails keeps its last line. */
@@ -273,6 +275,7 @@ final class HomeData {
                     .getJSONObject("indicators").getJSONArray("quote").getJSONObject(0).getJSONArray("close");
             out = new float[close.length()];
             for (int k = 0; k < close.length(); k++) if (!close.isNull(k)) out[n++] = (float) close.getDouble(k);
+            if (i != IBOV && n > 48) return java.util.Arrays.copyOfRange(out, n - 48, n);   // 24 h of 30 min
         }
         return n >= 2 ? java.util.Arrays.copyOf(out, n) : null;
     }

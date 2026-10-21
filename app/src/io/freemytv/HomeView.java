@@ -742,6 +742,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         return up;
     }
 
+    /** The bottom edge of the tab row's hairline (whole pixels). */
+    private int tabRuleBottom() {
+        return Math.round(L_TAB_RULE * k) + Math.max(1, Math.round(k));
+    }
+
     /** A 1 px hairline across [x0, x1] at y. */
     private void hairline(Canvas c, float x0, float x1, float y) {
         fill.setShader(null);
@@ -962,22 +967,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         return true;
     }
 
-    /** Swaps the background with a cross-fade (from one image to another, from the gradient to an image, or back). */
+    /**
+     * Swapped the background to a pick's photo. Modern 80s keeps its field behind everything, and the photos no longer
+     * carry the frosted versions it used, so it does nothing (the fade and glass code goes in the cleanup step).
+     */
     private void showBackdrop(Backdrop b) {
-        if (b == bgTo) return;
-        long up = SystemClock.uptimeMillis();
-        // In the middle of another swap, start from whichever is more visible.
-        if (bgFadeAt == 0 || fadeEase(bgFadeAt, up) >= 0.5f) bgFrom = bgTo;
-        bgTo = b;
-        bgFadeAt = up;
-        nightPair = false;
-        if (b == null || glassOf(b) == null) return;
-        if (bgFrom == null || glassOf(bgFrom) == null) {
-            scene.setFrost(frostOf(b));
-            scene.setGlassImage(glassOf(b));
-        } else {
-            scene.setGlassImages(glassOf(bgFrom), glassOf(b));
-        }
     }
 
     /** What the glass shows: the photo lightened (by day), darkened (at night) or blended in between. */
@@ -2826,11 +2820,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private void layoutLight() {
         if (lTab == null) return;
         // Caps tabs 64 px apart; a focused one inverts in a cell 16 px wider than its label on each side.
-        float pad = 16 * k, tabTop = L_TABBAR_TOP * k, tabBottom = (L_TABBAR_TOP + L_TABBAR_H) * k;
+        // The cell ends on the hairline's own row, so a focused tab reads as one block sitting on the line.
+        float pad = 16 * k, tabTop = L_TABBAR_TOP * k, tabBottom = tabRuleBottom();
         float x = MARGIN * k;
         for (int i = 0; i < TAB_COUNT; i++) {
             float tw = lTabOn.measureText(caps(tabs()[i]));
-            topRects[i].set(Math.round(x - pad), Math.round(tabTop), Math.round(x + tw + pad), Math.round(tabBottom));
+            topRects[i].set(Math.round(x - pad), Math.round(tabTop), Math.round(x + tw + pad), tabBottom);
             x += tw + L_TAB_GAP * k;
         }
         float b = L_BUTTON * k, right = CONTENT_R * k, cy = L_BUTTON_CY * k;
@@ -2928,7 +2923,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             if (i == tab) {
                 fill.setShader(null);
                 fill.setColor(M_INK);
-                c.drawRect(lx, Math.round((L_TAB_RULE - 3) * k), lx + lTabOn.measureText(label), Math.round(L_TAB_RULE * k) + 1, fill);
+                // 3 px ending where the hairline ends (it covers the line's row, as the focused cell does).
+                c.drawRect(lx, tabRuleBottom() - Math.round(3 * k), lx + lTabOn.measureText(label), tabRuleBottom(), fill);
                 if (focus > 0.01f) {
                     fill.setColor(Ui.alpha(M_INK, focus));
                     c.drawRect(r, fill);

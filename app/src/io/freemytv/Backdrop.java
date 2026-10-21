@@ -24,7 +24,8 @@ import android.graphics.Shader;
 final class Backdrop {
     static final int W = 1920, H = 1080, FW = 192, FH = 108, GW = 480, GH = 270;
     /** The cards at their focused size (1.05×): the wide one and the two tall ones. */
-    static final int WIDE_W = 1092, WIDE_H = 464, TALL_W = 336, TALL_H = 464;
+    /** The home screen's cards, at their exact size on a 1080p screen (drawn pixel for pixel). */
+    static final int WIDE_W = 1008, WIDE_H = 420, TALL_W = 328, TALL_H = 420;
     final Bitmap image;
     final int[] frost;      // heavily blurred (frosted glass, bottom drawer)
     final int[] glass;      // lightly blurred (Liquid Glass: the photo shows through the glass)
@@ -52,6 +53,12 @@ final class Backdrop {
     }
 
     static Backdrop make(Bitmap src, boolean forLight) {
+        if (forLight) {
+            // Modern 80s: the background is a field, so only the two card crops, straight from the image.
+            Bitmap wide = card(src, WIDE_W, WIDE_H), tall = card(src, TALL_W, TALL_H);
+            src.recycle();
+            return new Backdrop(null, null, null, wide, tall, null, null, null, null, null);
+        }
         Bitmap out = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(out);
         Paint photo = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.DITHER_FLAG);
@@ -159,6 +166,7 @@ final class Backdrop {
         }
         Bitmap out = Bitmap.createScaledBitmap(b, w, h, true);
         if (b != full && b != out) b.recycle();
+        if (out == full) out = full.copy(full.getConfig(), false);   // gpu() recycles what it copies: not the source
         return gpu(out);
     }
 
