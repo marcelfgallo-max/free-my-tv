@@ -243,8 +243,8 @@ final class HomeApps {
     private static final String[][] PORT_NAMES = {
         {"PlayStation 5", "controller"},
         {"Vivo TV", "settop"},
-        {"Switch 2", "handheld"},
         {"Apple TV", "airplay"},
+        {"Switch 2", "handheld"},
     };
 
     private static List<Item> inputs(Context c) {
