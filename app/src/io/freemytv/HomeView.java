@@ -1497,10 +1497,17 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             x += tw + gap;
         }
         float cardsTop = CARDS_TOP * k, split = left + (right - left) * 0.585f;
+        float weatherRight = split - 16 * k, quotesLeft = split + 16 * k;
+        if (groups == 2) {
+            // The cards line up with the rows above: the weather under the inputs, the quotes under the shortcuts.
+            weatherRight = drawerRects[drawerInputs - 1].right;
+            quotesLeft = drawerRects[drawerInputs].left;
+            right = drawerRects[n - 1].right;
+        }
         boolean wx = Prefs.weather(), qt = HomeData.quotesCard();
         // A card that is off gives its room to the other one.
-        weatherCard.set(left, cardsTop, qt ? split - 16 * k : right, cardsTop + CARDS_H * k);
-        quotesCard.set(wx ? split + 16 * k : left, cardsTop, right, cardsTop + CARDS_H * k);
+        weatherCard.set(left, cardsTop, qt ? weatherRight : right, cardsTop + CARDS_H * k);
+        quotesCard.set(wx ? quotesLeft : left, cardsTop, right, cardsTop + CARDS_H * k);
         drawerDirty = true;
     }
 
@@ -1628,12 +1635,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         c.drawText(nowTemp, x + sw + 18 * k - Ui.leftBearing(bigTemp, nowTemp), r.top + 170 * k, bigTemp);
         c.drawText(HomeData.condition(wx.code, wx.isDay), x, r.top + 220 * k, cardText);
         c.drawText(highLow, x, r.top + 258 * k, cardDim);
-        float split = r.left + 392 * k;
+        float split = r.left + 310 * k;
         fill.setShader(null);
         fill.setColor(tone(0x1A000000, 0x24FFFFFF));
         c.drawRoundRect(split - k, r.top + 34 * k, split + k, r.bottom - 34 * k, k, k, fill);
-        float hx = split + 30 * k, hw = (r.right - 30 * k - hx) / 6;
-        for (int i = 0; i < wx.hours.size() && i < 6; i++) {
+        int hours = weatherHours();
+        float hx = split + 30 * k, hw = (r.right - 30 * k - hx) / hours;
+        for (int i = 0; i < wx.hours.size() && i < hours; i++) {
             float hc = hx + hw * (i + 0.5f);
             c.drawText(hourText[i], hc, r.top + 96 * k, hourPaint);
             Symbols.draw(getContext(), c, Symbols.weather(wx.hourCode.get(i), wx.hourDay.get(i)), hc, r.top + 142 * k, 30 * k, drawerInk(0.9f));
@@ -1642,6 +1650,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         float sx = hx, base = r.top + 258 * k;
         if (wx.sunrise != 0) sx = sunItem(c, "sunrise", sunriseText, sx, base) + 36 * k;
         if (wx.sunset != 0) sunItem(c, "sunset", sunsetText, sx, base);
+    }
+
+    /** Next hours in the weather card: five beside the quotes card, six with the whole width. */
+    private static int weatherHours() {
+        return HomeData.quotesCard() ? 5 : 6;
     }
 
     private void refreshDrawerText() {
@@ -2657,7 +2670,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         s.append(". ").append(HomeData.degrees(wx.temp)).append(", ").append(HomeData.condition(wx.code, wx.isDay))
                 .append(Ui.tr(". Máxima ", ". High ")).append(HomeData.degrees(wx.max))
                 .append(Ui.tr(", mínima ", ", low ")).append(HomeData.degrees(wx.min)).append('.');
-        int hours = Math.min(6, wx.hours.size());
+        int hours = Math.min(weatherHours(), wx.hours.size());
         if (hours > 0) s.append(Ui.tr(" Próximas horas: ", " Next hours: "));
         for (int i = 0; i < hours; i++) {
             s.append(HomeData.hour(wx.hours.get(i))).append(' ').append(HomeData.degrees(wx.hourTemp.get(i))).append(i < hours - 1 ? ", " : ".");
