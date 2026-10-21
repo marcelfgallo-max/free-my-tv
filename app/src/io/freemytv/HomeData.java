@@ -527,9 +527,11 @@ final class HomeData {
         return Ui.once("change2", v, () -> (v >= 0 ? "+" : "−") + String.format(locale(), "%.2f%%", Math.abs(v)));
     }
 
+    /** "18h" ("6 PM" when the TV is set to 12 hours; "18:00" in English). */
     static String hour(long at) {
-        return Ui.once("hour", at, () -> Ui.en ? new SimpleDateFormat("h a", Locale.US).format(new java.util.Date(at))
-                : new SimpleDateFormat(Ui.es || Ui.ru ? "HH:mm" : Ui.de ? "HH 'Uhr'" : "HH'h'", Ui.locale()).format(new java.util.Date(at)));
+        boolean h12 = Ui.h12();
+        return Ui.once(h12 ? "hour12" : "hour", at, () -> h12 ? new SimpleDateFormat("h a", Locale.US).format(new java.util.Date(at))
+                : new SimpleDateFormat(Ui.en || Ui.es || Ui.ru ? "HH:mm" : Ui.de ? "HH 'Uhr'" : "HH'h'", Ui.locale()).format(new java.util.Date(at)));
     }
 
     /** How long ago the data was fetched, if it's stale (no internet): "12 min ago". */

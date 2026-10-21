@@ -164,16 +164,21 @@ final class Ui {
         return "de".equals(tv.getLanguage()) ? tv : Locale.GERMANY;
     }
 
-    /** "21:47", or "9:47" when the TV is set to 12 hours (without a setting, in English, like the iPhone in the US). */
+    /** The TV is set to 12 hours (before init, English is). */
+    static boolean h12() {
+        return app != null ? !android.text.format.DateFormat.is24HourFormat(app) : en;
+    }
+
+    /** "21:47", or "9:47" when the TV is set to 12 hours (like the iPhone in the US). */
     static String clock(long now) {
-        boolean h12 = app != null ? !android.text.format.DateFormat.is24HourFormat(app) : en;
-        return h12 ? new SimpleDateFormat("h:mm", Locale.US).format(new Date(now))
+        return h12() ? new SimpleDateFormat("h:mm", Locale.US).format(new Date(now))
                 : new SimpleDateFormat("HH:mm", locale()).format(new Date(now));
     }
 
-    /** "5:21" (sunrise and sunset; in English, "5:21 AM"). */
+    /** "5:21" (sunrise and sunset; "5:21 AM" when the TV is set to 12 hours). */
     static String time(long at) {
-        return once("time", at, () -> en ? new SimpleDateFormat("h:mm a", Locale.US).format(new Date(at))
+        boolean h12 = h12();
+        return once(h12 ? "time12" : "time", at, () -> h12 ? new SimpleDateFormat("h:mm a", Locale.US).format(new Date(at))
                 : new SimpleDateFormat("H:mm", locale()).format(new Date(at)));
     }
 
