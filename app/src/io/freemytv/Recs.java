@@ -45,6 +45,9 @@ final class Recs {
         String kind;            // "movie" or "tv"
         String title, backdrop, meta = "", app, pkg;
         boolean detailed;
+        // Continue watching (WatchNext): the app's own link to the title and how much was watched (0 to 1, or -1).
+        String intent;
+        float progress = -1;
     }
 
     interface Listener { void onRecs(); }
@@ -199,6 +202,12 @@ final class Recs {
         return (cut > 0 ? t.substring(0, cut) : t).trim();
     }
 
+    /** The HomeApps key of a streaming app ("netflix"), or null. */
+    static String serviceKey(String pkg) {
+        for (String[] s : SERVICES) if (s[2].equals(pkg)) return s[1];
+        return null;
+    }
+
     /** Name of the service the pick is on ("Netflix"), or empty. */
     static String serviceName(Pick p) {
         return p == null || p.app == null ? "" : SERVICE_NAME.get(p.app);
@@ -228,7 +237,11 @@ final class Recs {
     }
 
     private File imageFile(Pick p) {
-        return new File(new File(context.getCacheDir(), "recs"), p.backdrop.replace("/", ""));
+        // An app's own image (continue watching) is a whole, long URL: named by its hash.
+        String name = p.backdrop.startsWith("http")
+                ? "app-" + java.util.UUID.nameUUIDFromBytes(p.backdrop.getBytes(java.nio.charset.StandardCharsets.UTF_8))
+                : p.backdrop.replace("/", "");
+        return new File(new File(context.getCacheDir(), "recs"), name);
     }
 
     /** With a key: fetches the list if stale or the time of day (morning/afternoon/night) changed; then the details. */
@@ -422,7 +435,7 @@ final class Recs {
     }
 
     /** Language of titles and genres; the services come from the region. */
-    private static String lang() {
+    static String lang() {
         if (Ui.ru) return "ru-RU";
         if (Ui.es) return "ES".equals(java.util.Locale.getDefault().getCountry()) ? "es-ES" : "es-MX";
         if (Ui.de) return "de-DE";   // TMDB's de-AT and de-CH have few translations of their own
@@ -443,7 +456,7 @@ final class Recs {
         return String.format(Locale.US, "%04d-%02d-%02d", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
     }
 
-    private static void add(List<Pick> list, JSONObject o, String kind) {
+    static void add(List<Pick> list, JSONObject o, String kind) {
         String backdrop = o.optString("backdrop_path", "");
         if (backdrop.isEmpty() || "null".equals(backdrop)) return;
         Pick p = new Pick();
@@ -575,7 +588,7 @@ final class Recs {
         return stamp;
     }
 
-    private JSONObject get(String path) throws IOException, org.json.JSONException {
+    JSONObject get(String path) throws IOException, org.json.JSONException {
         String key = readKey();
         if (key == null) throw new IOException("no TMDB key");
         boolean bearer = key.startsWith("eyJ");   // read access token (v4) or API key (v3)
@@ -608,7 +621,7 @@ final class Recs {
         //noinspection ResultOfMethodCallIgnored
         f.getParentFile().mkdirs();
         File part = new File(f.getPath() + ".part");
-        HttpURLConnection c = (HttpURLConnection) new URL(IMAGES + p.backdrop).openConnection();
+        HttpURLConnection c = (HttpURLConnection) new URL(p.backdrop.startsWith("http") ? p.backdrop : IMAGES + p.backdrop).openConnection();
         c.setConnectTimeout(8000);
         c.setReadTimeout(20000);
         try (InputStream in = c.getInputStream(); FileOutputStream out = new FileOutputStream(part)) {
@@ -648,7 +661,8 @@ final class Recs {
             if (forLight != light) return;   // the design changed midway: this one is stale
             synchronized (images) {
                 images.put(p.backdrop, backdrop);
-                while (images.size() > (forLight ? 10 : 4)) images.remove(images.keySet().iterator().next());
+                // Light design: the three tabs' cards, Continue watching's and the catalog's page and the next one.
+                while (images.size() > (forLight ? 18 : 4)) images.remove(images.keySet().iterator().next());
             }
             notifyListeners();
         } catch (IOException | RuntimeException | OutOfMemoryError e) {
@@ -676,9 +690,10 @@ final class Recs {
             if (parts[i].lastModified() < stale) parts[i].delete();
         }
         File[] files = dir.listFiles((d, name) -> !name.endsWith(".part"));
-        if (files == null || files.length <= 24) return;
+        // The tabs' picks, Continue watching and a few pages of the catalog.
+        if (files == null || files.length <= 48) return;
         Arrays.sort(files, (a, b) -> Long.compare(a.lastModified(), b.lastModified()));
-        for (int i = 0; i < files.length - 24; i++) {
+        for (int i = 0; i < files.length - 48; i++) {
             //noinspection ResultOfMethodCallIgnored
             files[i].delete();
         }

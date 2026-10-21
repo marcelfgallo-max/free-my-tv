@@ -29,6 +29,13 @@ final class German {
             case ", tab ": return ", Tab ";
             case " of 3": return " von 3";
             case "Dollar": return "Dollar";
+            case "Loading the catalog…": return "Katalog wird geladen…";
+            case "Couldn't load the catalog right now.": return "Der Katalog konnte gerade nicht geladen werden.";
+            case "Search for ": return "Suche nach ";
+            case " in the app.": return " in der App.";
+            case "Movie": return "Film";
+            case "New episodes": return "Neue Folgen";
+            case "Nothing to continue right now. What you start on Netflix, Prime Video, Disney+ and Max shows up here.": return "Gerade nichts zum Weiterschauen. Was du auf Netflix, Prime Video, Disney+ und Max anfängst, erscheint hier.";
             case "Euro": return "Euro";
             case "Drawer only": return "Nur in der unteren Leiste";
             case "Markets": return "Kurse";

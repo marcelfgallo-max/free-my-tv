@@ -36,6 +36,13 @@ final class Russian {
             case ", tab ": return ", вкладка ";
             case " of 3": return " из 3";
             case "Dollar": return "Доллар";
+            case "Loading the catalog…": return "Загрузка каталога…";
+            case "Couldn't load the catalog right now.": return "Не удалось загрузить каталог.";
+            case "Search for ": return "Найдите ";
+            case " in the app.": return " в приложении.";
+            case "Movie": return "Фильм";
+            case "New episodes": return "Новые серии";
+            case "Nothing to continue right now. What you start on Netflix, Prime Video, Disney+ and Max shows up here.": return "Пока нечего продолжить. То, что вы начнёте смотреть в Netflix, Prime Video, Disney+ и Max, появится здесь.";
             case "Euro": return "Евро";
             case "Drawer only": return "Только в нижней панели";
             case "Markets": return "Котировки";
@@ -132,6 +139,7 @@ final class Russian {
             case "YouTube, Prime Video and Google Play: the TV itself controls those buttons.": return "Кнопками YouTube, Prime Video и Google Play управляет сам телевизор.";
             case "These are the TCL remote's buttons: on this TV, the buttons work as they always did.": return "Это кнопки пульта TCL: на этом телевизоре они работают как прежде.";
             case "Explore": return "Обзор";
+            case "Movies": return "Фильмы";
             case "Shows": return "Сериалы";
             case "Clear": return "Ясно";
             case "Mostly Sunny": return "Малооблачно";

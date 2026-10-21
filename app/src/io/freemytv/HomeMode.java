@@ -35,6 +35,8 @@ final class HomeMode {
 
     static final String PKG = "io.freemytv";
     static final String HOME_ACTIVITY = PKG + "/" + PKG + ".HomeActivity";
+    /** Lets the home screen read the streaming apps' Play Next rows (WatchNext). */
+    private static final String TV_LISTINGS = "android.permission.READ_TV_LISTINGS";
     static final String SETTINGS_ACTIVITY = PKG + "/" + PKG + ".SettingsActivity";
     /** Our screensaver: on Android 11 the copy that runs in the main process (ScreensaverAlone, #10). */
     static final String DREAM = PKG + "/" + PKG + (Build.VERSION.SDK_INT == 30 ? ".ScreensaverAlone" : ".Screensaver");
@@ -261,6 +263,7 @@ final class HomeMode {
             check(adb.shell("cmd package set-home-activity " + HOME_ACTIVITY), "Success",
                     Ui.tr("o Android não aceitou o novo Início", "Android didn't accept the new home screen"));
             adb.shell("settings put secure screensaver_components " + DREAM);
+            adb.shell("pm grant " + PKG + " " + TV_LISTINGS);
             JSONObject started = state(c);
             started.put("mode", FREE).put("homeReverted", false).put("setupHome", setupHome);
             save(c, started);
@@ -441,6 +444,7 @@ final class HomeMode {
                         fixed.add(pkg);
                     }
                 }
+                if (!WatchNext.allowed(app)) adb.shell("pm grant " + PKG + " " + TV_LISTINGS);
                 if (!reverted && !homeHolder(adb).contains(PKG)) {
                     adb.shell("cmd package set-home-activity " + HOME_ACTIVITY);
                     fixed.add(Ui.tr("o Início", "the home screen"));
