@@ -66,6 +66,34 @@ final class Symbols {
         canvas.drawBitmap(b, null, RECT, PAINT);
     }
 
+    /** Each symbol already reduced to the sizes drawSharp asked for (keyed by width × 4096 + height). */
+    private static final Map<Bitmap, android.util.SparseArray<Bitmap>> SIZED = new HashMap<>();
+
+    /**
+     * Like draw, for a symbol at a fixed size: reduced once to exactly that size (halving, no aliasing) and drawn on
+     * whole pixels, so its edges stay sharp instead of being filtered down ~5× every frame.
+     */
+    static void drawSharp(Context c, Canvas canvas, String name, float cx, float cy, float pointSize, int color) {
+        Bitmap b = get(c, name);
+        if (b == null) return;
+        int w = Math.max(1, Math.round(b.getWidth() * pointSize / PX_PER_POINT));
+        int h = Math.max(1, Math.round(b.getHeight() * pointSize / PX_PER_POINT));
+        synchronized (PAINT) {
+            android.util.SparseArray<Bitmap> sizes = SIZED.get(b);
+            if (sizes == null) {
+                sizes = new android.util.SparseArray<>();
+                SIZED.put(b, sizes);
+            }
+            Bitmap s = sizes.get(w * 4096 + h);
+            if (s == null) {
+                s = HomeView.downscale(b, w, h);
+                sizes.put(w * 4096 + h, s);
+            }
+            PAINT.setColor(color);
+            canvas.drawBitmap(s, Math.round(cx - w / 2f), Math.round(cy - h / 2f), PAINT);
+        }
+    }
+
     /** Weather symbol for an Open-Meteo WMO weather code. */
     static String weather(int code, boolean day) {
         if (code <= 1) return day ? "sunny" : "clear_night";
