@@ -182,13 +182,13 @@ final class HomeApps {
         return out;
     }
 
-    /** Live TV, the HDMI inputs with a device sending a signal, and All Apps. */
+    /** The HDMI inputs with a device sending a signal, Live TV, and All Apps. */
     static List<Item> shortcuts(Context c) {
         List<Item> items = new ArrayList<>();
+        items.addAll(inputs(c));
         if (liveTv(c) != null) {
             items.add(shortcut(LIVE_TV, "live", Ui.tr("TV ao Vivo", "Live TV"), "tv"));
         }
-        items.addAll(inputs(c));
         items.add(shortcut(ALL_APPS, "all", Ui.tr("Todos os Apps", "All Apps"), "apps"));
         return items;
     }
@@ -231,13 +231,21 @@ final class HomeApps {
         return it;
     }
 
-    /** For the bottom drawer: live TV and every HDMI input (the ones with no device are shown dimmed). */
+    /** For the bottom drawer: every HDMI input (the ones with no device are shown dimmed), then live TV. */
     static List<Item> allInputs(Context c) {
         List<Item> items = new ArrayList<>();
-        if (liveTv(c) != null) items.add(shortcut(LIVE_TV, "live", Ui.tr("TV ao Vivo", "Live TV"), "tv"));
         items.addAll(inputs(c, true));
+        if (liveTv(c) != null) items.add(shortcut(LIVE_TV, "live", Ui.tr("TV ao Vivo", "Live TV"), "tv"));
         return items;
     }
+
+    /** Fixed names and icons by HDMI port (1 to 4); they win over the TV's and HDMI-CEC's names. */
+    private static final String[][] PORT_NAMES = {
+        {"PlayStation 5", "controller"},
+        {"Vivo TV", "settop"},
+        {"Switch 2", "handheld"},
+        {"Apple TV", "airplay"},
+    };
 
     private static List<Item> inputs(Context c) {
         return inputs(c, false);
@@ -293,6 +301,10 @@ final class HomeApps {
                     : !reported.isEmpty() && state == TvInputManager.INPUT_STATE_CONNECTED ? reported : "HDMI " + number;
             String symbol = state == TvInputManager.INPUT_STATE_CONNECTED || custom != null
                     ? deviceSymbol(label) : "hdmi";
+            if (number >= 1 && number <= PORT_NAMES.length) {
+                label = PORT_NAMES[number - 1][0];
+                symbol = PORT_NAMES[number - 1][1];
+            }
             Item it = shortcut(INPUT, "hdmi" + number, label, symbol);
             it.inputId = info.getId();
             it.number = String.valueOf(number);
