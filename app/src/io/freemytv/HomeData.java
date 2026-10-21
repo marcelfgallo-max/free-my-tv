@@ -83,6 +83,7 @@ final class HomeData {
     /** Settings changed (city, coins): fetch again now. */
     void settingsChanged() {
         pricesAt = 0;
+        sparkAt = 0;
         weatherAt = 0;
         pricesFailedAt = 0;
         weatherFailedAt = 0;
@@ -186,7 +187,9 @@ final class HomeData {
     void refreshIfStale() {
         long now = System.currentTimeMillis();
         // A negative age (the TV's clock went back) counts as stale: otherwise the data would freeze.
-        if (!fetchingPrices && quotesCard() && (now - pricesAt > PRICES_EVERY || now < pricesAt) && !failedRecently(pricesFailedAt, now)) {
+        // The mini charts too: right after a restart the prices come from the cache, the charts not yet.
+        boolean stale = now - pricesAt > PRICES_EVERY || now < pricesAt || now - sparkAt > SPARK_EVERY;
+        if (!fetchingPrices && quotesCard() && stale && !failedRecently(pricesFailedAt, now)) {
             fetchingPrices = true;
             io.execute(() -> {
                 try {
@@ -194,6 +197,8 @@ final class HomeData {
                     boolean got = fetch("prices", pricesUrl(), this::parsePrices);
                     got |= fetch("fx", fxUrl(), this::parseFx);
                     got |= fetch("ibov", ibovUrl(), this::parseIbov);
+                    long at = System.currentTimeMillis();
+                    if (got && (at - sparkAt > SPARK_EVERY || at < sparkAt)) fetchSparks();
                     if (got) {
                         pricesAt = System.currentTimeMillis();
                         cache.edit().putLong("pricesAt", pricesAt).apply();
@@ -223,6 +228,53 @@ final class HomeData {
                 }
             });
         }
+    }
+
+    private static final long SPARK_EVERY = 15 * 60_000L;
+    /**
+     * The drawer card's mini charts: the coins' last 24 h (hourly, like their change), the others' day so far (every
+     * 30 min, like theirs). Null until fetched.
+     */
+    final float[][] spark = new float[COINS.length][];
+    volatile long sparkAt;
+
+    /** Binance's hourly closes for a coin, Yahoo Finance's day for the dollar, the euro and the Ibovespa. */
+    private static String sparkUrl(int i) {
+        if (i < CRYPTO) return "https://api.binance.com/api/v3/klines?interval=1h&limit=24&symbol=" + COINS[i] + QUOTE;
+        String symbol = i == USD ? "USDBRL%3DX" : i == EUR ? "EURBRL%3DX" : "%5EBVSP";
+        return "https://query1.finance.yahoo.com/v8/finance/chart/" + symbol + "?range=1d&interval=30m";
+    }
+
+    /** The mini charts of the quotes the card shows; one that fails keeps its last line. */
+    private void fetchSparks() {
+        int[] coins = active();
+        for (int j = 0; j < coins.length && j < CARD_ROWS; j++) {
+            int i = coins[j];
+            try {
+                float[] line = parseSpark(i, get(sparkUrl(i)));
+                if (line != null) spark[i] = line;
+            } catch (Exception e) {
+                AppLog.w("spark " + COINS[i] + ": " + e.getMessage());
+            }
+        }
+        sparkAt = System.currentTimeMillis();
+    }
+
+    private static float[] parseSpark(int i, String body) throws Exception {
+        float[] out;
+        int n = 0;
+        if (i < CRYPTO) {
+            // [[openTime, open, high, low, close, …], …]
+            JSONArray rows = new JSONArray(body);
+            out = new float[rows.length()];
+            for (int k = 0; k < rows.length(); k++) out[n++] = (float) Double.parseDouble(rows.getJSONArray(k).getString(4));
+        } else {
+            JSONArray close = new JSONObject(body).getJSONObject("chart").getJSONArray("result").getJSONObject(0)
+                    .getJSONObject("indicators").getJSONArray("quote").getJSONObject(0).getJSONArray("close");
+            out = new float[close.length()];
+            for (int k = 0; k < close.length(); k++) if (!close.isNull(k)) out[n++] = (float) close.getDouble(k);
+        }
+        return n >= 2 ? java.util.Arrays.copyOf(out, n) : null;
     }
 
     private interface Parser { void parse(String body) throws Exception; }

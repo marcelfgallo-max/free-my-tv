@@ -291,6 +291,10 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private String weatherTitle, nowTemp, highLow, sunriseText, sunsetText, staleText;
     private final String[] hourText = new String[6], hourTempText = new String[6];
     private final String[] priceText = new String[HomeData.COINS.length], changeText = new String[HomeData.COINS.length];
+    /** The quotes card's widest name and price (where the mini charts fit), and the chart's points (no allocation). */
+    private float nameColumn, priceColumn;
+    private final float[] sparkPoints = new float[4 * 48];
+    private final Paint sparkPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     /** What the hero shows: a recommendation or, without any, the date, the time and the weather. */
     private static final class Hero {
@@ -1703,6 +1707,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 priceText[i] = HomeData.quote(i, data.prices[i]);
                 changeText[i] = HomeData.change(i, data.changes[i]);
             }
+            nameColumn = priceColumn = 0;
+            int[] coins = HomeData.active();
+            for (int j = 0; j < coins.length && j < HomeData.CARD_ROWS; j++) {
+                nameColumn = Math.max(nameColumn, cardText.measureText(HomeData.coinName(coins[j])));
+                priceColumn = Math.max(priceColumn, pricePaint.measureText(priceText[coins[j]]));
+            }
         }
     }
 
@@ -1734,7 +1744,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
      * sunrise and sunset, "12 min ago").
      */
     private String drawerCardsKey() {
-        return data.weatherAt + "|" + data.pricesAt + "|" + Prefs.version + "|" + Ui.language + "|"
+        return data.weatherAt + "|" + data.pricesAt + "|" + data.sparkAt + "|" + Prefs.version + "|" + Ui.language + "|"
                 + Float.floatToIntBits(dark()) + "|" + System.currentTimeMillis() / 60_000;
     }
 
@@ -1772,6 +1782,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         c.drawText(quotesTitle(), x, r.top + 54 * k, cardTitle);
         c.drawText(staleText, right, r.top + 54 * k, cardDimRight);
         float cap = Ui.cap(cardText);
+        // The mini charts sit between the names and the prices, as wide as that room allows (up to 150 px).
+        float sparkRight = right - 128 * k - priceColumn - 28 * k;
+        float sparkLeft = Math.max(x + 60 * k + nameColumn + 28 * k, sparkRight - 150 * k);
         int[] coins = HomeData.active();
         for (int j = 0; j < coins.length && j < HomeData.CARD_ROWS; j++) {
             int i = coins[j];
@@ -1781,8 +1794,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             c.drawText(HomeData.coinName(i), x + Math.max(gw, 28 * k) / 2 + 30 * k, base, cardText);
             c.drawText(priceText[i], right - 128 * k, base, pricePaint);
             double change = data.changes[i];
+            int color = Double.isNaN(change) ? tone(L_DIM, 0x99FFFFFF)
+                    : change >= 0 ? tone(0xFF248A3D, UP_COLOR) : tone(0xFFD70015, DOWN_COLOR);
+            float[] line = data.spark[i];
+            if (line != null && sparkRight - sparkLeft > 48 * k) drawSpark(c, line, sparkLeft, sparkRight, mid, color);
             if (Double.isNaN(change)) continue;
-            int color = change >= 0 ? tone(0xFF248A3D, UP_COLOR) : tone(0xFFD70015, DOWN_COLOR);
             tmp.set(right - 108 * k, mid - 17 * k, right, mid + 17 * k);
             fill.setShader(null);
             fill.setColor(Ui.alpha(color, 0.2f));
@@ -1790,6 +1806,38 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             changePaint.setColor(color);
             c.drawText(changeText[i], tmp.centerX(), mid + Ui.halfCap(changePaint), changePaint);
         }
+    }
+
+    /** A quote's mini chart: its line from the lowest to the highest point, 28 px tall, centered on the row. */
+    private void drawSpark(Canvas c, float[] line, float left, float right, float mid, int color) {
+        float lo = Float.MAX_VALUE, hi = -Float.MAX_VALUE;
+        for (float v : line) {
+            lo = Math.min(lo, v);
+            hi = Math.max(hi, v);
+        }
+        float h = 28 * k, span = hi - lo;
+        int points = Math.min(line.length, sparkPoints.length / 4 + 1);
+        float step = (line.length - 1) / (float) (points - 1);
+        int n = 0;
+        float px = 0, py = 0;
+        for (int p = 0; p < points; p++) {
+            float v = line[Math.round(p * step)];
+            float cx = left + (right - left) * p / (points - 1);
+            float cy = span > 0 ? mid + h / 2 - (v - lo) / span * h : mid;
+            if (p > 0) {
+                sparkPoints[n++] = px;
+                sparkPoints[n++] = py;
+                sparkPoints[n++] = cx;
+                sparkPoints[n++] = cy;
+            }
+            px = cx;
+            py = cy;
+        }
+        sparkPaint.setStyle(Paint.Style.STROKE);
+        sparkPaint.setStrokeWidth(2.5f * k);
+        sparkPaint.setStrokeCap(Paint.Cap.ROUND);
+        sparkPaint.setColor(color);
+        c.drawLines(sparkPoints, 0, n, sparkPaint);
     }
 
     // MARK: - Focus
