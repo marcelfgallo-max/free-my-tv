@@ -29,6 +29,7 @@ final class German {
             case ", tab ": return ", Tab ";
             case " of 3": return " von 3";
             case "Dollar": return "Dollar";
+            case "Photo": return "Foto";
             case "Loading the catalog…": return "Katalog wird geladen…";
             case "Couldn't load the catalog right now.": return "Der Katalog konnte gerade nicht geladen werden.";
             case "Search for ": return "Suche nach ";

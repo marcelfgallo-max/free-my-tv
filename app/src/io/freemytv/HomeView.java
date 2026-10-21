@@ -50,7 +50,8 @@ import java.util.function.Consumer;
  *    (logo + price) at the right end of the tab row;
  *  - three cards with the titles recommended for right now in the selected tab (Recs, from TMDB), or the last ones
  *    watched in your apps (Continue: WatchNext), or what's on each service (Catalog); the background is
- *    the first card's photo, heavily blurred and almost white (Backdrop); without one, a light gradient;
+ *    the focused card's photo (the first card's, with the focus elsewhere), heavily blurred and almost white
+ *    (Backdrop); without one, a light gradient;
  *  - at the bottom, the glass shelf with the apps (icons in each brand's color, like the tvOS Dock; the focused one
  *    grows);
  *  - ↓ on the shelf: everything moves up and the bottom drawer appears (inputs, shortcuts, weather for the next hours
@@ -141,6 +142,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     // At the top: tabs (0 to 2) and icon-only buttons (3 to 5); the three cards
     private int tab, topIndex, cardIndex;
+    private boolean photoTheme;     // Home Settings > Theme > Photo: the night look over a barely darkened photo
+    private int tintColor;          // Automatic theme: the time of day's tone over the background (see timeTint)
+    private float tintStrength;
+    private final Paint tintPaint = new Paint();
+    private final android.graphics.PorterDuffXfermode multiply = new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.MULTIPLY),
+            screenMode = new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.SCREEN);
     private int page;       // Continue and Catalog: which three of the list the cards show (← → past the ends turn the page)
     private int widgetIndex;    // with TalkBack on, the drawer's weather (0) or quotes (1) card can take the focus
     private List<Recs.Pick> cards = new ArrayList<>();
@@ -885,6 +892,17 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     /** Day or night right now (from the sun at your location); `animate`: with the transition. */
     private void checkNight(boolean animate) {
+        boolean photo = "photo".equals(Prefs.theme());
+        if (photo != photoTheme) {
+            photoTheme = photo;
+            invalidateAll();
+        }
+        if ("auto".equals(Prefs.theme())) {
+            timeTint(System.currentTimeMillis());
+        } else if (tintStrength != 0) {
+            tintStrength = 0;
+            sky.invalidate();
+        }
         boolean want = data.isNight(System.currentTimeMillis());
         if (want == nightTarget) return;
         nightTarget = want;
@@ -1734,6 +1752,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         statusDirty |= snap || statusChanged;
         heroDirty |= snap || heroChanged;
         drawerDirty |= snap || drawerChanged;
+        // Like the Apple TV app: the background follows the focused card (once its photo is ready).
+        if (zone == Z_CARDS && cardIndex < cards.size()) {
+            Backdrop b = recs.backdrop(cards.get(cardIndex));
+            if (b != null) showBackdrop(b);
+        }
         spoken.focusMoved();
     }
 
@@ -2673,7 +2696,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             int from = more == paged ? page * 3 : 0, to = more == paged ? page * 3 + 6 : 3;
             for (int i = from; i < more.size() && i < to; i++) recs.backdrop(more.get(i));
         }
-        Backdrop b = cards.isEmpty() ? null : recs.backdrop(cards.get(0));
+        // The background is the focused card's photo (the first card's, with the focus elsewhere).
+        Backdrop b = cards.isEmpty() ? null : recs.backdrop(cards.get(zone == Z_CARDS ? Math.min(cardIndex, cards.size() - 1) : 0));
         if (cards.isEmpty() || b != null) showBackdrop(b);
         heroDirty = true;
         spoken.focusMoved();    // new picks under the focused card
@@ -2699,7 +2723,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         android.graphics.ColorFilter v = veil(tone(0.32f, 0.42f) * Ui.clamp(drawer.value), blend(0xFFFFFFFF, 0xFF000000, night));
         if (bgTo == null || (fading && bgFrom == null)) {
             if (lightGradient == null) lightGradient = new LinearGradient(0, 0, 0, h, 0xFFF5F5F7, 0xFFE2E2E7, Shader.TileMode.CLAMP);
-            if (nightGradient == null) nightGradient = new LinearGradient(0, 0, 0, h, 0xFF1C1C1E, 0xFF0B0B0D, Shader.TileMode.CLAMP);
+            if (nightGradient == null) nightGradient = new LinearGradient(0, 0, 0, h, 0xFF0B0B0C, 0xFF000000, Shader.TileMode.CLAMP);
             fill.setColorFilter(v);
             fill.setColor(0xFF000000);
             if (night < 0.999f) {
@@ -2719,11 +2743,46 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if (fading && bgFrom != null) drawLightImage(c, bgFrom, bgTo == null ? 1 - e : 1);
         if (bgTo != null) drawLightImage(c, bgTo, fading ? e : 1);
         imagePaint.setColorFilter(null);
+        if (tintStrength > 0) {
+            // By day multiplied (tints the light background without graying it); at night screened (black times a
+            // color stays black, so the color is added instead).
+            boolean dark = night > 0.5f;
+            tintPaint.setXfermode(dark ? screenMode : multiply);
+            tintPaint.setColor(dark ? blend(0xFF000000, tintColor, tintStrength * 0.22f) : blend(0xFFFFFFFF, tintColor, tintStrength * 0.35f));
+            c.drawRect(screen, tintPaint);
+        }
+    }
+
+    /**
+     * The tone of the hour, from today's sunrise and sunset: peach at dawn, warm orange in the golden hour and at
+     * sunset, blue for two hours after it; none by day and deep in the night.
+     */
+    private void timeTint(long now) {
+        HomeData.Weather wx = data.weather;
+        float t = Shaders.timeOfDay(now, 0) / 60_000f;
+        float rise = Shaders.timeOfDay(wx.sunrise, 6 * 3600_000L) / 60_000f, set = Shaders.timeOfDay(wx.sunset, 18 * 3600_000L) / 60_000f;
+        float dawn = bump(t - rise, -45, 0, 75), golden = bump(t - set, -90, -10, 20), blue = bump(t - set, 0, 30, 120);
+        int color = 0xFFFFC08A;
+        float strength = dawn;
+        if (golden > strength) { color = 0xFFFF9A62; strength = golden; }
+        if (blue > strength) { color = 0xFF6F86C8; strength = blue; }
+        // In steps of 1/32: the sky is only redrawn when the tone actually changes.
+        strength = Math.round(strength * 32) / 32f;
+        if (strength == tintStrength && color == tintColor) return;
+        tintStrength = strength;
+        tintColor = color;
+        sky.invalidate();
+    }
+
+    /** 0 outside [from, to], rising smoothly to 1 at `peak`. */
+    private static float bump(float x, float from, float peak, float to) {
+        if (x <= from || x >= to) return 0;
+        return x < peak ? smoothstep(from, peak, x) : 1 - smoothstep(peak, to, x);
     }
 
     private void drawLightImage(Canvas c, Backdrop b, float alpha) {
         if (night < 0.999f || b.nightImage == null) drawImage(c, b.lightImage, alpha);
-        if (night > 0.001f) drawImage(c, b.nightImage, alpha * night);
+        if (night > 0.001f) drawImage(c, photoTheme && b.photoImage != null ? b.photoImage : b.nightImage, alpha * night);
     }
 
     private void drawLightTop(Canvas c) {

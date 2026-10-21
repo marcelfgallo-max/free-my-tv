@@ -33,9 +33,10 @@ final class Backdrop {
     final Bitmap lightImage;            // by day: the background (the lightened frosted version, scaled up on screen)
     final int[] nightFrost, nightGlass; // at night: frosted (the bottom drawer's frosted glass) and glass, darkened
     final Bitmap nightImage;            // at night: the background (the darkened frosted version)
+    final Bitmap photoImage;            // "Photo" theme: the background (the glass version, only a little darkened)
 
     private Backdrop(Bitmap image, int[] frost, int[] glass, Bitmap wide, Bitmap tall, int[] light, int[] lightGlass,
-                     int[] night, int[] nightGlass) {
+                     int[] night, int[] nightGlass, int[] photo) {
         this.image = image;
         this.frost = frost;
         this.glass = glass;
@@ -47,6 +48,7 @@ final class Backdrop {
         this.nightGlass = nightGlass;
         lightImage = light == null ? null : Bitmap.createBitmap(light, FW, FH, Bitmap.Config.ARGB_8888);
         nightImage = night == null ? null : Bitmap.createBitmap(night, FW, FH, Bitmap.Config.ARGB_8888);
+        photoImage = photo == null ? null : Bitmap.createBitmap(photo, GW, GH, Bitmap.Config.ARGB_8888);
     }
 
     static Backdrop make(Bitmap src, boolean forLight) {
@@ -64,10 +66,13 @@ final class Backdrop {
             int[] light = whiten(frost.clone(), 0.82f);
             int[] glass = reduce(out, GW, GH, 2, 2);
             int[] lightGlass = whiten(glass.clone(), 0.74f);
-            int[] night = darken(frost.clone(), 0.76f);
-            int[] nightGlass = darken(glass, 0.56f);
+            // "Photo" theme: less blurred and only darkened enough for white text.
+            int[] photoBg = darken(glass.clone(), 0.5f);
+            // Night: almost black, the photo only a hint of color.
+            int[] night = darken(frost.clone(), 0.88f);
+            int[] nightGlass = darken(glass, 0.7f);
             out.recycle();
-            return new Backdrop(null, frost, null, wide, tall, light, lightGlass, night, nightGlass);
+            return new Backdrop(null, frost, null, wide, tall, light, lightGlass, night, nightGlass, photoBg);
         }
 
         float boost = Math.max(0, Math.min(0.3f, (luminance(out, 0, 0.22f, 0.5f, 0.62f) - 0.22f) * 1.1f));
@@ -94,7 +99,7 @@ final class Backdrop {
 
         int[] frost = reduce(out, FW, FH, 3, 3);
         int[] glass = reduce(out, GW, GH, 2, 2);
-        return new Backdrop(gpu(out), frost, glass, null, null, null, null, null, null);
+        return new Backdrop(gpu(out), frost, glass, null, null, null, null, null, null, null);
     }
 
     /** How many times smaller the screensaver photo's frosted version is (the glass math uses the same number). */
@@ -165,9 +170,9 @@ final class Backdrop {
         return g;
     }
 
-    /** Blends with a near-black (the darkest gray of Apple's dark-mode backgrounds), keeping the photo's tint. */
+    /** Blends with a near-black (a step above true black, so the glass still reads), keeping the photo's tint. */
     private static int[] darken(int[] px, float amount) {
-        float keep = 1 - amount, base = 11 * amount;
+        float keep = 1 - amount, base = 4 * amount;
         for (int i = 0; i < px.length; i++) {
             int p = px[i];
             int r = Math.round(((p >> 16) & 255) * keep + base);
