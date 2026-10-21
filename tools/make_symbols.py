@@ -1,5 +1,7 @@
-"""Renders the icons (white PNGs with transparency) from the Material Symbols Rounded font.
-Usage: python3 -I make_symbols.py FONT.ttf CODEPOINTS OUT_DIR [EM_PX]"""
+"""Renders the icons (white PNGs with transparency) from the Material Symbols font.
+Usage: python3 -I make_symbols.py FONT.ttf CODEPOINTS OUT_DIR [EM_PX] [--thin WEIGHT]
+The app uses Material Symbols Outlined with --thin 300: every icon a thin outline (Modern 80s); without --thin, each
+icon's fill from MAP at weight 600."""
 import os
 import sys
 
@@ -24,8 +26,14 @@ MAP = {
 
 
 def main():
-    font_path, cp_path, out = sys.argv[1], sys.argv[2], sys.argv[3]
-    em = int(sys.argv[4]) if len(sys.argv) > 4 else 172
+    args = sys.argv[1:]
+    thin = None
+    if "--thin" in args:
+        i = args.index("--thin")
+        thin = int(args[i + 1])
+        del args[i:i + 2]
+    font_path, cp_path, out = args[0], args[1], args[2]
+    em = int(args[3]) if len(args) > 3 else 172
     codes = {}
     for line in open(cp_path, encoding="utf-8"):
         parts = line.split()
@@ -38,7 +46,8 @@ def main():
         values = []
         for axis in axes:
             a = axis.lower()
-            values.append(fill if "fill" in a else 0 if "grad" in a else 48 if "optical" in a or "opsz" in a else 600)
+            values.append((0 if thin else fill) if "fill" in a else 0 if "grad" in a
+                          else 48 if "optical" in a or "opsz" in a else thin or 600)
         big_font.set_variation_by_axes(values)
         ch = chr(codes[material])
         # Drawn 8x larger without smoothing (the variable font's overlapping contours leave no gaps), then scaled down.
