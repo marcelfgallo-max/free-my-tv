@@ -27,6 +27,10 @@ final class Spanish {
             case ", tab ": return ", pestaña ";
             case " of 3": return " de 3";
             case "Dollar": return "Dólar";
+            case "Euro": return "Euro";
+            case "Drawer only": return "Solo en el panel inferior";
+            case "Markets": return "Cotizaciones";
+            case "change": return "variación";
             case "Series": return "Serie";
             case "prices from ": return "precios de ";
             case "Starting…": return "Iniciando…";

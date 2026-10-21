@@ -9,8 +9,9 @@ import android.util.SparseArray;
 
 
 /**
- * Official coin logos (BTC, ETH, SOL, USDT), flat and single-color: just the symbol, no disc or gradient
- * (res/drawable/coin_*.xml, vector drawables from the open cryptocurrency-icons set, CC0). The four symbols were
+ * Official coin logos (BTC, ETH, SOL), flat and single-color: just the symbol, no disc or gradient
+ * (res/drawable/coin_*.xml, vector drawables from the open cryptocurrency-icons set, CC0); the dollar, the euro and
+ * the Ibovespa are Material Symbols on the same frame. The coin symbols were
  * drawn on the same 32-unit frame with balanced visual "weight", so here they all use the same frame scale and only
  * the spare space on the sides is trimmed. Each size is drawn once into an exact-size bitmap and reused (sharp, no
  * resampling).
@@ -75,13 +76,16 @@ final class Glyphs {
         return Bitmap.createBitmap(b, left, 0, right - left + 1, h);
     }
 
-    private static final int[] IDS = {R.drawable.coin_btc, R.drawable.coin_eth, R.drawable.coin_sol, R.drawable.coin_usdt};
+    private static final int[] IDS = {R.drawable.coin_btc, R.drawable.coin_eth, R.drawable.coin_sol, R.drawable.coin_usd,
+            R.drawable.coin_eur, R.drawable.coin_ibov};
 
     private static int slot(String coin) {
         switch (coin) {
             case "BTC": return 0;
             case "ETH": return 1;
             case "SOL": return 2;
+            case "EUR": return 4;
+            case "IBOV": return 5;
             default: return 3;
         }
     }

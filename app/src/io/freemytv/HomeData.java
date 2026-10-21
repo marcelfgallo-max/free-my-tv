@@ -27,12 +27,18 @@ import java.util.concurrent.Executors;
 /**
  * Optional crypto prices (Binance, every 5 min) and weather/sunrise/sunset (Open-Meteo, every 30 min), cached
  * so the screen opens with numbers. Only fetched while the home screen or the screensaver is visible (the screen asks).
- * Neither source needs a key. Location and currency come from config.properties.
+ * In reais also the dollar and the euro (AwesomeAPI) and the Ibovespa (Yahoo Finance, unofficial).
+ * No source needs a key. Location and currency come from config.properties.
  */
 final class HomeData {
-    static final String[] COINS = {"BTC", "ETH", "SOL", "USDT"};
-    static final String[] COIN_NAMES = {"Bitcoin", "Ethereum", "Solana", "Dollar"};
+    static final String[] COINS = {"BTC", "ETH", "SOL", "USD", "EUR", "IBOV"};
+    static final String[] COIN_NAMES = {"Bitcoin", "Ethereum", "Solana", "Dollar", "Euro", "Ibovespa"};
+    static final int CRYPTO = 3, USD = 3, EUR = 4, IBOV = 5;
     private static final String CURRENCY = Config.CURRENCY.trim().toUpperCase(Locale.ROOT);
+    /** Order on screen and in Home Settings: in reais the dollar, the euro and the Ibovespa come first. */
+    static final int[] ORDER = CURRENCY.equals("BRL") ? new int[] {USD, EUR, IBOV, 0, 1, 2} : new int[] {0, 1, 2};
+    /** The drawer's quotes card has room for this many. */
+    static final int CARD_ROWS = 4;
     /** Binance quotes dollars as USDT. */
     private static final String QUOTE = CURRENCY.equals("USD") ? "USDT" : CURRENCY;
     private static final String WEATHER_QUERY = "&current=temperature_2m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset"
@@ -48,21 +54,26 @@ final class HomeData {
     private static final long PRICES_EVERY = 5 * 60_000L, WEATHER_EVERY = 30 * 60_000L;
     interface Listener { void onData(); }
 
-    /** BTC, ETH and SOL; in Brazilian reais also the dollar (USDT/BRL), which Binance doesn't list for most currencies. */
+    /** How many quotes the top row and the screensaver show (none when the quotes are only in the drawer). */
     static int coinCount() {
-        return Prefs.quotes() ? active().length : 0;
+        return Prefs.quotes() && Prefs.quotesTop() ? active().length : 0;
+    }
+
+    /** The drawer's quotes card is on and has something to show. */
+    static boolean quotesCard() {
+        return Prefs.quotes() && active().length > 0;
     }
 
     private static volatile int[] activeCoins;
     private static volatile int activeVersion = -1;
 
-    /** Indexes in COINS of the coins the user has on (and that Binance lists in this currency). */
+    /** Indexes in COINS of the quotes the user has on, in ORDER. */
     static int[] active() {
         int[] a = activeCoins;
         if (a != null && activeVersion == Prefs.version) return a;
         int n = 0;
         int[] tmp = new int[COINS.length];
-        for (int i = 0; i < COINS.length; i++) if (Prefs.coin(i) && (i < 3 || CURRENCY.equals("BRL"))) tmp[n++] = i;
+        for (int i : ORDER) if (Prefs.coin(i)) tmp[n++] = i;
         a = java.util.Arrays.copyOf(tmp, n);
         activeCoins = a;
         activeVersion = Prefs.version;
@@ -78,14 +89,41 @@ final class HomeData {
     }
 
     static String coinName(int i) {
-        return i == 3 ? Ui.tr("Dólar", "Dollar") : COIN_NAMES[i];
+        return i == USD ? Ui.tr("Dólar", "Dollar") : i == EUR ? Ui.tr("Euro", "Euro") : COIN_NAMES[i];
     }
 
+    /** True if any of the quotes that are on is not a coin (their change is the day's, not the last 24 h). */
+    static boolean anyMarket() {
+        for (int i : active()) if (i >= CRYPTO) return true;
+        return false;
+    }
+
+    private static boolean on(int[] coins, int i) {
+        for (int c : coins) if (c == i) return true;
+        return false;
+    }
+
+    /** Binance, for the coins that are on; null with none. */
     private static String pricesUrl() {
         StringBuilder symbols = new StringBuilder();
+        for (int i : active()) {
+            if (i >= CRYPTO) continue;
+            symbols.append(symbols.length() == 0 ? "" : ",").append("%22").append(COINS[i]).append(QUOTE).append("%22");
+        }
+        return symbols.length() == 0 ? null : "https://api.binance.com/api/v3/ticker/24hr?type=MINI&symbols=%5B" + symbols + "%5D";
+    }
+
+    /** AwesomeAPI, for the dollar and the euro in reais; null with neither on. */
+    private static String fxUrl() {
         int[] coins = active();
-        for (int i = 0; i < coins.length; i++) symbols.append(i == 0 ? "" : ",").append("%22").append(COINS[coins[i]]).append(QUOTE).append("%22");
-        return "https://api.binance.com/api/v3/ticker/24hr?type=MINI&symbols=%5B" + symbols + "%5D";
+        String pairs = (on(coins, USD) ? "USD-BRL," : "") + (on(coins, EUR) ? "EUR-BRL" : "");
+        if (pairs.endsWith(",")) pairs = pairs.substring(0, pairs.length() - 1);
+        return pairs.isEmpty() ? null : "https://economia.awesomeapi.com.br/json/last/" + pairs;
+    }
+
+    /** Yahoo Finance (unofficial, no key): the last days' closes, for the Ibovespa; null when it's off. */
+    private static String ibovUrl() {
+        return on(active(), IBOV) ? "https://query1.finance.yahoo.com/v8/finance/chart/%5EBVSP?range=5d&interval=1d" : null;
     }
 
     static final class Weather {
@@ -107,9 +145,9 @@ final class HomeData {
         return instance;
     }
 
-    final double[] prices = {Double.NaN, Double.NaN, Double.NaN, Double.NaN};
-    /** 24 h change (%), in the same order. */
-    final double[] changes = {Double.NaN, Double.NaN, Double.NaN, Double.NaN};
+    final double[] prices = {Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN};
+    /** Change (%), in the same order: the coins' in 24 h, the others' since the last close. */
+    final double[] changes = {Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN};
     volatile long pricesAt, weatherAt;
     volatile Weather weather = new Weather();
 
@@ -126,6 +164,10 @@ final class HomeData {
             if (Prefs.quotes()) {
                 String p = cache.getString("prices", null);
                 if (p != null) parsePrices(p);
+                String fx = cache.getString("fx", null);
+                if (fx != null) parseFx(fx);
+                String ibov = cache.getString("ibov", null);
+                if (ibov != null) parseIbov(ibov);
                 pricesAt = cache.getLong("pricesAt", 0);
             }
             String w = cache.getString("weather", null);
@@ -144,18 +186,21 @@ final class HomeData {
     void refreshIfStale() {
         long now = System.currentTimeMillis();
         // A negative age (the TV's clock went back) counts as stale: otherwise the data would freeze.
-        if (!fetchingPrices && coinCount() > 0 && (now - pricesAt > PRICES_EVERY || now < pricesAt) && !failedRecently(pricesFailedAt, now)) {
+        if (!fetchingPrices && quotesCard() && (now - pricesAt > PRICES_EVERY || now < pricesAt) && !failedRecently(pricesFailedAt, now)) {
             fetchingPrices = true;
             io.execute(() -> {
                 try {
-                    String body = get(pricesUrl());
-                    parsePrices(body);
-                    pricesAt = System.currentTimeMillis();
-                    cache.edit().putString("prices", body).putLong("pricesAt", pricesAt).apply();
-                    notifyListeners();
-                } catch (Exception e) {
-                    pricesFailedAt = System.currentTimeMillis();
-                    AppLog.w("prices: " + e.getMessage());
+                    // Each source on its own: one that fails leaves the others' numbers.
+                    boolean got = fetch("prices", pricesUrl(), this::parsePrices);
+                    got |= fetch("fx", fxUrl(), this::parseFx);
+                    got |= fetch("ibov", ibovUrl(), this::parseIbov);
+                    if (got) {
+                        pricesAt = System.currentTimeMillis();
+                        cache.edit().putLong("pricesAt", pricesAt).apply();
+                        notifyListeners();
+                    } else {
+                        pricesFailedAt = System.currentTimeMillis();
+                    }
                 } finally {
                     fetchingPrices = false;
                 }
@@ -180,6 +225,22 @@ final class HomeData {
         }
     }
 
+    private interface Parser { void parse(String body) throws Exception; }
+
+    /** Fetches one source of quotes and keeps its answer; false if it failed (or there's nothing to fetch). */
+    private boolean fetch(String key, String url, Parser parser) {
+        if (url == null) return false;
+        try {
+            String body = get(url);
+            parser.parse(body);
+            cache.edit().putString(key, body).apply();
+            return true;
+        } catch (Exception e) {
+            AppLog.w(key + ": " + e.getMessage());
+            return false;
+        }
+    }
+
     private static boolean failedRecently(long at, long now) {
         return at != 0 && now >= at && now - at < 2 * 60_000L;
     }
@@ -195,7 +256,7 @@ final class HomeData {
         for (int i = 0; i < list.length(); i++) {
             JSONObject o = list.getJSONObject(i);
             String symbol = o.getString("symbol");
-            for (int k = 0; k < COINS.length; k++) {
+            for (int k = 0; k < CRYPTO; k++) {
                 if (!symbol.equals(COINS[k] + quote)) continue;
                 found++;
                 double last = Double.parseDouble(o.optString("lastPrice", o.optString("price", "NaN")));
@@ -205,6 +266,36 @@ final class HomeData {
             }
         }
         if (found == 0) pricesAt = 0;   // cached in another currency (config changed): fetch again
+    }
+
+    /** AwesomeAPI: {"USDBRL": {"bid": "5.016", "pctChange": "-0.15"}, "EURBRL": …}. */
+    private void parseFx(String body) throws Exception {
+        JSONObject o = new JSONObject(body);
+        int[] which = {USD, EUR};
+        for (int k : which) {
+            JSONObject pair = o.optJSONObject(COINS[k] + "BRL");
+            if (pair == null) continue;
+            prices[k] = Double.parseDouble(pair.optString("bid", "NaN"));
+            changes[k] = Double.parseDouble(pair.optString("pctChange", "NaN"));
+        }
+    }
+
+    /**
+     * Yahoo Finance: the last close against the one before. Before the market opens, today's close is null and this
+     * is the last session's change.
+     */
+    private void parseIbov(String body) throws Exception {
+        JSONObject result = new JSONObject(body).getJSONObject("chart").getJSONArray("result").getJSONObject(0);
+        JSONArray close = result.getJSONObject("indicators").getJSONArray("quote").getJSONObject(0).getJSONArray("close");
+        double last = Double.NaN, before = Double.NaN;
+        for (int i = 0; i < close.length(); i++) {
+            if (close.isNull(i)) continue;
+            before = last;
+            last = close.getDouble(i);
+        }
+        double now = result.getJSONObject("meta").optDouble("regularMarketPrice", last);
+        prices[IBOV] = now;
+        changes[IBOV] = before > 0 ? (now - before) / before * 100 : Double.NaN;
     }
 
     private static Weather parseWeather(String body) throws Exception {
@@ -330,6 +421,13 @@ final class HomeData {
                 : String.format(locale(), symbol + "%.2f", v));
     }
 
+    /** A quote for the drawer card: a price in the configured currency, or the Ibovespa in points. */
+    static String quote(int i, double v) {
+        if (i != IBOV) return brl(v);
+        if (Double.isNaN(v)) return "—";
+        return Ui.once("points", v, () -> String.format(locale(), "%,.0f", v));
+    }
+
     /** The weather in words, from Open-Meteo's WMO code. */
     static String condition(int code, boolean day) {
         if (code < 0) return "";
@@ -421,6 +519,12 @@ final class HomeData {
     static String change(double v) {
         if (Double.isNaN(v)) return "";
         return Ui.once("change", v, () -> (v >= 0 ? "+" : "−") + String.format(locale(), "%.1f%%", Math.abs(v)));
+    }
+
+    /** Like change(v), with two decimals for the dollar and the euro (they move little: "−0.05%"). */
+    static String change(int i, double v) {
+        if (i != USD && i != EUR || Double.isNaN(v)) return change(v);
+        return Ui.once("change2", v, () -> (v >= 0 ? "+" : "−") + String.format(locale(), "%.2f%%", Math.abs(v)));
     }
 
     static String hour(long at) {

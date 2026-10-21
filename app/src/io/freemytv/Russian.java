@@ -36,6 +36,10 @@ final class Russian {
             case ", tab ": return ", вкладка ";
             case " of 3": return " из 3";
             case "Dollar": return "Доллар";
+            case "Euro": return "Евро";
+            case "Drawer only": return "Только в нижней панели";
+            case "Markets": return "Котировки";
+            case "change": return "изменение";
             case "Series": return "Сериал";
             case "prices from ": return "котировки за ";
             case "Starting…": return "Запуск…";
@@ -128,7 +132,6 @@ final class Russian {
             case "YouTube, Prime Video and Google Play: the TV itself controls those buttons.": return "Кнопками YouTube, Prime Video и Google Play управляет сам телевизор.";
             case "These are the TCL remote's buttons: on this TV, the buttons work as they always did.": return "Это кнопки пульта TCL: на этом телевизоре они работают как прежде.";
             case "Explore": return "Обзор";
-            case "Movies": return "Фильмы";
             case "Shows": return "Сериалы";
             case "Clear": return "Ясно";
             case "Mostly Sunny": return "Малооблачно";

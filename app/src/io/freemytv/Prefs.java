@@ -73,10 +73,10 @@ final class Prefs {
 
     static void setTemperature(String v) { put("temperature", v); }
 
-    /** "auto" (dark from sunset to sunrise), "light" or "dark". */
+    /** "auto" (dark from sunset to sunrise), "light", "dark" or "photo" (dark, over the focused title's photo). */
     static String theme() {
         String v = sp().getString("theme", "auto");
-        return v.equals("light") || v.equals("dark") ? v : "auto";
+        return v.equals("light") || v.equals("dark") || v.equals("photo") ? v : "auto";
     }
 
     static void setTheme(String v) { put("theme", v); }
@@ -99,6 +99,9 @@ final class Prefs {
 
     static boolean quotes() { return sp().getBoolean("quotes", Config.SHOW_CRYPTO); }
     static void setQuotes(boolean on) { put("quotes", on); }
+    /** The quotes also in the home screen's top row and the screensaver (off: only in the drawer's card). */
+    static boolean quotesTop() { return sp().getBoolean("quotesTop", true); }
+    static void setQuotesTop(boolean on) { put("quotesTop", on); }
 
     static boolean coin(int i) { return sp().getBoolean("coin" + i, true); }
     static void setCoin(int i, boolean on) { put("coin" + i, on); }

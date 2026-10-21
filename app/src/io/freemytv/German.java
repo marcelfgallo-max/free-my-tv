@@ -29,6 +29,10 @@ final class German {
             case ", tab ": return ", Tab ";
             case " of 3": return " von 3";
             case "Dollar": return "Dollar";
+            case "Euro": return "Euro";
+            case "Drawer only": return "Nur in der unteren Leiste";
+            case "Markets": return "Kurse";
+            case "change": return "Veränderung";
             case "Series": return "Serie";
             case "prices from ": return "Kurse von ";
             case "Starting…": return "Wird gestartet…";

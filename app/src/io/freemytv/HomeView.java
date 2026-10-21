@@ -1437,7 +1437,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             x += tw + gap;
         }
         float cardsTop = CARDS_TOP * k, split = left + (right - left) * 0.585f;
-        boolean wx = Prefs.weather(), qt = Prefs.quotes() && HomeData.active().length > 0;
+        boolean wx = Prefs.weather(), qt = HomeData.quotesCard();
         // A card that is off gives its room to the other one.
         weatherCard.set(left, cardsTop, qt ? split - 16 * k : right, cardsTop + CARDS_H * k);
         quotesCard.set(wx ? split + 16 * k : left, cardsTop, right, cardsTop + CARDS_H * k);
@@ -1503,7 +1503,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         for (int i = 0; i < drawerItems.size(); i++) if (i != top) drawDrawerTile(c, i);
         if (top >= 0) drawDrawerTile(c, top);
         if (Prefs.weather()) drawWeatherCard(c, weatherCard);
-        if (Prefs.quotes() && HomeData.active().length > 0) drawQuotesCard(c, quotesCard);
+        if (HomeData.quotesCard()) drawQuotesCard(c, quotesCard);
     }
 
     /** Square drawer button: symbol and name; an input with no device is dimmed. Focused: white, with dark text. */
@@ -1603,12 +1603,21 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             textPricesAt = data.pricesAt;
             textMinute = minute;
             String stale = HomeData.staleness(data.pricesAt, 5 * 60_000L);
-            staleText = stale.isEmpty() ? Ui.tr("variação em 24 h", "24h change") : Ui.tr("de ", "", "de ") + stale;
+            staleText = !stale.isEmpty() ? Ui.tr("de ", "", "de ") + stale : changeLabel();
             for (int i = 0; i < HomeData.COINS.length; i++) {
-                priceText[i] = HomeData.brl(data.prices[i]);
-                changeText[i] = HomeData.change(data.changes[i]);
+                priceText[i] = HomeData.quote(i, data.prices[i]);
+                changeText[i] = HomeData.change(i, data.changes[i]);
             }
         }
+    }
+
+    /** The coins' change is over 24 h; the dollar's, the euro's and the Ibovespa's, since the last close. */
+    private static String changeLabel() {
+        return HomeData.anyMarket() ? Ui.tr("variação", "change") : Ui.tr("variação em 24 h", "24h change");
+    }
+
+    private static String quotesTitle() {
+        return HomeData.anyMarket() ? Ui.tr("Cotações", "Markets") : Ui.tr("Cotações", "Crypto");
     }
 
     private float sunItem(Canvas c, String symbol, String label, float x, float base) {
@@ -1665,11 +1674,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private void drawPrices(Canvas c, RectF r) {
         float x = r.left + 34 * k, right = r.right - 34 * k;
         refreshDrawerText();
-        c.drawText(Ui.tr("Cotações", "Crypto"), x, r.top + 54 * k, cardTitle);
+        c.drawText(quotesTitle(), x, r.top + 54 * k, cardTitle);
         c.drawText(staleText, right, r.top + 54 * k, cardDimRight);
         float cap = Ui.cap(cardText);
         int[] coins = HomeData.active();
-        for (int j = 0; j < coins.length; j++) {
+        for (int j = 0; j < coins.length && j < HomeData.CARD_ROWS; j++) {
             int i = coins[j];
             float base = r.top + (110 + 52 * j) * k, mid = base - cap / 2;
             float gw = Glyphs.width(getContext(), HomeData.COINS[i], cap);
@@ -2386,7 +2395,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         for (int i = 0; i < shelf.size(); i++) out.add(a11yId(Z_SHELF, i));
         for (int i = 0; i < drawerItems.size(); i++) out.add(a11yId(Z_DRAWER, i));
         if (drawerOpen && Prefs.weather()) out.add(a11yId(WIDGETS, 0));
-        if (drawerOpen && Prefs.quotes() && HomeData.active().length > 0) out.add(a11yId(WIDGETS, 1));
+        if (drawerOpen && HomeData.quotesCard()) out.add(a11yId(WIDGETS, 1));
     }
 
     private String a11yText(int id) {
@@ -2481,7 +2490,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         List<Integer> out = new ArrayList<>();
         if (!drawerOpen) return out;
         if (Prefs.weather()) out.add(0);
-        if (Prefs.quotes() && HomeData.active().length > 0) out.add(1);
+        if (HomeData.quotesCard()) out.add(1);
         return out;
     }
 
@@ -2571,14 +2580,16 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         return s.toString();
     }
 
-    /** The quotes card as TalkBack reads it: each coin with its price and 24 h change. */
+    /** The quotes card as TalkBack reads it: each quote with its price and change. */
     private String quotesText() {
-        StringBuilder s = new StringBuilder(Ui.tr("Cotações", "Crypto"));
+        StringBuilder s = new StringBuilder(quotesTitle());
         String stale = HomeData.staleness(data.pricesAt, 5 * 60_000L);
-        s.append(", ").append(stale.isEmpty() ? Ui.tr("variação em 24 h", "24h change") : Ui.tr("de ", "", "de ") + stale).append('.');
-        for (int i : HomeData.active()) {
-            s.append(' ').append(HomeData.coinName(i)).append(' ').append(HomeData.brl(data.prices[i]));
-            if (!Double.isNaN(data.changes[i])) s.append(", ").append(HomeData.change(data.changes[i]));
+        s.append(", ").append(stale.isEmpty() ? changeLabel() : Ui.tr("de ", "", "de ") + stale).append('.');
+        int[] coins = HomeData.active();
+        for (int j = 0; j < coins.length && j < HomeData.CARD_ROWS; j++) {
+            int i = coins[j];
+            s.append(' ').append(HomeData.coinName(i)).append(' ').append(HomeData.quote(i, data.prices[i]));
+            if (!Double.isNaN(data.changes[i])) s.append(", ").append(HomeData.change(i, data.changes[i]));
             s.append('.');
         }
         return s.toString();
