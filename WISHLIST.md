@@ -22,7 +22,6 @@ Salve este pedido como WISHLIST.md na pasta, pra eu completar depois.
 ## Médias
 
 - [x] Troca automática pra HDMI quando o PS5 ou o Switch 2 ligam (CEC), com opção de desligar. ✅ (21/10/2026) A própria TV já faz (BRAVIA Sync); desliga nos ajustes da TV.
-- [ ] Modo de imagem por entrada (Jogo no PS5/Switch, Cinema na Apple TV).
 - [ ] Protetor de tela com as minhas fotos + relógio e clima.
 - [ ] Placar do meu time com onde vai passar o próximo jogo (me pergunte qual time).
 - [ ] Próximos compromissos do Google Calendar.
