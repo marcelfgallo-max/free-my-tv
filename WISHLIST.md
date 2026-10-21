@@ -22,7 +22,6 @@ Salve este pedido como WISHLIST.md na pasta, pra eu completar depois.
 ## Médias
 
 - [x] Troca automática pra HDMI quando o PS5 ou o Switch 2 ligam (CEC), com opção de desligar. ✅ (21/10/2026) A própria TV já faz (BRAVIA Sync); desliga nos ajustes da TV.
-- [ ] Protetor de tela com as minhas fotos + relógio e clima.
 - [ ] Placar do meu time com onde vai passar o próximo jogo (me pergunte qual time).
 - [ ] Próximos compromissos do Google Calendar.
 - [ ] Selo “episódio novo” nas séries que eu acompanho.
@@ -34,3 +33,7 @@ Salve este pedido como WISHLIST.md na pasta, pra eu completar depois.
 - [ ] Controle pelo celular via página web na rede local, com PIN.
 - [ ] “Alexa, PlayStation na TV” (Bravia IP Control / Home Assistant).
 - [ ] Modo cinema (apaga a interface, ajusta brilho e soundbar, abre o último app).
+
+## Futuro
+
+- [ ] Protetor de tela com as minhas fotos + relógio e clima (falta escolher de onde vêm as fotos: álbum compartilhado do iCloud, pasta na TV ou Google Fotos).
