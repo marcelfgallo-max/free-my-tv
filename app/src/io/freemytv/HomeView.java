@@ -698,6 +698,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         drawerWasMoving = drawerMoving;
         tilesDirty = statusDirty = heroDirty = drawerDirty = gridDirty = motionDirty = false;
         if (updateClock()) {
+            updateSleepLabel();
             layoutStatus();
             status.invalidate();
             if (hero != null && hero.clock) {
@@ -1447,6 +1448,18 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         return list;
     }
 
+    /** The sleep timer's tile counts down the minutes. */
+    private void updateSleepLabel() {
+        for (HomeApps.Item it : drawerItems) {
+            if (it.kind != HomeApps.SLEEP) continue;
+            String label = SleepTimer.label(activity);
+            if (!label.equals(it.label)) {
+                it.label = label;
+                drawerDirty = true;
+            }
+        }
+    }
+
     private void setDrawerItems(List<HomeApps.Item> list) {
         int inputs = 0;
         while (inputs < list.size() && (list.get(inputs).kind == HomeApps.INPUT || list.get(inputs).kind == HomeApps.LIVE_TV)) inputs++;
@@ -1456,6 +1469,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         }
         drawerItems = list;
         drawerInputs = inputs;
+        updateSleepLabel();
         if (drawerFocus.length != list.size()) {
             drawerFocus = new Spring[list.size()];
             drawerRects = new RectF[list.size()];
@@ -2248,6 +2262,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         click.open();
         if (it.kind == HomeApps.ALL_APPS) {
             openSheet();
+            return;
+        }
+        if (it.kind == HomeApps.SLEEP) {
+            int minutes = SleepTimer.next(activity);
+            showToast(minutes == 0 ? Ui.tr("Timer desligado.", "Sleep timer off.", "Temporizador apagado.")
+                    : Ui.tr("A TV desliga em ", "The TV turns off in ", "La TV se apaga en ") + minutes + " min.");
+            updateSleepLabel();
             return;
         }
         if (it.kind == HomeApps.INPUTS) {

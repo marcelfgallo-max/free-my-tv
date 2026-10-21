@@ -29,6 +29,10 @@ final class German {
             case " of 3": return " von 3";
             case "Dollar": return "Dollar";
             case "Photo": return "Foto";
+            case "Sleep Timer": return "Sleep-Timer";
+            case "Off in ": return "Aus in ";
+            case "Sleep timer off.": return "Sleep-Timer aus.";
+            case "The TV turns off in ": return "Der Fernseher geht aus in ";
             case "Loading the catalog…": return "Katalog wird geladen…";
             case "Couldn't load the catalog right now.": return "Der Katalog konnte gerade nicht geladen werden.";
             case "Search for ": return "Suche nach ";

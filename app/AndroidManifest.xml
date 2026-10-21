@@ -141,6 +141,11 @@
                 android:resource="@xml/remote_key_service" />
         </service>
 
+        <!-- The drawer's sleep timer: its alarm puts the TV to standby. -->
+        <receiver
+            android:name=".SleepTimer"
+            android:exported="false" />
+
         <receiver
             android:name=".HomeReceiver"
             android:exported="false">

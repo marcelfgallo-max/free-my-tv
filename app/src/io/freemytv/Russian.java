@@ -36,6 +36,10 @@ final class Russian {
             case " of 3": return " из 3";
             case "Dollar": return "Доллар";
             case "Photo": return "Фото";
+            case "Sleep Timer": return "Таймер сна";
+            case "Off in ": return "Выкл. через ";
+            case "Sleep timer off.": return "Таймер сна выключен.";
+            case "The TV turns off in ": return "Телевизор выключится через ";
             case "Loading the catalog…": return "Загрузка каталога…";
             case "Couldn't load the catalog right now.": return "Не удалось загрузить каталог.";
             case "Search for ": return "Найдите ";
