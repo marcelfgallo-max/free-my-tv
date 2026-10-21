@@ -17,7 +17,7 @@ Salve este pedido como WISHLIST.md na pasta, pra eu completar depois.
 - [x] Ponto verde no card da HDMI ativa (CEC). ✅ (21/10/2026) PS5 e Switch 2 testados; o Vivo TV não informa se está ligado; falta testar a Apple TV.
 - [x] Timer pra dormir (30/60/90 min) nos Atalhos. ✅ (21/10/2026)
 - [x] Saudação por horário (“Boa noite, Marcel”). ✅ (21/10/2026)
-- [ ] Mini-gráfico de 24h nas cotações.
+- [x] Mini-gráfico de 24h nas cotações. ✅ (21/10/2026)
 
 ## Médias
 
