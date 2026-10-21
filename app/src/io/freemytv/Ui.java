@@ -35,12 +35,14 @@ final class Ui {
             ru = "ru".equals(language);
     static Typeface thin, light, displayMedium, displaySemibold, regular, medium, semibold;
     private static boolean loaded;
+    private static Context app;
     private static final Rect BOUNDS = new Rect();
     private static final RectF OVAL = new RectF();
 
     static synchronized void init(Context c) {
         if (loaded) return;
         loaded = true;
+        app = c.getApplicationContext();
         AssetManager a = c.getAssets();
         thin = font(a, 32, 200);
         light = font(a, 32, 300);
@@ -162,9 +164,10 @@ final class Ui {
         return "de".equals(tv.getLanguage()) ? tv : Locale.GERMANY;
     }
 
-    /** "21:47" (in English, "9:47", like the iPhone in the US). */
+    /** "21:47", or "9:47" when the TV is set to 12 hours (without a setting, in English, like the iPhone in the US). */
     static String clock(long now) {
-        return en ? new SimpleDateFormat("h:mm", Locale.US).format(new Date(now))
+        boolean h12 = app != null ? !android.text.format.DateFormat.is24HourFormat(app) : en;
+        return h12 ? new SimpleDateFormat("h:mm", Locale.US).format(new Date(now))
                 : new SimpleDateFormat("HH:mm", locale()).format(new Date(now));
     }
 

@@ -45,7 +45,7 @@ import java.util.function.Consumer;
 
 /**
  * The home screen, styled after the Apple TV app with the macOS 27 glass:
- *  - at the top left, the "For You" title and the tabs (Explore, Movies, Shows, Continue, Catalog); at the top right, icon-only glass
+ *  - at the top left, the time (large) and the tabs (Explore, Movies, Shows, Continue, Catalog); at the top right, icon-only glass
  *    buttons (Live TV, HDMI Inputs, Settings), with the focused one's name below it, and the small crypto quotes
  *    (logo + price) at the right end of the tab row;
  *  - three cards with the titles recommended for right now in the selected tab (Recs, from TMDB), or the last ones
@@ -695,7 +695,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 refreshHero(false);
                 heroLayer.invalidate();
             }
-            if (!picksOn()) heroLayer.invalidate();
+            heroLayer.invalidate();   // the time at the top left (or the big clock without picks)
         }
 
         // Busy: something is moving, or the sheet or the drawer is open.
@@ -2792,8 +2792,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             if (HomeData.coinCount() > 0) drawQuotes(c);
             return;
         }
-        String hello = Ui.tr("Para você", "For You");
-        c.drawText(hello, MARGIN * k - Ui.leftBearing(lTitle, hello), L_TITLE_BASE * k, lTitle);
+        // The time, large, where a title would be.
+        c.drawText(clockText, MARGIN * k - Ui.leftBearing(lTitle, clockText), L_TITLE_BASE * k, lTitle);
         // Text tabs (the selected one in bold, in the main text color); with focus on the tabs, the selected one gets
         // the white pill with a shadow and grows a little (the tvOS focus).
         float focus = Ui.clamp(topFocus[tab].value);
