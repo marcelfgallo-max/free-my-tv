@@ -95,8 +95,10 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private static final ExecutorService LOADER = Executors.newSingleThreadExecutor();
     // Light design (the L_ constants): title, tab bar, three recommendation cards and the shelf.
     // The tab bar is a 68 px capsule; the cards sit on the 5-column grid (the wide one spans 3).
-    private static final float L_TITLE_BASE = 130, L_TABBAR_TOP = 158, L_TABBAR_H = 68, L_CARDS_TOP = 262, L_CARD_H = 442;
-    private static final float L_TALL_W = 320, L_CARD_GAP = 40, L_BUTTON = 68, L_BUTTON_GAP = 20, L_BUTTON_CY = 103;
+    private static final float L_TITLE_BASE = 155, L_TABBAR_TOP = 176, L_TABBAR_H = 63, L_CARDS_TOP = 280, L_CARD_H = 420;
+    // Modern 80s tab strip: caps labels on a baseline, a hairline under the row, a 3 px segment under the selected one.
+    private static final float L_TAB_BASE = 214, L_TAB_RULE = 239, L_TAB_GAP = 64;
+    private static final float L_TALL_W = 328, L_CARD_GAP = 32, L_BUTTON = 72, L_BUTTON_GAP = 8, L_BUTTON_CY = 108;
     private static final float L_PLATTER_TOP = 848, L_TILE_H = 120;
     private static final float L_DATE_BASE = 330, L_CLOCK_BASE = 540, L_WEATHER_BASE = 626, L_QUOTES_BASE = 694;
     private static final int L_INK = 0xFF1D1D1F, L_DIM = 0xFF6E6E73, L_FAINT = 0xFF8E8E93;
@@ -612,17 +614,21 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         clockPaint = Ui.numbers(Ui.thin, 176 * k, 0xFFFFFFFF);
         clockPaint.setLetterSpacing(-0.01f);
         for (Paint p : new Paint[] {labelPaint, titlePaint, metaPaint, clockPaint}) p.setShadowLayer(22 * k, 0, 2 * k, 0x59000000);
-        lTitle = Ui.text(Ui.displaySemibold, 76 * k, L_INK);
-        lTitle.setLetterSpacing(0.004f);
-        lGreeting = Ui.text(Ui.medium, 34 * k, L_DIM);
-        lTab = Ui.text(Ui.medium, 30 * k, L_DIM);
-        lTabOn = Ui.text(Ui.semibold, 30 * k, L_INK);
-        lCardTitle = Ui.text(Ui.semibold, 31 * k, L_INK);
-        lCardTitle.setLetterSpacing(0.012f);
-        lCardMeta = Ui.text(Ui.medium, 25 * k, L_DIM);
+        // Modern 80s: the clock big and tight, caps tabs and titles in Inter Display at 500.
+        lTitle = Ui.text(Ui.displayMedium, 124 * k, M_INK);
+        lTitle.setLetterSpacing(-0.05f);
+        lGreeting = Ui.text(Ui.regular, 40 * k, M_MUTED);
+        lGreeting.setLetterSpacing(-0.02f);
+        lTab = Ui.text(Ui.displayMedium, 28 * k, M_MUTED);
+        lTab.setLetterSpacing(-0.01f);
+        lTabOn = Ui.text(Ui.displayMedium, 28 * k, M_INK);
+        lTabOn.setLetterSpacing(-0.01f);
+        lCardTitle = Ui.text(Ui.displayMedium, 34 * k, M_INK);
+        lCardTitle.setLetterSpacing(-0.03f);
+        lCardMeta = Ui.text(Ui.regular, 23 * k, M_MUTED);
         badgePaint = Ui.text(Ui.semibold, 20 * k, 0xFFFFFFFF);
-        lQuote = Ui.numbers(Ui.regular, 21 * k, L_FAINT);
-        lTip = Ui.text(Ui.semibold, 25 * k, L_INK);
+        lQuote = Ui.numbers(Ui.regular, 24 * k, M_INK);
+        lTip = Ui.text(Ui.displayMedium, 22 * k, M_INK);
         lTip.setTextAlign(Paint.Align.CENTER);
         lDate = Ui.text(Ui.semibold, 34 * k, L_DIM);
         lClock = Ui.numbers(Ui.light, 200 * k, L_INK);
@@ -1066,13 +1072,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     /** Text colors for the current night value (dark by day, white at night). */
     private void applyTone() {
-        lTitle.setColor(tone(L_INK, WHITE));
-        lGreeting.setColor(tone(L_DIM, 0xFF98989D));
-        lTab.setColor(tone(L_DIM, 0xFF8E8E93));
-        lTabOn.setColor(tone(L_INK, WHITE));
-        lCardTitle.setColor(tone(L_INK, WHITE));
-        lCardMeta.setColor(tone(L_DIM, 0xFF98989D));
-        lQuote.setColor(tone(L_FAINT, 0xB8FFFFFF));
+        lTitle.setColor(M_INK);
+        lGreeting.setColor(M_MUTED);
+        lTab.setColor(M_MUTED);
+        lTabOn.setColor(M_INK);
+        lCardTitle.setColor(M_INK);
+        lCardMeta.setColor(M_MUTED);
+        lQuote.setColor(M_INK);
         lTip.setColor(tone(L_INK, WHITE));
         lDate.setColor(tone(L_DIM, 0xFF98989D));
         lClock.setColor(tone(L_INK, WHITE));
@@ -1352,12 +1358,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             q = quotes = new Quotes(coins, data.prices, text);
         }
         // On the tab row, at the right.
-        float base = clock ? L_QUOTES_BASE * k : (L_TABBAR_TOP + L_TABBAR_H / 2) * k + q.halfCap;
+        float base = clock ? L_QUOTES_BASE * k : L_TAB_BASE * k;
         float cap = q.cap, gap = (clock ? 8 : 6) * k, spacing = (clock ? 32 : 24) * k;
         float total = spacing * (n - 1);
         for (int i = 0; i < n; i++) total += q.glyphs[i] + gap + q.widths[i];
         float x = clock ? MARGIN * k : right - total;
-        int coinColor = clock ? text.getColor() : Ui.alpha(tone(0xB38E8E93, 0x8CFFFFFF), fade);
+        int coinColor = text.getColor();
         for (int i = 0; i < n; i++) {
             Glyphs.coin(getContext(), c, HomeData.COINS[coins[i]], x + q.glyphs[i] / 2, base - cap / 2, cap, coinColor);
             x += q.glyphs[i] + gap;
@@ -1442,6 +1448,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if (f > 0.01f) {
             float out = 8 * k + 1.5f * k;
             tmp.set(cell.left - out, cell.top - out, cell.right + out, cell.bottom + out);
+            rim.setShader(null);
             rim.setColor(Ui.alpha(M_INK, f));
             rim.setStrokeWidth(3 * k);
             c.drawRect(tmp, rim);
@@ -2818,24 +2825,24 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     private void layoutLight() {
         if (lTab == null) return;
-        // Text tabs; the focus pill extends 26 px past the text (the first tab's text starts at the margin).
-        float pad = 26 * k, tabTop = L_TABBAR_TOP * k, tabBottom = (L_TABBAR_TOP + L_TABBAR_H) * k;
-        float x = MARGIN * k - pad;
+        // Caps tabs 64 px apart; a focused one inverts in a cell 16 px wider than its label on each side.
+        float pad = 16 * k, tabTop = L_TABBAR_TOP * k, tabBottom = (L_TABBAR_TOP + L_TABBAR_H) * k;
+        float x = MARGIN * k;
         for (int i = 0; i < TAB_COUNT; i++) {
-            float tw = Math.max(lTabOn.measureText(tabs()[i]), lTab.measureText(tabs()[i]));
-            topRects[i].set(x, tabTop, x + tw + 2 * pad, tabBottom);
-            x = topRects[i].right + 4 * k;
+            float tw = lTabOn.measureText(caps(tabs()[i]));
+            topRects[i].set(Math.round(x - pad), Math.round(tabTop), Math.round(x + tw + pad), Math.round(tabBottom));
+            x += tw + L_TAB_GAP * k;
         }
         float b = L_BUTTON * k, right = CONTENT_R * k, cy = L_BUTTON_CY * k;
         for (int i = 2; i >= 0; i--) {
-            topRects[TAB_COUNT + i].set(right - b, cy - b / 2, right, cy + b / 2);
+            topRects[TAB_COUNT + i].set(Math.round(right - b), Math.round(cy - b / 2), Math.round(right), Math.round(cy + b / 2));
             right -= b + L_BUTTON_GAP * k;
         }
         float top = L_CARDS_TOP * k, ch = L_CARD_H * k, g = L_CARD_GAP * k, left = MARGIN * k, tall = L_TALL_W * k;
         float wide = (CONTENT_R - MARGIN) * k - 2 * tall - 2 * g;
-        cardRects[0].set(left, top, left + wide, top + ch);
-        cardRects[1].set(cardRects[0].right + g, top, cardRects[0].right + g + tall, top + ch);
-        cardRects[2].set(cardRects[1].right + g, top, cardRects[1].right + g + tall, top + ch);
+        cardRects[0].set(Math.round(left), Math.round(top), Math.round(left + wide), Math.round(top + ch));
+        cardRects[1].set(cardRects[0].right + Math.round(g), cardRects[0].top, cardRects[0].right + Math.round(g + tall), cardRects[0].bottom);
+        cardRects[2].set(cardRects[1].right + Math.round(g), cardRects[0].top, cardRects[1].right + Math.round(g + tall), cardRects[0].bottom);
         heroDirty = statusDirty = true;
     }
 
@@ -2907,32 +2914,29 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             if (HomeData.coinCount() > 0) drawQuotes(c);
             return;
         }
-        // The time, large, where a title would be.
+        // The time, large and tight, where a title would be; the greeting after it.
         c.drawText(clockText, MARGIN * k - Ui.leftBearing(lTitle, clockText), L_TITLE_BASE * k, lTitle);
-        c.drawText(greetingText, MARGIN * k + lTitle.measureText(clockText) + 28 * k, L_TITLE_BASE * k, lGreeting);
-        // Text tabs (the selected one in bold, in the main text color); with focus on the tabs, the selected one gets
-        // the white pill with a shadow and grows a little (the tvOS focus).
+        c.drawText(greetingText, MARGIN * k + lTitle.measureText(clockText) + 48 * k, L_TITLE_BASE * k, lGreeting);
+        // Tab strip: caps labels over a hairline, a 3 px white segment under the selected one; with focus on the tabs,
+        // the selected one inverts (white cell, black label).
+        hairline(c, MARGIN * k, CONTENT_R * k, L_TAB_RULE * k);
         float focus = Ui.clamp(topFocus[tab].value);
         for (int i = 0; i < TAB_COUNT; i++) {
             RectF r = topRects[i];
-            if (i == tab && focus > 0.01f) {
-                float s = 1 + 0.05f * focus;
-                cell.set(r.centerX() - r.width() * s / 2, r.centerY() - r.height() * s / 2,
-                        r.centerX() + r.width() * s / 2, r.centerY() + r.height() * s / 2);
-                float rr = cell.height() / 2;
-                if (focus > 0.01f) {
-                    tmp.set(cell);
-                    tmp.offset(0, 8 * k * focus);
-                    shadow.setColor(Ui.alpha(0xFF000000, tone(0.22f, 0.4f) * focus));
-                    shadows.draw(c, tmp, rr, SHADOW_BLUR * k, shadow);
-                }
+            String label = caps(tabs()[i]);
+            float lx = r.left + 16 * k;
+            if (i == tab) {
                 fill.setShader(null);
-                fill.setColor(Ui.alpha(0xFFFFFFFF, focus));
-                c.drawRoundRect(cell, rr, rr, fill);
+                fill.setColor(M_INK);
+                c.drawRect(lx, Math.round((L_TAB_RULE - 3) * k), lx + lTabOn.measureText(label), Math.round(L_TAB_RULE * k) + 1, fill);
+                if (focus > 0.01f) {
+                    fill.setColor(Ui.alpha(M_INK, focus));
+                    c.drawRect(r, fill);
+                }
             }
             Paint p = i == tab ? lTabOn : lTab;
-            if (i == tab) lTabOn.setColor(blend(tone(L_INK, WHITE), L_INK, focus));   // always dark on the white pill
-            c.drawText(tabs()[i], r.centerX() - p.measureText(tabs()[i]) / 2, r.centerY() + Ui.halfCap(p), p);
+            if (i == tab) lTabOn.setColor(blend(M_INK, 0xFF000000, focus));
+            c.drawText(label, lx, L_TAB_BASE * k, p);
         }
         int top = -1;
         for (int i = 0; i < 3; i++) if (cardFocus[i].value > 0.02f && (top < 0 || cardFocus[i].value > cardFocus[top].value)) top = i;
@@ -2989,65 +2993,35 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         RectF base = cardRects[i];
         Recs.Pick p = i < cards.size() ? cards.get(i) : null;
         if (p == null && pagedSource() != null) return;   // a last page with fewer than three: no gray placeholders
-        float v = cardFocus[i].value, f = Ui.clamp(v), s = 1 + 0.05f * v;
-        float bw = base.width(), bh = base.height(), r0 = 18 * k;
-        float cx = base.centerX(), cy = base.centerY() - 6 * k * v;
-        cell.set(cx - bw * s / 2, cy - bh * s / 2, cx + bw * s / 2, cy + bh * s / 2);
-        float r = r0 * s;
-        c.save();
-        c.translate(cx, cy);
-        c.scale(s, s);
-        tmp.set(-bw / 2, -bh / 2, bw / 2, bh / 2);
-        tmp.offset(0, (10 + 14 * f) * k);
-        shadowDeep.setColor(Ui.alpha(0xFF000000, tone(0.14f, 0.32f) + tone(0.2f, 0.28f) * f));
-        shadows.draw(c, tmp, r0, DEEP_BLUR * k, shadowDeep);
-        c.restore();
+        float f = Ui.clamp(cardFocus[i].value);
+        float bw = base.width();
+        cell.set(base);
         Backdrop b = p == null ? null : recs.backdrop(p);
         Bitmap img = b == null ? null : (i == 0 ? b.wide : b.tall);
         if (img != null) {
-            roundImage(c, img, cell, r);
+            c.drawBitmap(img, null, cell, bitmapPaint);
         } else {
             fill.setShader(null);
-            fill.setColor(tone(0xFFDADADF, 0xFF2C2C2E));
-            c.drawRoundRect(cell, r, r, fill);
+            fill.setColor(0x14FFFFFF);
+            c.drawRect(cell, fill);
         }
         if (f > 0.01f) {
-            if (lightSheens.length != cardRects.length) {
-                lightSheens = new LinearGradient[cardRects.length];
-                lightRims = new LinearGradient[cardRects.length];
-                lightShaderW = new float[cardRects.length];
-            }
-            if (lightSheens[i] == null || lightShaderW[i] != bw) {
-                lightSheens[i] = new LinearGradient(-bw / 2, -bh / 2, 0, bh / 2, 0x38FFFFFF, 0x00FFFFFF, Shader.TileMode.CLAMP);
-                lightRims[i] = new LinearGradient(0, -bh / 2, 0, bh / 2, 0xE6FFFFFF, 0x59FFFFFF, Shader.TileMode.CLAMP);
-                lightShaderW[i] = bw;
-            }
-            int alpha = Math.round(255 * f);
-            c.save();
-            c.translate(cx, cy);
-            c.scale(s, s);
-            tmp.set(-bw / 2, -bh / 2, bw / 2, bh / 2);
-            sheen.setShader(lightSheens[i]);
-            sheen.setAlpha(alpha);
-            c.drawRoundRect(tmp, r0, r0, sheen);
-            sheen.setAlpha(255);
-            rim.setShader(lightRims[i]);
-            rim.setAlpha(alpha);
-            rim.setStrokeWidth(2.5f * k / s);
-            c.drawRoundRect(tmp, r0, r0, rim);
-            rim.setStrokeWidth(2.5f * k);
-            rim.setAlpha(255);
-            c.restore();
+            float out = 8 * k + 1.5f * k;
+            tmp.set(cell.left - out, cell.top - out, cell.right + out, cell.bottom + out);
+            rim.setShader(null);
+            rim.setColor(Ui.alpha(M_INK, f));
+            rim.setStrokeWidth(3 * k);
+            c.drawRect(tmp, rim);
         }
         if (p == null) return;
-        if (p.progress >= 0) drawProgress(c, cell, p.progress, s);
-        if (tab == CATALOG_TAB) drawBadge(c, cell, p, s);
+        if (p.progress >= 0) drawProgress(c, cell, p.progress, 1);
+        if (tab == CATALOG_TAB) drawBadge(c, cell, p, 1);
         fitPaint.set(lCardTitle);
-        c.drawText(TextUtils.ellipsize(p.title, fitPaint, bw, TextUtils.TruncateAt.END).toString(), base.left, base.bottom + 46 * k, lCardTitle);
+        c.drawText(TextUtils.ellipsize(caps(p.title), fitPaint, bw, TextUtils.TruncateAt.END).toString(), base.left, base.bottom + 57 * k, lCardTitle);
         // Continue and Catalog: every card says the episode or kind and the app (the narrow ones too).
         if ((i == 0 || pagedSource() != null) && p.meta != null && !p.meta.isEmpty()) {
             fitPaint.set(lCardMeta);
-            c.drawText(TextUtils.ellipsize(p.meta, fitPaint, bw, TextUtils.TruncateAt.END).toString(), base.left, base.bottom + 80 * k, lCardMeta);
+            c.drawText(TextUtils.ellipsize(p.meta, fitPaint, bw, TextUtils.TruncateAt.END).toString(), base.left, base.bottom + 87 * k, lCardMeta);
         }
     }
 
@@ -3056,7 +3030,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         int pages = (pagedSource().size() + 2) / 3;
         if (pages <= 1) return;
         float cy = (L_CARDS_TOP + L_CARD_H / 2) * k, size = 34 * k;
-        int color = tone(L_DIM, 0xB3FFFFFF);
+        int color = M_MUTED;
         if (page < pages - 1) Symbols.draw(getContext(), c, "chevron_right", (CONTENT_R + MARGIN / 2) * k, cy, size, color);
         if (page > 0) {
             float cx = MARGIN / 2 * k;
@@ -3075,7 +3049,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         tmp.set(card.left + pad, card.top + pad, card.left + pad + w, card.top + pad + h);
         fill.setShader(null);
         fill.setColor(Catalog.color(p));
-        c.drawRoundRect(tmp, h / 2, h / 2, fill);
+        c.drawRect(tmp, fill);
         c.save();
         c.scale(s, s, tmp.centerX(), tmp.centerY());
         c.drawText(name, tmp.centerX() - badgePaint.measureText(name) / 2, tmp.centerY() + Ui.halfCap(badgePaint), badgePaint);
@@ -3114,41 +3088,38 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         tmp.set(card.left + pad, y, card.right - pad, y + bh);
         fill.setShader(null);
         fill.setColor(0x80000000);
-        c.drawRoundRect(tmp, bh / 2, bh / 2, fill);
+        c.drawRect(tmp, fill);
         tmp.right = tmp.left + Math.max(bh, tmp.width() * progress);
-        fill.setColor(0xF2FFFFFF);
-        c.drawRoundRect(tmp, bh / 2, bh / 2, fill);
+        fill.setColor(M_INK);
+        c.drawRect(tmp, fill);
     }
 
     /**
-     * Live TV, HDMI Inputs and Settings: icon-only glass circles (light by day, smoked at night); the focused one turns
-     * white with a dark icon (the tvOS focus) and its name appears below it.
+     * Live TV, HDMI Inputs and Settings: square cells with a hairline border; the focused one inverts (white, black
+     * symbol) and its name appears below it.
      */
     private void drawLightButtons(Canvas c) {
         applyTone();
         for (int i = 0; i < 3; i++) {
             RectF r = topRects[TAB_COUNT + i];
-            float f = Ui.clamp(topFocus[TAB_COUNT + i].value), s = 1 + 0.1f * f, rad = r.width() / 2 * s;
-            cell.set(r.centerX() - rad, r.centerY() - rad, r.centerX() + rad, r.centerY() + rad);
-            tmp.set(cell);
-            tmp.offset(0, (6 + 8 * f) * k);
-            shadow.setColor(Ui.alpha(0xFF000000, tone(0.1f, 0.3f) + tone(0.14f, 0.2f) * f));
-            shadows.draw(c, tmp, rad, SHADOW_BLUR * k, shadow);
-            scene.liquid(c, cell, rad, tone(0xFFFFFFFF, SMOKE), tone(0.55f, 0.5f), tone(0.02f, 0.01f), 12 * k, 8 * k,
-                    tone(0.6f, 0.45f), 1 - f);
+            float f = Ui.clamp(topFocus[TAB_COUNT + i].value);
+            hairline(c, r.left, r.right, r.top);
+            hairline(c, r.left, r.right, r.bottom - 1);
+            vline(c, r.left, r.top, r.bottom);
+            vline(c, r.right - 1, r.top, r.bottom);
             if (f > 0.01f) {
                 fill.setShader(null);
-                fill.setColor(Ui.alpha(0xFFFFFFFF, f));
-                c.drawCircle(cell.centerX(), cell.centerY(), rad, fill);
+                fill.setColor(Ui.alpha(M_INK, f));
+                c.drawRect(r, fill);
             }
-            Symbols.draw(getContext(), c, lightButtons.get(i).symbol, cell.centerX(), cell.centerY(), 27 * k * s,
-                    blend(tone(L_INK, 0xEBFFFFFF), L_INK, f));
+            Symbols.drawSharp(getContext(), c, lightButtons.get(i).symbol, r.centerX(), r.centerY(), 27 * k,
+                    blend(M_INK, 0xFF000000, f));
             if (f > 0.01f) {
-                String label = lightButtons.get(i).label;
+                String label = caps(lightButtons.get(i).label);
                 float half = lTip.measureText(label) / 2;
                 float x = Math.min(r.centerX(), CONTENT_R * k - half);
-                lTip.setAlpha(Math.round(255 * f));
-                c.drawText(label, x, r.bottom + (40 + 4 * f) * k, lTip);
+                lTip.setColor(Ui.alpha(M_INK, f));
+                c.drawText(label, x, r.bottom + 40 * k, lTip);
             }
         }
     }
