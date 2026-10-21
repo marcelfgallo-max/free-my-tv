@@ -13,7 +13,7 @@ Salve este pedido como WISHLIST.md na pasta, pra eu completar depois.
 
 ## Rápidas
 
-- [ ] Relógio grande no topo.
+- [x] Relógio grande no topo. ✅ (21/10/2026)
 - [ ] Ponto verde no card da HDMI ativa (CEC).
 - [ ] Timer pra dormir (30/60/90 min) nos Atalhos.
 - [ ] Saudação por horário (“Boa noite, Marcel”).
