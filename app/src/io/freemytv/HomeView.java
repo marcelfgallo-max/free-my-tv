@@ -340,6 +340,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         @Override public void onInputRemoved(String inputId) { reloadSoon(); }
     };
 
+    /** A device on an HDMI port turned on or off: the drawer's green dots. */
+    private final Runnable cecChanged = () -> {
+        if (!running) return;
+        drawerDirty = true;
+        wake();
+    };
+
     private void reloadSoon() {
         handler.removeCallbacks(reloadSoon);
         handler.postDelayed(reloadSoon, 500);
@@ -353,6 +360,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             recs.refreshIfStale();
             watchNext.refresh();
             catalog.refresh();
+            Cec.refresh(activity, false, cecChanged);
             checkNotices();
             updatePalette();
             checkNight(true);
@@ -428,6 +436,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         recs.refreshIfStale();
         watchNext.refresh();
         catalog.refresh();
+        Cec.refresh(activity, true, cecChanged);
         if (tvInputs != null) tvInputs.registerCallback(inputCallback, handler);
         handler.postDelayed(tick, 15_000);
         checkNotices();
@@ -1575,6 +1584,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         String label = TextUtils.ellipsize(it.label, fitPaint, room, TextUtils.TruncateAt.END).toString();
         c.drawText(label, cx, cell.top + cell.height() * 0.8f, drawerLabel);
         drawerLabel.setTextSize(23 * k);
+        if (it.kind == HomeApps.INPUT && it.number != null && Cec.on(Integer.parseInt(it.number))) {
+            // The device on this port is on (HDMI-CEC): a green dot at the top right.
+            fill.setShader(null);
+            fill.setColor(0xFF30D158);
+            c.drawCircle(cell.right - 18 * k * s, cell.top + 18 * k * s, 7 * k * s, fill);
+        }
     }
 
     /** Weather for your location: now (large), the next 6 hours, and sunrise and sunset. */

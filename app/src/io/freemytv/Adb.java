@@ -33,8 +33,8 @@ import javax.crypto.Cipher;
 /**
  * ADB client that talks to the TV itself (127.0.0.1:5555, open while debugging is on). It's what lets the app switch
  * the home screen and the screensaver, and turn off apps, without a computer. The first time, the TV asks
- * "Allow USB debugging?" and you accept with "Always allow". Only HomeMode uses it, and only with its own fixed
- * commands (nothing from outside).
+ * "Allow USB debugging?" and you accept with "Always allow". Only HomeMode and Cec (which reads the HDMI-CEC
+ * devices) use it, and only with their own fixed commands (nothing from outside).
  * Protocol: https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/protocol.txt
  */
 final class Adb implements Closeable {
@@ -64,7 +64,16 @@ final class Adb implements Closeable {
         out = socket.getOutputStream();
     }
 
-    /** Connects and authenticates. If the TV doesn't know our key yet, waits up to `approvalMs` for you to accept. */
+    /** Connects only with the key the TV already accepted: never shows the "Allow debugging?" prompt. */
+    static Adb connectKnown(Context c) throws IOException {
+        if (!new File(c.getFilesDir(), "adbkey").exists()) throw new IOException("no ADB key yet");
+        return connect(c, 0, null);
+    }
+
+    /**
+     * Connects and authenticates. If the TV doesn't know our key yet, waits up to `approvalMs` for you to accept
+     * (0: gives up instead of asking).
+     */
     static Adb connect(Context c, int approvalMs, Approval approval) throws IOException {
         KeyPair keys = keys(c);
         Socket s = new Socket();
@@ -101,6 +110,8 @@ final class Adb implements Closeable {
                 if (!signed) {
                     adb.send(AUTH, AUTH_SIGNATURE, 0, sign(keys.getPrivate(), m.data));
                     signed = true;
+                } else if (!offeredKey && approvalMs <= 0) {
+                    throw new IOException("the TV doesn't know the app's key yet");
                 } else if (!offeredKey) {
                     // Unknown key: send the public one; the TV shows "Allow USB debugging?".
                     adb.send(AUTH, AUTH_RSAPUBLICKEY, 0, publicKeyBlob(keys.getPublic()));
