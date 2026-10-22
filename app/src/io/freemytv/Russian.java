@@ -38,6 +38,8 @@ final class Russian {
             case "Good morning": return "Доброе утро";
             case "Good afternoon": return "Добрый день";
             case "Good evening": return "Добрый вечер";
+            case "LIVE": return "ЭФИР";
+            case "NEXT": return "ДАЛЕЕ";
             case "Sleep Timer": return "Таймер сна";
             case "Off in ": return "Выкл. через ";
             case "Sleep timer off.": return "Таймер сна выключен.";

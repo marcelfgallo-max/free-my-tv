@@ -153,7 +153,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     /** Modern 80s fields, with their blur and grain baked in: Ember behind Explore, Ultramarine behind the drawer. */
     private Bitmap fieldEmber, fieldUltra;
     private boolean fieldsLoading;
-    private Paint mBigDegree;
+    private Paint mBigDegree, teamBig, teamSmall, teamTag, teamImage;
+    private final Team team;
+    private final Team.Listener teamChanged = () -> {
+        heroDirty = true;
+        wake();
+    };
     private String nowDigits = "";
     private Paint mLabel, mLabelRight, mCell, mName, mPrice, mChange, mMuted, mMutedRight, mHour, mHourTemp, mBig;
     private final java.util.HashMap<String, String> capsCache = new java.util.HashMap<>();
@@ -361,6 +366,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             recs.refreshIfStale();
             watchNext.refresh();
             catalog.refresh();
+            team.refreshIfStale();
             Cec.refresh(activity, false, cecChanged);
             checkNotices();
             updatePalette();
@@ -376,6 +382,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         data = HomeData.get(a);
         recs = Recs.get(a);
         watchNext = WatchNext.get(a);
+        team = Team.get(a);
         catalog = Catalog.get(a);
         click = new Click(a);
         ui = a.getSharedPreferences("home-ui", Context.MODE_PRIVATE);
@@ -437,6 +444,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         recs.refreshIfStale();
         watchNext.refresh();
         catalog.refresh();
+        team.addListener(teamChanged);
+        team.refreshIfStale();
         Cec.refresh(activity, true, cecChanged);
         if (tvInputs != null) tvInputs.registerCallback(inputCallback, handler);
         handler.postDelayed(tick, 15_000);
@@ -466,6 +475,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         recs.removeListener(this);
         watchNext.setListener(null);
         catalog.setListener(null);
+        team.removeListener(teamChanged);
         if (tvInputs != null) tvInputs.unregisterCallback(inputCallback);
     }
 
@@ -690,6 +700,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         mBig = Ui.text(Ui.displayMedium, 184 * k, M_INK);   // proportional digits: a "1" isn't as wide as an "8"
         mBig.setLetterSpacing(-0.055f);
         mBigDegree = Ui.text(Ui.displayMedium, 84 * k, M_INK);
+        teamBig = Ui.text(Ui.displayMedium, 26 * k, M_INK);
+        teamBig.setLetterSpacing(-0.01f);
+        teamSmall = Ui.numbers(Ui.regular, 21 * k, M_MUTED);
+        teamTag = Ui.text(Ui.regular, 21 * k, M_UP);
+        teamImage = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
         capsCache.clear();
         loadFields();
     }
@@ -727,6 +742,14 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             capsCache.put(s, up);
         }
         return up;
+    }
+
+    private final Paint rulePaint = new Paint();
+
+    /** The hairline paint (Team draws its rule with it). */
+    private Paint rule() {
+        rulePaint.setColor(M_HAIRLINE);
+        return rulePaint;
     }
 
     /** The bottom edge of the tab row's hairline (whole pixels). */
@@ -2784,6 +2807,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         // The time, large and tight, where a title would be; the greeting after it.
         c.drawText(clockText, MARGIN * k - Ui.leftBearing(lTitle, clockText), L_TITLE_BASE * k, lTitle);
         c.drawText(greetingText, MARGIN * k + lTitle.measureText(clockText) + 48 * k, L_TITLE_BASE * k, lGreeting);
+        // Your team, between the greeting and the corner buttons: the last result (or the score now) and the next game.
+        Team.draw(c, topRects[TAB_COUNT].left - 40 * k, 104 * k, 142 * k, k, teamBig, teamSmall, teamTag, teamImage, rule());
         // Tab strip: caps labels over a hairline, a 3 px white segment under the selected one; with focus on the tabs,
         // the selected one inverts (white cell, black label).
         hairline(c, MARGIN * k, CONTENT_R * k, L_TAB_RULE * k);

@@ -31,6 +31,8 @@ final class German {
             case "Good morning": return "Guten Morgen";
             case "Good afternoon": return "Guten Tag";
             case "Good evening": return "Guten Abend";
+            case "LIVE": return "LIVE";
+            case "NEXT": return "NÄCHSTES";
             case "Sleep Timer": return "Sleep-Timer";
             case "Off in ": return "Aus in ";
             case "Sleep timer off.": return "Sleep-Timer aus.";

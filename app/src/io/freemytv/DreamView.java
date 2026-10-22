@@ -84,6 +84,13 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
     private final Paint photoPaint = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.DITHER_FLAG);
     private final Paint black = new Paint();
     private final Paint rule = new Paint();
+    private final Paint crestPaint = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
+    private Paint teamBig, teamSmall, teamTag;
+    private final Team team;
+    private final Team.Listener teamChanged = () -> {
+        chromeDirty = true;
+        invalidate();
+    };
     private final Set<String> failed = new HashSet<>();     // Recs.key: a movie and a series can have the same ID
     private boolean running, dirty = true, chromeDirty = true;
     private boolean fallback;       // the aurora with the clock (no photos)
@@ -107,6 +114,7 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
             data.refreshIfStale();
             recs.refreshIfStale();
             recs.prefetchAll();
+            team.refreshIfStale();
             dirty = true;
             chromeDirty = true;
             prepareNext();
@@ -118,6 +126,7 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
         super(c);
         data = HomeData.get(c);
         recs = Recs.get(c);
+        team = Team.get(c);
         Shaders.dream(scene.palette);
         scene.setMotion(0.4f, 0.32f);
         scene.applyPalette();
@@ -137,6 +146,8 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
         loadField();
         data.addListener(this);
         recs.addListener(this);
+        team.addListener(teamChanged);
+        team.refreshIfStale();
         data.refreshIfStale();
         recs.refreshIfStale();
         recs.prefetchAll();
@@ -155,6 +166,7 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
         handler.removeCallbacks(tick);
         data.removeListener(this);
         recs.removeListener(this);
+        team.removeListener(teamChanged);
         // The photos stay in GPU memory until the garbage collector runs: release them now (after the last frame).
         final java.util.Set<Bitmap> gone = new java.util.HashSet<>();
         for (Slide s : new Slide[] {current, incoming, prepared}) {
@@ -231,6 +243,10 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
         titlePaint = new TextPaint(Ui.text(Ui.displayMedium, 76 * k, INK));
         titlePaint.setLetterSpacing(-0.035f);
         metaPaint = Ui.text(Ui.regular, 26 * k, MUTED);
+        teamBig = Ui.text(Ui.displayMedium, 26 * k, INK);
+        teamBig.setLetterSpacing(-0.01f);
+        teamSmall = Ui.numbers(Ui.regular, 21 * k, MUTED);
+        teamTag = Ui.text(Ui.regular, 21 * k, 0xFF5EDCFF);
         fieldRect.set(0, 0, w, h);
         dirty = true;
         chromeDirty = true;
@@ -510,6 +526,9 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
             }
             String stale = HomeData.staleness(data.pricesAt, 5 * 60_000L);
             if (!stale.isEmpty() && n > 0) c.drawText(stale, right - total - 24 * k - cornerStale.measureText(stale), qbase, cornerStale);
+            // Your team under the clock (and under the prices when they're shown).
+            float ty = n > 0 ? qbase + 56 * k : (CLOCK_TOP + 20) * k + Ui.cap(cornerClock) + 50 * k;
+            Team.draw(c, right, ty, ty + 38 * k, k, teamBig, teamSmall, teamTag, crestPaint, rule);
         } finally {
             chrome.endRecording();
         }
