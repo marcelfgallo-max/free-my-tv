@@ -49,11 +49,17 @@
     "openFromCatalog",
     "drawDrawerTile"
   ],
-  "installation": "Pending explicit user authorization",
-  "screenshots": [],
+  "installation": "Explicitly authorized by Marcel; adb install -r returned Success",
+  "screenshots": [
+    "screenshots/phase4-home-before.png",
+    "screenshots/phase4-home-after.png",
+    "screenshots/phase4-app-focused.png"
+  ],
   "limitations": [
-    "No phase 4 visual validation on the TV yet",
-    "Extracted app logos depend on the installed app artwork; failed extraction retains a grayscale banner",
+    "No separate drawer or focused header-button capture in phase 4",
+    "Other installed app artwork may fail extraction and retain a grayscale banner",
     "No measured TV performance result"
-  ]
+  ],
+  "implementation_commit": "a2ff4cb",
+  "visual_validation": "Real TV captures verified seven monochrome logos, YouTube negative-space triangle, rounded posters and poster focus, circular header buttons at rest, and rounded orange app focus. 14 sampled-point checks passed, plus neutrality checks for seven logo regions."
 }

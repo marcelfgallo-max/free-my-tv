@@ -5,7 +5,7 @@
 Fase 1 concluída para o primeiro lote de 293 tokens, com validação visual da Home. Fase 2 instalada com autorização de Marcel: fundo grafite e superfície da barra de apps na Home e na gaveta. Cores confirmadas nas capturas reais. Fase 3 aprovada e compilada: seleção de aba e foco laranja. Fase 3 instalada com autorização específica e validada na Home: Explore mantém a cápsula laranja com o pôster focado, e o anel externo aparece quando o foco está na aba. Demais consumidores de foco ainda sem captura específica.
 
 
-Fase 4 aprovada e compilada: logos monocromáticos no dock, pôsteres e foco com cantos suaves, botões circulares. Instalação e validação visual desta fase aguardam nova autorização.
+Fase 4 aprovada e compilada: logos monocromáticos no dock, pôsteres e foco com cantos suaves, botões circulares. Fase 4 instalada com autorização específica e validada na Home: sete logos monocromáticos, recorte do YouTube, pôsteres arredondados, botões circulares e foco arredondado em app.
 Base: 8569d2127ac1577921764e6ea541dd798f085cb9. Trabalho exclusivo no worktree free-my-tv-design, branch design-system.
 Build e comparação de instruções: design-review/phase1-verification.json. Home validada com capturas reais antes/depois: zero diferença em 1.911.600 pixels fora do cabeçalho dinâmico de relógio e saudação. Gaveta e ajustes ainda não possuem capturas pareadas. Build sozinho não comprova equivalência de pixels.
 
@@ -101,7 +101,7 @@ roundImage reutiliza BitmapShader em cache no Android 9. Não foi acrescentado b
 
 Os botões circulares mantêm seus centros e regiões de navegação de 72 unidades. A proposta de tamanho 88 não entra nesta etapa para evitar mudanças de posição junto das formas. Cards de clima/cotações e entradas da gaveta, grade Todos os Apps e ajustes ainda não recebem este redesenho. O dock compartilhado muda tanto na Home quanto na gaveta. Day continua reservado.
 
-Validação local: build JDK 17, quatro fontes novas/alteradas compiladas contra API 28, assinatura do APK e nove verificações de transparência/recorte. A confirmação visual dos logos e cantos permanece pendente da instalação autorizada.
+Validação local: build JDK 17, quatro fontes novas/alteradas compiladas contra API 28, assinatura do APK e nove verificações de transparência/recorte. A instalação foi autorizada e concluída. Capturas reais confirmaram os sete logos da TV, o recorte do YouTube, os cantos dos pôsteres e o foco sobre YouTube. Não houve captura separada da gaveta ou de botão circular focado.
 
 
 ## Catálogo implementado

@@ -1,0 +1,331 @@
+{
+  "home_after": "screenshots/phase4-home-after.png",
+  "app_focused": "screenshots/phase4-app-focused.png",
+  "home_samples": {
+    "background": {
+      "xy": [
+        40,
+        400
+      ],
+      "rgb": [
+        32,
+        33,
+        36
+      ],
+      "expected_rgb": [
+        32,
+        33,
+        36
+      ],
+      "pass": true
+    },
+    "dock": {
+      "xy": [
+        90,
+        940
+      ],
+      "rgb": [
+        43,
+        44,
+        47
+      ],
+      "expected_rgb": [
+        43,
+        44,
+        47
+      ],
+      "pass": true
+    },
+    "active_tab": {
+      "xy": [
+        155,
+        222
+      ],
+      "rgb": [
+        255,
+        90,
+        32
+      ],
+      "expected_rgb": [
+        255,
+        90,
+        32
+      ],
+      "pass": true
+    },
+    "poster_corner": {
+      "xy": [
+        255,
+        330
+      ],
+      "rgb": [
+        32,
+        33,
+        36
+      ],
+      "expected_rgb": [
+        32,
+        33,
+        36
+      ],
+      "pass": true
+    },
+    "poster_focus_corner": {
+      "xy": [
+        404,
+        320
+      ],
+      "rgb": [
+        32,
+        33,
+        36
+      ],
+      "expected_rgb": [
+        32,
+        33,
+        36
+      ],
+      "pass": true
+    },
+    "poster_focus_top": {
+      "xy": [
+        480,
+        320
+      ],
+      "rgb": [
+        255,
+        90,
+        32
+      ],
+      "expected_rgb": [
+        255,
+        90,
+        32
+      ],
+      "pass": true
+    },
+    "button_corner": {
+      "xy": [
+        1593,
+        73
+      ],
+      "rgb": [
+        32,
+        33,
+        36
+      ],
+      "expected_rgb": [
+        32,
+        33,
+        36
+      ],
+      "pass": true
+    },
+    "button_surface": {
+      "xy": [
+        1628,
+        80
+      ],
+      "rgb": [
+        43,
+        44,
+        47
+      ],
+      "expected_rgb": [
+        43,
+        44,
+        47
+      ],
+      "pass": true
+    },
+    "youtube_play_cutout": {
+      "xy": [
+        414,
+        936
+      ],
+      "rgb": [
+        43,
+        44,
+        47
+      ],
+      "expected_rgb": [
+        43,
+        44,
+        47
+      ],
+      "pass": true
+    },
+    "youtube_ink": {
+      "xy": [
+        399,
+        930
+      ],
+      "rgb": [
+        245,
+        245,
+        247
+      ],
+      "expected_rgb": [
+        245,
+        245,
+        247
+      ],
+      "pass": true
+    }
+  },
+  "app_focus_samples": {
+    "focus_top": {
+      "xy": [
+        450,
+        866
+      ],
+      "rgb": [
+        255,
+        90,
+        32
+      ],
+      "expected_rgb": [
+        255,
+        90,
+        32
+      ],
+      "pass": true
+    },
+    "rounded_focus_corner": {
+      "xy": [
+        338,
+        866
+      ],
+      "rgb": [
+        43,
+        44,
+        47
+      ],
+      "expected_rgb": [
+        43,
+        44,
+        47
+      ],
+      "pass": true
+    },
+    "logo_ink": {
+      "xy": [
+        399,
+        930
+      ],
+      "rgb": [
+        245,
+        245,
+        247
+      ],
+      "expected_rgb": [
+        245,
+        245,
+        247
+      ],
+      "pass": true
+    },
+    "play_cutout": {
+      "xy": [
+        414,
+        936
+      ],
+      "rgb": [
+        43,
+        44,
+        47
+      ],
+      "expected_rgb": [
+        43,
+        44,
+        47
+      ],
+      "pass": true
+    }
+  },
+  "logo_regions": [
+    {
+      "name": "Netflix",
+      "bounds": [
+        96,
+        876,
+        312,
+        996
+      ],
+      "pixels_with_channel_spread_over_5": 0,
+      "solid_logo_color_pixels": 1358
+    },
+    {
+      "name": "YouTube",
+      "bounds": [
+        348,
+        876,
+        564,
+        996
+      ],
+      "pixels_with_channel_spread_over_5": 0,
+      "solid_logo_color_pixels": 1359
+    },
+    {
+      "name": "Prime Video",
+      "bounds": [
+        600,
+        876,
+        816,
+        996
+      ],
+      "pixels_with_channel_spread_over_5": 0,
+      "solid_logo_color_pixels": 1262
+    },
+    {
+      "name": "Disney+",
+      "bounds": [
+        852,
+        876,
+        1068,
+        996
+      ],
+      "pixels_with_channel_spread_over_5": 0,
+      "solid_logo_color_pixels": 310
+    },
+    {
+      "name": "Max",
+      "bounds": [
+        1104,
+        876,
+        1320,
+        996
+      ],
+      "pixels_with_channel_spread_over_5": 0,
+      "solid_logo_color_pixels": 2761
+    },
+    {
+      "name": "Apple TV",
+      "bounds": [
+        1356,
+        876,
+        1572,
+        996
+      ],
+      "pixels_with_channel_spread_over_5": 0,
+      "solid_logo_color_pixels": 2233
+    },
+    {
+      "name": "BladeTV",
+      "bounds": [
+        1608,
+        876,
+        1824,
+        996
+      ],
+      "pixels_with_channel_spread_over_5": 0,
+      "solid_logo_color_pixels": 1494
+    }
+  ],
+  "notes": [
+    "Before and after show John Candy and matching catalog rows. Clock and greeting change.",
+    "Neutrality check allows channel spread of 5 because the approved graphite and off-white colors are not equal-RGB grays.",
+    "No full-image pixel equality or performance claim.",
+    "Drawer and focused header buttons were not separately captured in this phase."
+  ]
+}
