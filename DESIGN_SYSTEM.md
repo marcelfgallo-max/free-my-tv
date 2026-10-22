@@ -555,3 +555,20 @@ Nunca instalar sem autorização expressa de Marcel, nem alterar configuração 
 
 
 Atualização de 22/10/2026: a pedido de Marcel, o placar e o próximo jogo foram removidos do cabeçalho. A Home também deixa de iniciar/atualizar os dados de futebol e registrar seu listener. Posições do relógio, saudação e botões preservadas. Esta remoção acompanha a instalação autorizada de Day e Night.
+
+## Fase 7, protetor de tela (compilado, instalação pendente)
+
+O DreamView passa a compartilhar Day/Night, DotDisplay e os pictogramas da gaveta. O placar e as consultas de futebol foram retirados. Fotos cinematográficas existentes ficam em moldura arredondada; legenda e relógio usam superfícies opacas discretas. Sem foto, o fundo segue o tema, com relógio pontilhado central. Detalhes e validação em design-review/PHASE7_RESULTS.md.
+
+| Token | Valor | Uso |
+| --- | --- | --- |
+| DREAM_PHOTO_INSET / DREAM_PHOTO_RADIUS | 64 / 48 | Moldura da foto, Canvas lógico 1920 × 1080 |
+| DREAM_PANEL_RADIUS | 32 | Relógio, legenda e estado sem foto |
+| DREAM_CLOCK_CARD_WIDTH / DREAM_CLOCK_HEIGHT | 680 / 132 | Painel e relógio com foto |
+| DREAM_FALLBACK_CLOCK_HEIGHT | 220 | Relógio sem foto |
+| DREAM_TITLE_WIDTH / DREAM_TITLE_SIZE | 816 / 52 | Título em até duas linhas |
+| DREAM_PHOTO_SATURATION_DAY / NIGHT | 0,95 / 0,85 | Tratamento suave da fotografia |
+| DREAM_PHOTO_BRIGHTNESS_NIGHT | 0,86 | Redução discreta de luz no Night |
+| DREAM_SHOW_MS / FADE_MS / FIRST_MS | 30000 / 3000 / 1600 | Tempos preservados do slideshow |
+
+Cores vêm de BACKGROUND, SURFACE, TEXT_PRIMARY, TEXT_SECONDARY, SOFT_DIVIDER e ACCENT. A foto usa BitmapShader e ColorMatrixColorFilter, disponíveis na API 28. Nenhuma biblioteca, blur nativo ou alteração nos serviços de troca de Home foi adicionada.

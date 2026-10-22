@@ -1,0 +1,34 @@
+{
+  "base": "27f61fa",
+  "implementation_commit": "d1ef931",
+  "apk_sha256": "40bbb72a55e75ef9214fe276cdb07be7aa819f543e6145ab49f7be38751c7a7e",
+  "build": "JDK 17, build.sh succeeded, 3.8 MB",
+  "api28": "DreamView, DreamGeometry and Theme compile against android-28.jar; no new dependencies",
+  "signature": "apksigner verify --min-sdk-version 28 succeeded",
+  "tests": {
+    "photo_and_clock": "55010 assertions: crop coverage over full zoom/pan paths, 3 scales, 4 image aspect ratios, all 1440 minutes in 12/24-hour formats",
+    "theme": "17 checks passed",
+    "protected_files_unchanged": [
+      "CLAUDE.md",
+      "WISHLIST.md",
+      "app/src/io/freemytv/HomeMode.java",
+      "app/src/io/freemytv/Adb.java",
+      "app/src/io/freemytv/ModeJob.java",
+      "app/src/io/freemytv/Watchdog.java",
+      "app/src/io/freemytv/HomeView.java",
+      "app/src/io/freemytv/SettingsActivity.java",
+      "app/src/io/freemytv/Screensaver.java",
+      "app/src/io/freemytv/ScreensaverAlone.java"
+    ],
+    "preview_adapters_excluded_from_apk": true
+  },
+  "football": "No Team instance, listener, refresh or draw call remains in DreamView",
+  "preview": "Offline SVG layout specimens using production DotDisplay and DrawerSymbols. Placeholder photo, sample data and host text rendering, not Android screenshots. Inspected Day, Night and fallback.",
+  "installation": "Not installed. Awaiting specific authorization. No TV commands in this phase.",
+  "limitations": [
+    "No real TV screenshots of phase 7 yet",
+    "Crossfade, bitmap shader/color filter and performance require on-device review",
+    "Keeps existing movie/series photo source; no personal album integration",
+    "Photo presentation follows the saved manual Day/Night preference, not a new schedule"
+  ]
+}
