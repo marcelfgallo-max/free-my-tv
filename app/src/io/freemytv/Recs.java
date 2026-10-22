@@ -44,6 +44,7 @@ final class Recs {
         int id;
         String kind;            // "movie" or "tv"
         String title, backdrop, meta = "", app, pkg;
+        String poster;          // Explore's showcase: TMDB's poster path
         boolean detailed;
         // Continue watching (WatchNext): the app's own link to the title and how much was watched (0 to 1, or -1).
         String intent;

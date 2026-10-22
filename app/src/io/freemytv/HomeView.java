@@ -110,6 +110,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     /** The tabs come first in the top row (0 to TAB_COUNT - 1), then the three corner buttons. */
     private static final int TAB_COUNT = TABS.length, NEXT_TAB = 3, CATALOG_TAB = 4;
     private static final int Z_TOP = 4, Z_CARDS = 5;
+    // Explore's showcase: two genres, 11 posters (2:3) each, filling the margins exactly (11 × 138 + 10 × 21 = 1728).
+    private static final int SHOW_COLS = 11;
+    private static final float SHOW_W = 138, SHOW_H = 207, SHOW_GAP = 21, SHOW_LABEL_1 = 300, SHOW_LABEL_2 = 588;
 
     private final Activity activity;
     private final Scene scene = new Scene();
@@ -146,8 +149,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private List<Recs.Pick> cards = new ArrayList<>();
     private final Spring[] topFocus = new Spring[TAB_COUNT + 3];
     private final RectF[] topRects = new RectF[TAB_COUNT + 3];
-    private final Spring[] cardFocus = new Spring[3];
-    private final RectF[] cardRects = new RectF[3];
+    // The three cards, or in Explore's showcase one per poster (row 1 first).
+    private final Spring[] cardFocus = new Spring[2 * SHOW_COLS];
+    private final RectF[] cardRects = new RectF[2 * SHOW_COLS];
+    private final Genres genres;
+    private int genrePage, showRow1;    // the pair of genres on screen; how many posters the first row has
     private final List<HomeApps.Item> lightButtons = new ArrayList<>();
     private Paint badgePaint;
     /** Modern 80s fields, with their blur and grain baked in: Ember behind Explore, Ultramarine behind the drawer. */
@@ -366,6 +372,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             recs.refreshIfStale();
             watchNext.refresh();
             catalog.refresh();
+            genres.refresh(genrePage);
             team.refreshIfStale();
             Cec.refresh(activity, false, cecChanged);
             checkNotices();
@@ -384,6 +391,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         watchNext = WatchNext.get(a);
         team = Team.get(a);
         catalog = Catalog.get(a);
+        genres = Genres.get(a);
         click = new Click(a);
         ui = a.getSharedPreferences("home-ui", Context.MODE_PRIVATE);
         tvInputs = (TvInputManager) a.getSystemService(Context.TV_INPUT_SERVICE);
@@ -411,7 +419,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             topFocus[i] = new Spring(0.26f, 0.85f, 0);
             topRects[i] = new RectF();
         }
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < cardFocus.length; i++) {
             cardFocus[i] = new Spring(0.32f, 0.78f, 0);
             cardRects[i] = new RectF();
         }
@@ -440,6 +448,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         recs.addListener(this);
         watchNext.setListener(this::onRecs);
         catalog.setListener(this::onRecs);
+        genres.setListener(this::onRecs);
         data.refreshIfStale();
         recs.refreshIfStale();
         watchNext.refresh();
@@ -475,6 +484,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         recs.removeListener(this);
         watchNext.setListener(null);
         catalog.setListener(null);
+        genres.setListener(null);
         team.removeListener(teamChanged);
         if (tvInputs != null) tvInputs.unregisterCallback(inputCallback);
     }
@@ -505,6 +515,10 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         }
         if (tab != 0) selectTab(0);
         page = 0;
+        if (genrePage != 0) {
+            genrePage = 0;
+            updateCards();
+        }
         retarget(!animated);
         motionDirty = true;
     }
@@ -545,7 +559,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         int width = MeasureSpec.getSize(widthSpec), height = MeasureSpec.getSize(heightSpec);
         float kk = width / 1920f;
         measure(sky, width, height);
-        measure(heroLayer, width, Math.round(790 * kk));
+        measure(heroLayer, width, Math.round(850 * kk));   // down to the showcase's second row
         measure(status, Math.round(1160 * kk), Math.round(240 * kk));
         // Sized to what they draw (the glass and its shadow; the grown tiles and their shadows): smaller layers are
         // cheaper for the GPU to composite on every frame of the drawer animation.
@@ -2279,7 +2293,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 if (!WatchNext.open(activity, p)) showToast(Ui.tr("Não deu para abrir ", "Couldn't open ") + p.title + ".");
                 return;
             }
-            if (tab == CATALOG_TAB) {
+            if (tab == CATALOG_TAB || showcase()) {
                 openFromCatalog(p, cardRects[cardIndex]);
                 return;
             }
@@ -2509,7 +2523,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             return;
         }
         for (int i = picksOn() ? 0 : TAB_COUNT; i < TAB_COUNT + lightButtons.size(); i++) out.add(a11yId(Z_TOP, i));
-        for (int i = 0; i < Math.min(3, cards.size()); i++) out.add(a11yId(Z_CARDS, i));
+        for (int i = 0; i < Math.min(cardRects.length, cards.size()); i++) out.add(a11yId(Z_CARDS, i));
         for (int i = 0; i < shelf.size(); i++) out.add(a11yId(Z_SHELF, i));
         for (int i = 0; i < drawerItems.size(); i++) out.add(a11yId(Z_DRAWER, i));
         if (drawerOpen && Prefs.weather()) out.add(a11yId(WIDGETS, 0));
@@ -2561,7 +2575,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 dy = (i < TAB_COUNT ? heroLayer : status).getTranslationY();
                 break;
             case Z_CARDS:
-                if (i >= Math.min(3, cards.size())) return false;
+                if (i >= Math.min(cardRects.length, cards.size())) return false;
                 a11yRect.set(cardRects[i]);
                 dy = heroLayer.getTranslationY();
                 break;
@@ -2731,19 +2745,64 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             topRects[TAB_COUNT + i].set(Math.round(right - b), Math.round(cy - b / 2), Math.round(right), Math.round(cy + b / 2));
             right -= b + L_BUTTON_GAP * k;
         }
+        if (showcase()) layoutShowcase(); else layoutCards();
+        heroDirty = statusDirty = true;
+    }
+
+    /** The three cards: a wide one and two tall ones. */
+    private void layoutCards() {
         float top = L_CARDS_TOP * k, ch = L_CARD_H * k, g = L_CARD_GAP * k, left = MARGIN * k, tall = L_TALL_W * k;
         float wide = (CONTENT_R - MARGIN) * k - 2 * tall - 2 * g;
         cardRects[0].set(Math.round(left), Math.round(top), Math.round(left + wide), Math.round(top + ch));
         cardRects[1].set(cardRects[0].right + Math.round(g), cardRects[0].top, cardRects[0].right + Math.round(g + tall), cardRects[0].bottom);
         cardRects[2].set(cardRects[1].right + Math.round(g), cardRects[0].top, cardRects[1].right + Math.round(g + tall), cardRects[0].bottom);
-        heroDirty = statusDirty = true;
+    }
+
+    /** The showcase: row 1's posters, then row 2's, each under its label and hairline, the last one ending on the margin. */
+    private void layoutShowcase() {
+        int n = cards.size();
+        for (int i = 0; i < n && i < cardRects.length; i++) {
+            boolean second = i >= showRow1;
+            int col = second ? i - showRow1 : i;
+            float top = ((second ? SHOW_LABEL_2 : SHOW_LABEL_1) + 30) * k, x = (MARGIN + col * (SHOW_W + SHOW_GAP)) * k;
+            cardRects[i].set(Math.round(x), Math.round(top), Math.round(x) + Math.round(SHOW_W * k), Math.round(top) + Math.round(SHOW_H * k));
+        }
+    }
+
+    /** Explore shows the genre showcase (with a TMDB key); the other tabs, three cards. */
+    private boolean showcase() {
+        return tab == 0 && picksOn();
+    }
+
+    /** Explore: the next or the previous pair of genres (focus on the first poster going forward, the last going back). */
+    private boolean turnGenrePage(int dx, boolean second) {
+        int to = genrePage + dx;
+        if (to < 0 || to >= Genres.pages()) return false;
+        genrePage = to;
+        updateCards();
+        if (cards.isEmpty()) return true;
+        int from = second ? showRow1 : 0, to2 = second ? cards.size() : showRow1;
+        if (from >= to2) {     // that row is empty on this page: the other one
+            from = second ? 0 : showRow1;
+            to2 = second ? showRow1 : cards.size();
+        }
+        cardIndex = dx > 0 ? from : Math.max(from, to2 - 1);
+        return true;
     }
 
     /** The three cards of the current tab (Explore, Movies, Shows, Continue, Catalog). */
     private void updateCards() {
         List<Recs.Pick> paged = pagedSource();
         List<Recs.Pick> list;
-        if (paged != null) {
+        if (showcase()) {
+            // Two genres: up to 11 posters each, row 1 first.
+            genrePage = Math.max(0, Math.min(genrePage, Genres.pages() - 1));
+            List<Recs.Pick> a = genres.items(2 * genrePage), b = genres.items(2 * genrePage + 1);
+            list = new ArrayList<>(a.subList(0, Math.min(SHOW_COLS, a.size())));
+            showRow1 = list.size();
+            list.addAll(b.subList(0, Math.min(SHOW_COLS, b.size())));
+            genres.refresh(genrePage);
+        } else if (paged != null) {
             page = Math.max(0, Math.min(page, (paged.size() - 1) / 3));
             list = paged.subList(page * 3, Math.min(page * 3 + 3, paged.size()));
             if (tab == CATALOG_TAB) catalog.prefetch(list);
@@ -2753,6 +2812,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if (!samePicks(list, cards)) {
             cards = list;
             cardIndex = Math.min(cardIndex, Math.max(0, list.size() - 1));
+            if (labelPaint != null) {
+                if (showcase()) layoutShowcase(); else layoutCards();
+            }
             if (zone == Z_CARDS && list.isEmpty()) {
                 zone = Z_SHELF;
                 retarget(false);
@@ -2772,6 +2834,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if (index == tab) return;
         tab = index;
         page = 0;
+        cards = new ArrayList<>();   // Explore's showcase and the cards share the rects: updateCards lays them out again
         updateCards();
         heroDirty = true;
     }
@@ -2830,6 +2893,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             Paint p = i == tab ? lTabOn : lTab;
             if (i == tab) lTabOn.setColor(blend(M_INK, 0xFF000000, focus));
             c.drawText(label, lx, L_TAB_BASE * k, p);
+        }
+        if (showcase()) {
+            drawShowcase(c);
+            if (HomeData.coinCount() > 0) drawQuotes(c);
+            return;
         }
         int top = -1;
         for (int i = 0; i < 3; i++) if (cardFocus[i].value > 0.02f && (top < 0 || cardFocus[i].value > cardFocus[top].value)) top = i;
@@ -2915,6 +2983,68 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if ((i == 0 || pagedSource() != null) && p.meta != null && !p.meta.isEmpty()) {
             fitPaint.set(lCardMeta);
             c.drawText(TextUtils.ellipsize(p.meta, fitPaint, bw, TextUtils.TruncateAt.END).toString(), base.left, base.bottom + 87 * k, lCardMeta);
+        }
+    }
+
+    /**
+     * Explore's showcase: per row the genre's label in caps on a hairline (the focused title at its right), and the
+     * posters under it; the focused one gets the 3 px white outline. Arrows outside the margins when there are more
+     * pairs of genres before or after.
+     */
+    private void drawShowcase(Canvas c) {
+        int focused = zone == Z_CARDS && cardIndex < cards.size() ? cardIndex : -1;
+        float left = MARGIN * k, right = CONTENT_R * k;
+        for (int row = 0; row < 2; row++) {
+            int genre = 2 * genrePage + row;
+            if (genre >= 2 * Genres.pages()) break;
+            float base = (row == 0 ? SHOW_LABEL_1 : SHOW_LABEL_2) * k;
+            c.drawText(caps(Genres.label(genre)), left, base, mLabel);
+            hairline(c, left, right, base + 14 * k);
+            int from = row == 0 ? 0 : showRow1, to = row == 0 ? showRow1 : cards.size();
+            if (focused >= from && focused < to) {
+                // The focused title at the right of its row's label: "MATCHBOX THE MOVIE  2025 · APPLE TV".
+                Recs.Pick p = cards.get(focused);
+                float x = right - mMutedRight.measureText(p.meta);
+                c.drawText(p.meta, right, base, mMutedRight);
+                String title = caps(p.title);
+                fitPaint.set(mLabelRight);
+                c.drawText(TextUtils.ellipsize(title, fitPaint, x - left - 520 * k, TextUtils.TruncateAt.END).toString(), x - 18 * k, base, mLabelRight);
+            }
+            if (from == to) {
+                c.drawText(genres.loading(genrePage) ? Ui.tr("Carregando…", "Loading…", "Cargando…")
+                        : Ui.tr("Nada deste gênero nos seus apps agora.", "Nothing in this genre on your apps right now.",
+                        "Nada de este género en tus apps ahora."), left, base + 120 * k, lCardMeta);
+            }
+            for (int i = from; i < to; i++) {
+                RectF r = cardRects[i];
+                Bitmap poster = genres.poster(cards.get(i), Math.round(r.width()), Math.round(r.height()));
+                if (poster != null) {
+                    c.drawBitmap(poster, null, r, bitmapPaint);
+                } else {
+                    fill.setShader(null);
+                    fill.setColor(0x14FFFFFF);
+                    c.drawRect(r, fill);
+                }
+                float f = Ui.clamp(cardFocus[i].value);
+                if (f > 0.01f) {
+                    float out = 8 * k + 1.5f * k;
+                    tmp.set(r.left - out, r.top - out, r.right + out, r.bottom + out);
+                    rim.setShader(null);
+                    rim.setColor(Ui.alpha(M_INK, f));
+                    rim.setStrokeWidth(3 * k);
+                    c.drawRect(tmp, rim);
+                }
+            }
+        }
+        // More pairs of genres: arrows in the side margins, at the middle of the two rows.
+        float cy = ((SHOW_LABEL_1 + 30 + SHOW_LABEL_2 + 30 + SHOW_H) / 2) * k, size = 34 * k;
+        if (genrePage < Genres.pages() - 1) Symbols.drawSharp(getContext(), c, "chevron_right", (CONTENT_R + MARGIN / 2) * k, cy, size, M_MUTED);
+        if (genrePage > 0) {
+            float cx = MARGIN / 2 * k;
+            c.save();
+            c.scale(-1, 1, cx, cy);
+            Symbols.drawSharp(getContext(), c, "chevron_right", cx, cy, size, M_MUTED);
+            c.restore();
         }
     }
 
@@ -3024,12 +3154,25 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 if (cards.isEmpty()) {
                     zone = Z_TOP;
                     topIndex = picksOn() ? tab : TAB_COUNT;
+                } else if (showcase()) {
+                    // Up from the apps: the showcase's lower row (the upper one if that's empty).
+                    zone = Z_CARDS;
+                    int from = showRow1 < cards.size() ? showRow1 : 0, to = showRow1 < cards.size() ? cards.size() : showRow1;
+                    float x = tileRects[shelfIndex].centerX();
+                    cardIndex = from;
+                    for (int i = from; i < to; i++) {
+                        if (Math.abs(cardRects[i].centerX() - x) < Math.abs(cardRects[cardIndex].centerX() - x)) cardIndex = i;
+                    }
                 } else {
                     zone = Z_CARDS;
                     cardIndex = nearest(cardRects, cards.size(), tileRects[shelfIndex].centerX());
                 }
                 break;
             case Z_CARDS:
+                if (showcase()) {
+                    if (!moveShowcase(dx, dy)) return true;
+                    break;
+                }
                 if (dx != 0) {
                     int next = Math.max(0, Math.min(cards.size() - 1, cardIndex + dx));
                     if (next == cardIndex && pagedSource() != null && turnPage(dx)) break;
@@ -3065,6 +3208,32 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         }
         retarget(false);
         click.move();
+        return true;
+    }
+
+    /** The showcase's focus: false when it stays put (the end of the last pair, say). */
+    private boolean moveShowcase(int dx, int dy) {
+        boolean second = cardIndex >= showRow1;
+        int from = second ? showRow1 : 0, to = second ? cards.size() : showRow1, col = cardIndex - from;
+        if (dx != 0) {
+            int next = cardIndex + dx;
+            if (next < from || next >= to) return turnGenrePage(dx, second);
+            cardIndex = next;
+        } else if (dy < 0) {
+            if (second && showRow1 > 0) {
+                cardIndex = Math.min(col, showRow1 - 1);
+            } else {
+                zone = Z_TOP;
+                topIndex = tab;
+            }
+        } else {
+            if (!second && showRow1 < cards.size()) {
+                cardIndex = showRow1 + Math.min(col, cards.size() - showRow1 - 1);
+            } else {
+                zone = Z_SHELF;
+                if (!shelf.isEmpty()) shelfIndex = nearest(tileRects, tileRects.length, cardRects[cardIndex].centerX());
+            }
+        }
         return true;
     }
 
