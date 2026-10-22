@@ -22,7 +22,7 @@ Salve este pedido como WISHLIST.md na pasta, pra eu completar depois.
 ## Médias
 
 - [x] Troca automática pra HDMI quando o PS5 ou o Switch 2 ligam (CEC), com opção de desligar. ✅ (21/10/2026) A própria TV já faz (BRAVIA Sync); desliga nos ajustes da TV.
-- [ ] Placar do meu time com onde vai passar o próximo jogo (me pergunte qual time).
+- [x] Placar do meu time com onde vai passar o próximo jogo (me pergunte qual time). ✅ (21/10/2026) São Paulo, pela ESPN; sem o canal (não há fonte grátis e confiável); o modo ao vivo estreia no sábado.
 - [ ] Próximos compromissos do Google Calendar.
 - [ ] Selo “episódio novo” nas séries que eu acompanho.
 
