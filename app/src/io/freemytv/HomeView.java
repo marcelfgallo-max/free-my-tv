@@ -1733,7 +1733,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             c.drawText(caps(HomeData.coinName(i)), x + 44 * k, base, mName);
             c.drawText(priceText[i], priceRight, base, mPrice);
             double change = data.changes[i];
-            int color = Double.isNaN(change) ? M_MUTED : change >= 0 ? M_UP : M_DOWN;
+            int color = Double.isNaN(change) || HomeData.flat(i, change) ? M_MUTED : change >= 0 ? M_UP : M_DOWN;
             float[] line = data.spark[i];
             if (line != null && sparkRight - sparkLeft > 48 * k) drawSpark(c, line, sparkLeft, sparkRight, mid, color);
             if (!Double.isNaN(change)) {

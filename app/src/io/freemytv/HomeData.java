@@ -570,13 +570,24 @@ final class HomeData {
     /** "+1.2%" / "−0.8%" (a real minus sign). */
     static String change(double v) {
         if (Double.isNaN(v)) return "";
-        return Ui.once("change", v, () -> (v >= 0 ? "+" : "−") + String.format(locale(), "%.1f%%", Math.abs(v)));
+        return Ui.once("change", v, () -> sign(v, 1) + String.format(locale(), "%.1f%%", Math.abs(v)));
     }
 
     /** Like change(v), with two decimals for the dollar and the euro (they move little: "−0.05%"). */
     static String change(int i, double v) {
         if (i != USD && i != EUR || Double.isNaN(v)) return change(v);
-        return Ui.once("change2", v, () -> (v >= 0 ? "+" : "−") + String.format(locale(), "%.2f%%", Math.abs(v)));
+        return Ui.once("change2", v, () -> sign(v, 2) + String.format(locale(), "%.2f%%", Math.abs(v)));
+    }
+
+    /** True when quote i's change shows as zero ("0.00%"): too small to call up or down. */
+    static boolean flat(int i, double v) {
+        return !Double.isNaN(v) && Math.round(Math.abs(v) * (i == USD || i == EUR ? 100 : 10)) == 0;
+    }
+
+    /** "+" or "−", or nothing when the change rounds to zero at that many decimals (no "−0.00%"). */
+    private static String sign(double v, int decimals) {
+        if (Math.round(Math.abs(v) * Math.pow(10, decimals)) == 0) return "";
+        return v >= 0 ? "+" : "−";
     }
 
     /** "18h" ("6 PM" when the TV is set to 12 hours; "18:00" in English). */
