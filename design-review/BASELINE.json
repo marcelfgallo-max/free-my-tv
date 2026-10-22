@@ -1,0 +1,50 @@
+{
+  "commit": "8569d2127ac1577921764e6ea541dd798f085cb9",
+  "branch": "design-system",
+  "base": "origin/sony-bravia-tweaks",
+  "date": "2026-10-21",
+  "timezone": "America/Sao_Paulo",
+  "files_sha256": {
+    "app/src/io/freemytv/HomeView.java": "b97e20aa81f4b414de96d48b010e86a0ab70ff33c5f73b16790ac7210ac2452f",
+    "app/src/io/freemytv/SettingsActivity.java": "889ae5137e26ac0c969a6186a55b6bfe10a119ec4f83f31b6e78c1acf83921c7",
+    "app/src/io/freemytv/Ui.java": "83f3777f537d73e5085761264a207487b6766d0297199cfee572abfbd6a3caa3",
+    "app/src/io/freemytv/Frost.java": "992bc12648df0e8fc4710d0ab52a738244b979ef5468410cf05493b3a96c27b0",
+    "app/src/io/freemytv/Backdrop.java": "a1f2d4a42a03948781306d90ec9128a89f1db265b8b24736e8c848e502d09b1e",
+    "app/src/io/freemytv/Shadows.java": "3e4cd7a59a79eeb45082e634a94a0c4a5b9893fead1aa870a17de8e09a2d5a62",
+    "app/src/io/freemytv/Spring.java": "6ca04d2fb2d0213229f110afce4b141db51e81f9a19e8339f630de031b9b2b47",
+    "app/src/io/freemytv/Scene.java": "a76979dacad7d9fd3c1ea2f05c7a816ed55c678091b6ffd8983388697c131731",
+    "app/src/io/freemytv/Symbols.java": "b98c3bb676fa551a3770bf483c9256954ada2a59001b7ac6a19162476915d855",
+    "app/src/io/freemytv/Team.java": "f028775bcafbbe8c169f0ce9a01bc9baabffacabdc29f5adf66e73d3d9fd57b5",
+    "app/src/io/freemytv/HomeApps.java": "3d195c98c4bbbac56fb1226826f3efcf63eda80af62b93b70614685e5c946349",
+    "app/src/io/freemytv/DreamView.java": "fd93ee0deaed3e897edfe580876538ec7cebaf30afccd4f11ad1370e32037715",
+    "app/src/io/freemytv/Glyphs.java": "a8cb61bb589c7d9d0e6c59a12def2bb1c6b6d0c798abf02993d70c4df53d212d",
+    "app/src/io/freemytv/Shaders.java": "d3bdf03f8364b083968f93c42597a75a9e24e4cc7f96644852e9d2aef88f5b13",
+    "app/src/io/freemytv/Recording.java": "c7b8bc13aa0487d7f20a7e2d9df0c781d7f67997597b95fc6812e8e6ffad2f40"
+  },
+  "literal_lines_per_file": {
+    "HomeView": 676,
+    "SettingsActivity": 232,
+    "Ui": 17,
+    "Frost": 32,
+    "Backdrop": 70,
+    "Shadows": 21,
+    "Spring": 7,
+    "Scene": 38,
+    "Symbols": 16,
+    "Team": 30,
+    "HomeApps": 168,
+    "DreamView": 151,
+    "Glyphs": 17,
+    "Shaders": 37,
+    "Recording": 6
+  },
+  "scope_note": "Inventario estatico. Nao prova quais caminhos executam na TV. Arquivos privados nao lidos nem incluidos.",
+  "protected_sha256": {
+    "CLAUDE.md": "4de99eda08ead8520a3df0b64bb50e9219bc300ae7d199af4d5023e1ee40c251",
+    "WISHLIST.md": "a29c5363d09e02630bd811508a769f6689e54e6fda6b9ac9736d4fc69a12b09b",
+    "app/src/io/freemytv/HomeMode.java": "fe884b016f8178c19b26a4294d186ee9dc4f8894515ae3e884f974963aee2ba3",
+    "app/src/io/freemytv/Adb.java": "0ff372da9774f959b082b51596fb2e7cd51c5eb9de5596c102abab71fd5839fa",
+    "app/src/io/freemytv/ModeJob.java": "bd81ee55998c36f506cc99971d44e5125bba6e7c44711a5166916156202ccfa4",
+    "app/src/io/freemytv/Watchdog.java": "64caf5b2a9c1d564e328d740eaa974987d252cad37ca2005ac20d24ee6e0278a"
+  }
+}

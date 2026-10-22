@@ -1,0 +1,110 @@
+{
+  "status": "PROPOSTA_AGUARDANDO_OK",
+  "coordinateSystem": {
+    "width": 1920,
+    "height": 1080,
+    "unit": "canvas logical pixel, scaled by k, not dp/sp"
+  },
+  "colors": {
+    "BACKGROUND": {
+      "day": "#E6E5E8",
+      "night": "#202124"
+    },
+    "SURFACE": {
+      "day": "#FAF9FB",
+      "night": "#2B2C2F"
+    },
+    "SURFACE_PRESSED": {
+      "day": "#DEDEE2",
+      "night": "#36373B"
+    },
+    "TEXT_PRIMARY": {
+      "day": "#292B2E",
+      "night": "#F5F5F7"
+    },
+    "TEXT_SECONDARY": {
+      "day": "#62636A",
+      "night": "#B8B9BF"
+    },
+    "TEXT_DISABLED": {
+      "day": "#88898F",
+      "night": "#77797F"
+    },
+    "DIVIDER": {
+      "day": "#D7D7DD",
+      "night": "#414246"
+    },
+    "ACCENT": {
+      "day": "#FF5A20",
+      "night": "#FF5A20"
+    },
+    "ON_ACCENT": {
+      "day": "#FFFFFF",
+      "night": "#FFFFFF"
+    },
+    "ON_ACCENT_SMALL": {
+      "day": "#292B2E",
+      "night": "#292B2E"
+    },
+    "FOCUS": {
+      "day": "#FF5A20",
+      "night": "#FF5A20"
+    },
+    "NEGATIVE": {
+      "day": "#C43B24",
+      "night": "#FF6B4A"
+    },
+    "POSITIVE": {
+      "day": "#62636A",
+      "night": "#D3D4D8"
+    },
+    "WARNING": {
+      "day": "#A84A00",
+      "night": "#FFAD66"
+    },
+    "CEC_ACTIVE": {
+      "day": "#21854C",
+      "night": "#55CA85"
+    }
+  },
+  "spacing": [
+    4,
+    8,
+    12,
+    16,
+    24,
+    32,
+    48,
+    64
+  ],
+  "radius": {
+    "poster": 12,
+    "card": 40,
+    "dock": 48,
+    "tab": 28,
+    "roundButton": 44,
+    "settingsRow": 18
+  },
+  "effects": {
+    "shadowAlpha": 0,
+    "shadowBlur": 0,
+    "glowAlpha": 0,
+    "surfaceAlpha": 1,
+    "focusScale": 1,
+    "focusStroke": 3,
+    "focusOutset": 4
+  },
+  "motion": {
+    "focusResponseSeconds": 0.2,
+    "focusDamping": 1,
+    "drawerResponseSeconds": 0.3,
+    "drawerDamping": 1,
+    "sheetResponseSeconds": 0.3,
+    "sheetDamping": 1,
+    "themeCrossfadeMs": 180,
+    "pressFeedbackMs": 80,
+    "toastMs": 6000,
+    "holdReorderMs": 500
+  },
+  "note": "Proposta de visual novo. Nao usar estes valores no primeiro commit de extracao: essa fase preserva os valores legados."
+}
