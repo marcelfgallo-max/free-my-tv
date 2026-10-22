@@ -1,0 +1,19 @@
+{
+  "base_commit": "8569d2127ac1577921764e6ea541dd798f085cb9",
+  "jdk": "17.0.20.1",
+  "identical_class_count": 77,
+  "equivalent_instructions": [
+    "io/freemytv/HomeView.class"
+  ],
+  "new_theme_classes": [
+    "io/freemytv/Theme$Legacy$AppColor.class",
+    "io/freemytv/Theme$Legacy$HomeColor.class",
+    "io/freemytv/Theme$Legacy$HomeText.class",
+    "io/freemytv/Theme$Legacy$Palette.class",
+    "io/freemytv/Theme$Legacy.class",
+    "io/freemytv/Theme.class"
+  ],
+  "assets_unchanged": true,
+  "failures": [],
+  "visual_validation": "pending real TV before/after screenshots"
+}

@@ -185,4 +185,3 @@ Uma etapa por vez. Se alterar geometria, atualizar foco/hitboxes/bounds junto. S
 ## Evidência esperada
 
 Para cada etapa: commit, arquivos alterados, saída de build sem dados privados, print antes/depois e descrição do que mudou. Primeiro print precisa ser captura real da TV no estado atual. As quatro imagens da pasta references são alvos de design, não capturas de teste.
-

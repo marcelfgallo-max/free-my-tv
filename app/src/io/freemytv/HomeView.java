@@ -81,11 +81,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     // "All Apps" sheet.
     private static final int COLUMNS = 5, VISIBLE_ROWS = 3;
     private static final float GRID_W = 300, GRID_H = 169, GRID_GAP = 40, GRID_ROW = 239, GRID_TOP = 196, GRID_RADIUS = 22;
-    private static final int SMOKE = 0xFF111113, INK = 0xFF1C1C1E, WHITE = 0xFFF5F5F7;
-    private static final int UP_COLOR = 0xFF30D158, DOWN_COLOR = 0xFFFF453A;
+    private static final int SMOKE = Theme.Legacy.HomeColor.SMOKE, INK = Theme.Legacy.HomeColor.INK, WHITE = Theme.Legacy.HomeColor.WHITE;
+    private static final int UP_COLOR = Theme.Legacy.HomeColor.UP_COLOR, DOWN_COLOR = Theme.Legacy.HomeColor.DOWN_COLOR;
     // Modern 80s: white type on the fields, 55% white hairlines instead of boxes, cyan up and red-orange down.
-    private static final int M_INK = 0xFFFFFFFF, M_MUTED = 0xB8FFFFFF, M_HAIRLINE = 0x8CFFFFFF;
-    private static final int M_UP = 0xFF5EDCFF, M_DOWN = 0xFFFF5A3C;
+    private static final int M_INK = Theme.Legacy.HomeColor.M_INK, M_MUTED = Theme.Legacy.HomeColor.M_MUTED, M_HAIRLINE = Theme.Legacy.HomeColor.M_HAIRLINE;
+    private static final int M_UP = Theme.Legacy.HomeColor.M_UP, M_DOWN = Theme.Legacy.HomeColor.M_DOWN;
     private static final long TOAST_MS = 6000, FADE_MS = 800;
     /** Blur radii of the shadow and shadowDeep paints (Shadows needs them to draw the same blur on older TVs). */
     private static final float SHADOW_BLUR = 26, DEEP_BLUR = 30;
@@ -100,7 +100,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private static final float L_TALL_W = 328, L_CARD_GAP = 32, L_BUTTON = 72, L_BUTTON_GAP = 8, L_BUTTON_CY = 108;
     private static final float L_PLATTER_TOP = 848, L_TILE_H = 120;
     private static final float L_DATE_BASE = 330, L_CLOCK_BASE = 540, L_WEATHER_BASE = 626, L_QUOTES_BASE = 694;
-    private static final int L_INK = 0xFF1D1D1F, L_DIM = 0xFF6E6E73, L_FAINT = 0xFF8E8E93;
+    private static final int L_INK = Theme.Legacy.HomeColor.L_INK, L_DIM = Theme.Legacy.HomeColor.L_DIM, L_FAINT = Theme.Legacy.HomeColor.L_FAINT;
     private static final String[] TABS = {"Explorar", "Filmes", "Séries", "Continuar", "Catálogo"};
     private static final String[] TABS_RU = {"Обзор", "Фильмы", "Сериалы", "Продолжить", "Каталог"};
     private static final String[] TABS_EN = {"Explore", "Movies", "Shows", "Continue", "Catalog"};
@@ -181,16 +181,16 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     /** Each app's tile like its Apple TV icon: brand colors (top, bottom) and logo (0 = as is, 1 = white, 2 = dark). */
     private static final Map<String, int[]> TILE_STYLE = new HashMap<>();
     static {
-        TILE_STYLE.put("netflix", new int[] {0xFF0A0A0A, 0xFF000000, 0});
-        TILE_STYLE.put("youtube", new int[] {0xFF1C1C1E, 0xFF09090A, 0});
-        TILE_STYLE.put("globoplay", new int[] {0xFFFF8A1F, 0xFFFF2D5A, 1});
-        TILE_STYLE.put("prime", new int[] {0xFF2AA8FF, 0xFF0A68D4, 1});
-        TILE_STYLE.put("disney", new int[] {0xFF173584, 0xFF08143F, 0});
-        TILE_STYLE.put("max", new int[] {0xFF5C30E8, 0xFF221684, 0});
-        TILE_STYLE.put("appletv", new int[] {0xFF1C1C1E, 0xFF000000, 0});
+        TILE_STYLE.put("netflix", new int[] {Theme.Legacy.AppColor.NETFLIX_TOP, Theme.Legacy.AppColor.NETFLIX_BOTTOM, 0});
+        TILE_STYLE.put("youtube", new int[] {Theme.Legacy.AppColor.YOUTUBE_TOP, Theme.Legacy.AppColor.YOUTUBE_BOTTOM, 0});
+        TILE_STYLE.put("globoplay", new int[] {Theme.Legacy.AppColor.GLOBOPLAY_TOP, Theme.Legacy.AppColor.GLOBOPLAY_BOTTOM, 1});
+        TILE_STYLE.put("prime", new int[] {Theme.Legacy.AppColor.PRIME_TOP, Theme.Legacy.AppColor.PRIME_BOTTOM, 1});
+        TILE_STYLE.put("disney", new int[] {Theme.Legacy.AppColor.DISNEY_TOP, Theme.Legacy.AppColor.DISNEY_BOTTOM, 0});
+        TILE_STYLE.put("max", new int[] {Theme.Legacy.AppColor.MAX_TOP, Theme.Legacy.AppColor.MAX_BOTTOM, 0});
+        TILE_STYLE.put("appletv", new int[] {Theme.Legacy.AppColor.APPLETV_TOP, Theme.Legacy.AppColor.APPLETV_BOTTOM, 0});
     }
     private final android.graphics.PorterDuffColorFilter whiteLogo =
-            new android.graphics.PorterDuffColorFilter(0xFFFFFFFF, android.graphics.PorterDuff.Mode.SRC_IN);
+            new android.graphics.PorterDuffColorFilter(Theme.Legacy.Palette.WHITE_AFF, android.graphics.PorterDuff.Mode.SRC_IN);
     private final RectF platterRect = new RectF();
     private int shelfIndex;
 
@@ -617,68 +617,68 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     }
 
     private void makePaints() {
-        labelPaint = Ui.text(Ui.medium, 25 * k, 0xC7FFFFFF);
-        labelPaint.setLetterSpacing(0.1f);
-        titlePaint = new TextPaint(Ui.text(Ui.displayMedium, 76 * k, 0xFFFFFFFF));
-        titlePaint.setLetterSpacing(0.005f);
-        metaPaint = Ui.text(Ui.medium, 29 * k, 0xD1FFFFFF);
-        metaPaint.setLetterSpacing(0.014f);
-        clockPaint = Ui.numbers(Ui.thin, 176 * k, 0xFFFFFFFF);
-        clockPaint.setLetterSpacing(-0.01f);
-        for (Paint p : new Paint[] {labelPaint, titlePaint, metaPaint, clockPaint}) p.setShadowLayer(22 * k, 0, 2 * k, 0x59000000);
+        labelPaint = Ui.text(Ui.medium, Theme.Legacy.HomeText.LABEL_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AC7);
+        labelPaint.setLetterSpacing(Theme.Legacy.HomeText.LABEL_PAINT_TRACKING);
+        titlePaint = new TextPaint(Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.TITLE_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AFF));
+        titlePaint.setLetterSpacing(Theme.Legacy.HomeText.TITLE_PAINT_TRACKING);
+        metaPaint = Ui.text(Ui.medium, Theme.Legacy.HomeText.META_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AD1);
+        metaPaint.setLetterSpacing(Theme.Legacy.HomeText.META_PAINT_TRACKING);
+        clockPaint = Ui.numbers(Ui.thin, Theme.Legacy.HomeText.CLOCK_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AFF);
+        clockPaint.setLetterSpacing(Theme.Legacy.HomeText.CLOCK_PAINT_TRACKING);
+        for (Paint p : new Paint[] {labelPaint, titlePaint, metaPaint, clockPaint}) p.setShadowLayer(22 * k, 0, 2 * k, Theme.Legacy.Palette.BLACK_A59);
         // Modern 80s: the clock big and tight, caps tabs and titles in Inter Display at 500.
-        lTitle = Ui.text(Ui.displayMedium, 124 * k, M_INK);
-        lTitle.setLetterSpacing(-0.05f);
-        lGreeting = Ui.text(Ui.regular, 40 * k, M_MUTED);
-        lGreeting.setLetterSpacing(-0.02f);
-        lTab = Ui.text(Ui.displayMedium, 28 * k, M_MUTED);
-        lTab.setLetterSpacing(-0.01f);
-        lTabOn = Ui.text(Ui.displayMedium, 28 * k, M_INK);
-        lTabOn.setLetterSpacing(-0.01f);
-        lCardTitle = Ui.text(Ui.displayMedium, 34 * k, M_INK);
-        lCardTitle.setLetterSpacing(-0.03f);
-        lCardMeta = Ui.text(Ui.regular, 23 * k, M_MUTED);
-        badgePaint = Ui.text(Ui.semibold, 20 * k, 0xFFFFFFFF);
-        lQuote = Ui.numbers(Ui.regular, 24 * k, M_INK);
-        lTip = Ui.text(Ui.displayMedium, 22 * k, M_INK);
+        lTitle = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.L_TITLE_SIZE * k, M_INK);
+        lTitle.setLetterSpacing(Theme.Legacy.HomeText.L_TITLE_TRACKING);
+        lGreeting = Ui.text(Ui.regular, Theme.Legacy.HomeText.L_GREETING_SIZE * k, M_MUTED);
+        lGreeting.setLetterSpacing(Theme.Legacy.HomeText.L_GREETING_TRACKING);
+        lTab = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.L_TAB_SIZE * k, M_MUTED);
+        lTab.setLetterSpacing(Theme.Legacy.HomeText.L_TAB_TRACKING);
+        lTabOn = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.L_TAB_ON_SIZE * k, M_INK);
+        lTabOn.setLetterSpacing(Theme.Legacy.HomeText.L_TAB_ON_TRACKING);
+        lCardTitle = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.L_CARD_TITLE_SIZE * k, M_INK);
+        lCardTitle.setLetterSpacing(Theme.Legacy.HomeText.L_CARD_TITLE_TRACKING);
+        lCardMeta = Ui.text(Ui.regular, Theme.Legacy.HomeText.L_CARD_META_SIZE * k, M_MUTED);
+        badgePaint = Ui.text(Ui.semibold, Theme.Legacy.HomeText.BADGE_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AFF);
+        lQuote = Ui.numbers(Ui.regular, Theme.Legacy.HomeText.L_QUOTE_SIZE * k, M_INK);
+        lTip = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.L_TIP_SIZE * k, M_INK);
         lTip.setTextAlign(Paint.Align.CENTER);
-        lDate = Ui.text(Ui.semibold, 34 * k, L_DIM);
-        lClock = Ui.numbers(Ui.light, 200 * k, L_INK);
-        lClock.setLetterSpacing(-0.01f);
-        lWeather = Ui.text(Ui.medium, 34 * k, L_DIM);
-        lClockQuote = Ui.numbers(Ui.medium, 28 * k, L_DIM);
-        buttonPaint = Ui.text(Ui.semibold, 29 * k, INK);
-        capsuleText = Ui.numbers(Ui.medium, 29 * k, 0xF2FFFFFF);
-        tipPaint = Ui.text(Ui.semibold, 25 * k, 0xF2FFFFFF);
+        lDate = Ui.text(Ui.semibold, Theme.Legacy.HomeText.L_DATE_SIZE * k, L_DIM);
+        lClock = Ui.numbers(Ui.light, Theme.Legacy.HomeText.L_CLOCK_SIZE * k, L_INK);
+        lClock.setLetterSpacing(Theme.Legacy.HomeText.L_CLOCK_TRACKING);
+        lWeather = Ui.text(Ui.medium, Theme.Legacy.HomeText.L_WEATHER_SIZE * k, L_DIM);
+        lClockQuote = Ui.numbers(Ui.medium, Theme.Legacy.HomeText.L_CLOCK_QUOTE_SIZE * k, L_DIM);
+        buttonPaint = Ui.text(Ui.semibold, Theme.Legacy.HomeText.BUTTON_PAINT_SIZE * k, INK);
+        capsuleText = Ui.numbers(Ui.medium, Theme.Legacy.HomeText.CAPSULE_TEXT_SIZE * k, Theme.Legacy.Palette.WHITE_AF2);
+        tipPaint = Ui.text(Ui.semibold, Theme.Legacy.HomeText.TIP_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AF2);
         tipPaint.setTextAlign(Paint.Align.CENTER);
-        tipPaint.setShadowLayer(16 * k, 0, 1 * k, 0x99000000);
+        tipPaint.setShadowLayer(16 * k, 0, 1 * k, Theme.Legacy.Palette.BLACK_A99);
         // Quotes: a subtle detail, smaller and dimmer than the rest.
-        quotePaint = Ui.numbers(Ui.regular, 21 * k, 0xB8FFFFFF);
-        quotePaint.setShadowLayer(14 * k, 0, 1 * k, 0x99000000);
-        staleQuote = Ui.text(Ui.medium, 21 * k, 0x99FFFFFF);
+        quotePaint = Ui.numbers(Ui.regular, Theme.Legacy.HomeText.QUOTE_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AB8);
+        quotePaint.setShadowLayer(14 * k, 0, 1 * k, Theme.Legacy.Palette.BLACK_A99);
+        staleQuote = Ui.text(Ui.medium, Theme.Legacy.HomeText.STALE_QUOTE_SIZE * k, Theme.Legacy.Palette.WHITE_A99);
         staleQuote.setTextAlign(Paint.Align.RIGHT);
-        rowTitle = Ui.text(Ui.semibold, 25 * k, 0xB3FFFFFF);
-        drawerLabel = Ui.text(Ui.medium, 23 * k, 0xEBFFFFFF);
+        rowTitle = Ui.text(Ui.semibold, Theme.Legacy.HomeText.ROW_TITLE_SIZE * k, Theme.Legacy.Palette.WHITE_AB3);
+        drawerLabel = Ui.text(Ui.medium, Theme.Legacy.HomeText.DRAWER_LABEL_SIZE * k, Theme.Legacy.Palette.WHITE_AEB);
         drawerLabel.setTextAlign(Paint.Align.CENTER);
-        cardTitle = Ui.text(Ui.semibold, 25 * k, 0xB3FFFFFF);
-        cardText = Ui.text(Ui.medium, 29 * k, 0xF2FFFFFF);
-        cardDim = Ui.numbers(Ui.medium, 23 * k, 0xADFFFFFF);
-        cardDimRight = Ui.text(Ui.medium, 21 * k, 0x99FFFFFF);
+        cardTitle = Ui.text(Ui.semibold, Theme.Legacy.HomeText.CARD_TITLE_SIZE * k, Theme.Legacy.Palette.WHITE_AB3);
+        cardText = Ui.text(Ui.medium, Theme.Legacy.HomeText.CARD_TEXT_SIZE * k, Theme.Legacy.Palette.WHITE_AF2);
+        cardDim = Ui.numbers(Ui.medium, Theme.Legacy.HomeText.CARD_DIM_SIZE * k, Theme.Legacy.Palette.WHITE_AAD);
+        cardDimRight = Ui.text(Ui.medium, Theme.Legacy.HomeText.CARD_DIM_RIGHT_SIZE * k, Theme.Legacy.Palette.WHITE_A99);
         cardDimRight.setTextAlign(Paint.Align.RIGHT);
-        bigTemp = Ui.numbers(Ui.light, 100 * k, 0xFFFFFFFF);
-        hourPaint = Ui.numbers(Ui.medium, 22 * k, 0xADFFFFFF);
+        bigTemp = Ui.numbers(Ui.light, Theme.Legacy.HomeText.BIG_TEMP_SIZE * k, Theme.Legacy.Palette.WHITE_AFF);
+        hourPaint = Ui.numbers(Ui.medium, Theme.Legacy.HomeText.HOUR_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AAD);
         hourPaint.setTextAlign(Paint.Align.CENTER);
-        hourTemp = Ui.numbers(Ui.medium, 26 * k, 0xF2FFFFFF);
+        hourTemp = Ui.numbers(Ui.medium, Theme.Legacy.HomeText.HOUR_TEMP_SIZE * k, Theme.Legacy.Palette.WHITE_AF2);
         hourTemp.setTextAlign(Paint.Align.CENTER);
-        pricePaint = Ui.numbers(Ui.medium, 26 * k, 0xF2FFFFFF);
+        pricePaint = Ui.numbers(Ui.medium, Theme.Legacy.HomeText.PRICE_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AF2);
         pricePaint.setTextAlign(Paint.Align.RIGHT);
-        changePaint = Ui.numbers(Ui.semibold, 21 * k, 0xFFFFFFFF);
+        changePaint = Ui.numbers(Ui.semibold, Theme.Legacy.HomeText.CHANGE_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AFF);
         changePaint.setTextAlign(Paint.Align.CENTER);
-        sheetTitle = Ui.text(Ui.displaySemibold, 40 * k, 0xFFFFFFFF);
+        sheetTitle = Ui.text(Ui.displaySemibold, Theme.Legacy.HomeText.SHEET_TITLE_SIZE * k, Theme.Legacy.Palette.WHITE_AFF);
         sheetTitle.setTextAlign(Paint.Align.CENTER);
-        gridLabel = new TextPaint(Ui.text(Ui.medium, 24 * k, 0x99FFFFFF));
+        gridLabel = new TextPaint(Ui.text(Ui.medium, Theme.Legacy.HomeText.GRID_LABEL_SIZE * k, Theme.Legacy.Palette.WHITE_A99));
         gridLabel.setTextAlign(Paint.Align.CENTER);
-        toastPaint = new TextPaint(Ui.text(Ui.medium, 26 * k, 0xF2FFFFFF));
+        toastPaint = new TextPaint(Ui.text(Ui.medium, Theme.Legacy.HomeText.TOAST_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AF2));
         shadow.setMaskFilter(new BlurMaskFilter(SHADOW_BLUR * k, BlurMaskFilter.Blur.NORMAL));
         shadowSoft.setMaskFilter(new BlurMaskFilter(12 * k, BlurMaskFilter.Blur.NORMAL));
         shadowDeep.setMaskFilter(new BlurMaskFilter(DEEP_BLUR * k, BlurMaskFilter.Blur.NORMAL));
@@ -688,36 +688,36 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         rim.setStyle(Paint.Style.STROKE);
         rim.setStrokeWidth(2.5f * k);
         // Modern 80s: Inter Display at 500, tight; labels in caps.
-        mLabel = Ui.text(Ui.displayMedium, 26 * k, M_INK);
-        mLabel.setLetterSpacing(-0.01f);
+        mLabel = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.M_LABEL_SIZE * k, M_INK);
+        mLabel.setLetterSpacing(Theme.Legacy.HomeText.M_LABEL_TRACKING);
         mLabelRight = new Paint(mLabel);
         mLabelRight.setTextAlign(Paint.Align.RIGHT);
-        mCell = Ui.text(Ui.displayMedium, 21 * k, M_INK);
-        mCell.setLetterSpacing(-0.01f);
+        mCell = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.M_CELL_SIZE * k, M_INK);
+        mCell.setLetterSpacing(Theme.Legacy.HomeText.M_CELL_TRACKING);
         mCell.setTextAlign(Paint.Align.CENTER);
-        mName = Ui.text(Ui.displayMedium, 31 * k, M_INK);
-        mName.setLetterSpacing(-0.02f);
-        mPrice = Ui.numbers(Ui.displayMedium, 31 * k, M_INK);
-        mPrice.setLetterSpacing(-0.02f);
+        mName = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.M_NAME_SIZE * k, M_INK);
+        mName.setLetterSpacing(Theme.Legacy.HomeText.M_NAME_TRACKING);
+        mPrice = Ui.numbers(Ui.displayMedium, Theme.Legacy.HomeText.M_PRICE_SIZE * k, M_INK);
+        mPrice.setLetterSpacing(Theme.Legacy.HomeText.M_PRICE_TRACKING);
         mPrice.setTextAlign(Paint.Align.RIGHT);
-        mChange = Ui.numbers(Ui.displayMedium, 25 * k, M_UP);
-        mChange.setLetterSpacing(-0.01f);
+        mChange = Ui.numbers(Ui.displayMedium, Theme.Legacy.HomeText.M_CHANGE_SIZE * k, M_UP);
+        mChange.setLetterSpacing(Theme.Legacy.HomeText.M_CHANGE_TRACKING);
         mChange.setTextAlign(Paint.Align.RIGHT);
-        mMuted = Ui.numbers(Ui.regular, 22 * k, M_MUTED);
+        mMuted = Ui.numbers(Ui.regular, Theme.Legacy.HomeText.M_MUTED_SIZE * k, M_MUTED);
         mMutedRight = new Paint(mMuted);
         mMutedRight.setTextAlign(Paint.Align.RIGHT);
-        mHour = Ui.numbers(Ui.regular, 24 * k, M_MUTED);
+        mHour = Ui.numbers(Ui.regular, Theme.Legacy.HomeText.M_HOUR_SIZE * k, M_MUTED);
         mHour.setTextAlign(Paint.Align.CENTER);
-        mHourTemp = Ui.numbers(Ui.displayMedium, 38 * k, M_INK);
-        mHourTemp.setLetterSpacing(-0.035f);
+        mHourTemp = Ui.numbers(Ui.displayMedium, Theme.Legacy.HomeText.M_HOUR_TEMP_SIZE * k, M_INK);
+        mHourTemp.setLetterSpacing(Theme.Legacy.HomeText.M_HOUR_TEMP_TRACKING);
         mHourTemp.setTextAlign(Paint.Align.CENTER);
-        mBig = Ui.text(Ui.displayMedium, 184 * k, M_INK);   // proportional digits: a "1" isn't as wide as an "8"
-        mBig.setLetterSpacing(-0.055f);
-        mBigDegree = Ui.text(Ui.displayMedium, 84 * k, M_INK);
-        teamBig = Ui.text(Ui.displayMedium, 26 * k, M_INK);
-        teamBig.setLetterSpacing(-0.01f);
-        teamSmall = Ui.numbers(Ui.regular, 21 * k, M_MUTED);
-        teamTag = Ui.text(Ui.regular, 21 * k, M_UP);
+        mBig = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.M_BIG_SIZE * k, M_INK);   // proportional digits: a "1" isn't as wide as an "8"
+        mBig.setLetterSpacing(Theme.Legacy.HomeText.M_BIG_TRACKING);
+        mBigDegree = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.M_BIG_DEGREE_SIZE * k, M_INK);
+        teamBig = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.TEAM_BIG_SIZE * k, M_INK);
+        teamBig.setLetterSpacing(Theme.Legacy.HomeText.TEAM_BIG_TRACKING);
+        teamSmall = Ui.numbers(Ui.regular, Theme.Legacy.HomeText.TEAM_SMALL_SIZE * k, M_MUTED);
+        teamTag = Ui.text(Ui.regular, Theme.Legacy.HomeText.TEAM_TAG_SIZE * k, M_UP);
         teamImage = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
         capsCache.clear();
         loadFields();
@@ -989,7 +989,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     /** The glass the toasts and the All Apps sheet are drawn with: a plain dark tone (there's no photo behind). */
     private void neutralGlass() {
-        int color = blend(0xFFEBEBF0, 0xFF141416, night);
+        int color = blend(Theme.Legacy.Palette.GLASS_DAY, Theme.Legacy.Palette.GLASS_NIGHT, night);
         java.util.Arrays.fill(neutralFrostPx, color);
         java.util.Arrays.fill(neutralGlassPx, color);
         scene.setFrost(neutralFrostPx);
@@ -1030,11 +1030,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         lCardMeta.setColor(M_MUTED);
         lQuote.setColor(M_INK);
         lTip.setColor(tone(L_INK, WHITE));
-        lDate.setColor(tone(L_DIM, 0xFF98989D));
+        lDate.setColor(tone(L_DIM, Theme.Legacy.Palette.TEXT_DIM_NIGHT));
         lClock.setColor(tone(L_INK, WHITE));
-        lWeather.setColor(tone(L_DIM, 0xFF98989D));
-        lClockQuote.setColor(tone(L_DIM, 0xFF98989D));
-        staleQuote.setColor(tone(L_FAINT, 0x99FFFFFF));
+        lWeather.setColor(tone(L_DIM, Theme.Legacy.Palette.TEXT_DIM_NIGHT));
+        lClockQuote.setColor(tone(L_DIM, Theme.Legacy.Palette.TEXT_DIM_NIGHT));
+        staleQuote.setColor(tone(L_FAINT, Theme.Legacy.Palette.WHITE_A99));
     }
 
     private boolean tickHeroFade(long up) {
@@ -1350,7 +1350,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             drawLogo(c, it, cell, s, style[2]);
         } else if (it.logo != null) {
             tileFill.setShader(null);
-            tileFill.setColor(0xFF161618);
+            tileFill.setColor(Theme.Legacy.Palette.APP_FALLBACK);
             c.drawRect(cell, tileFill);
             drawLogo(c, it, cell, s, 0);
         } else if (it.tile != null) {
@@ -1537,7 +1537,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     /** Color for the drawer's text and symbols: dark by day, white at night. */
     private int drawerInk(float alpha) {
-        return Ui.alpha(tone(L_INK, 0xFFFFFFFF), alpha);
+        return Ui.alpha(tone(L_INK, Theme.Legacy.Palette.WHITE_AFF), alpha);
     }
 
     /** The drawer's sections have no box: only their content and hairlines. */
@@ -1586,19 +1586,19 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             c.drawRect(cellRect, fill);
         }
         boolean off = it.kind == HomeApps.INPUT && !it.connected;
-        int ink = blend(off ? 0x73FFFFFF : M_INK, 0xFF000000, f);
+        int ink = blend(off ? Theme.Legacy.Palette.WHITE_A73 : M_INK, Theme.Legacy.Palette.BLACK_AFF, f);
         Symbols.drawSharp(getContext(), c, it.symbol, cx, cellRect.top + cellRect.height() * 0.36f, 34 * k, ink);
         String label = caps(it.label);
         mCell.setColor(ink);
         float room = cellRect.width() - 16 * k, wide = mCell.measureText(label);
         // A long name shrinks a little before it gets cut.
-        if (wide > room) mCell.setTextSize(Math.max(17 * k, 21 * k * room / wide));
+        if (wide > room) mCell.setTextSize(Math.max(Theme.Legacy.HomeText.M_CELL_MIN_SIZE * k, Theme.Legacy.HomeText.M_CELL_SIZE * k * room / wide));
         c.drawText(label, cx, cellRect.top + cellRect.height() * 0.74f, mCell);
-        mCell.setTextSize(21 * k);
+        mCell.setTextSize(Theme.Legacy.HomeText.M_CELL_SIZE * k);
         if (it.kind == HomeApps.INPUT && it.number != null && Cec.on(Integer.parseInt(it.number))) {
             // The device on this port is on (HDMI-CEC): a dot at the top right (cyan: the system has no green).
             fill.setShader(null);
-            fill.setColor(f > 0.5f ? 0xFF0B12E6 : M_UP);
+            fill.setColor(f > 0.5f ? Theme.Legacy.Palette.CEC_FOCUSED : M_UP);
             c.drawCircle(cellRect.right - 16 * k, cellRect.top + 16 * k, 6 * k, fill);
         }
     }
@@ -1701,7 +1701,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     private float sunItem(Canvas c, String symbol, String label, float x, float base) {
         float size = 22 * k, sw = Symbols.width(getContext(), symbol, size);
-        Symbols.draw(getContext(), c, symbol, x + sw / 2, base - Ui.halfCap(cardDim), size, tone(L_DIM, 0xB3FFFFFF));
+        Symbols.draw(getContext(), c, symbol, x + sw / 2, base - Ui.halfCap(cardDim), size, tone(L_DIM, Theme.Legacy.Palette.WHITE_AB3));
         c.drawText(label, x + sw + 10 * k, base, cardDim);
         return x + sw + 10 * k + cardDim.measureText(label);
     }
@@ -1891,7 +1891,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     }
 
     private void drawSheet(Canvas c) {
-        c.drawColor(0xA8000000);
+        c.drawColor(Theme.Legacy.Palette.BLACK_AA8);
         float shift = scroll.value * GRID_ROW * k;
         c.drawText(Ui.tr("Todos os Apps", "All Apps"), w / 2f, 124 * k - shift, sheetTitle);
         int n = others.size();
@@ -1913,7 +1913,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             float f = gridFocus[i].value;
             drawCard(c, others.get(i).tile, gridCell, GRID_RADIUS * k, f, 0.08f);
             if (sheetOpen && i == gridIndex) focusedCell.set(cell);
-            gridLabel.setColor(blend(0x99FFFFFF, 0xFFFFFFFF, Ui.clamp(f)));
+            gridLabel.setColor(blend(Theme.Legacy.Palette.WHITE_A99, Theme.Legacy.Palette.WHITE_AFF, Ui.clamp(f)));
             c.drawText(gridLabels[i], gridCell.centerX(), gridCell.bottom + (40 + 6 * f) * k, gridLabel);
         }
     }
@@ -1928,14 +1928,14 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if (f > 0.01f) {
             tmp.set(cell);
             tmp.offset(0, 16 * k * f);
-            shadow.setColor(Ui.alpha(0xFF000000, 0.55f * fc));
+            shadow.setColor(Ui.alpha(Theme.Legacy.Palette.BLACK_AFF, 0.55f * fc));
             shadows.draw(c, tmp, r, SHADOW_BLUR * k, shadow);
         }
         if (image != null) roundImage(c, image, cell, r);
         if (f > 0.01f) {
             float bh = base.height();
             if (cardSheen == null || cardSheenH != bh) {
-                cardSheen = new LinearGradient(0, -bh / 2, 0, 0, 0x1AFFFFFF, 0x00FFFFFF, Shader.TileMode.CLAMP);
+                cardSheen = new LinearGradient(0, -bh / 2, 0, 0, Theme.Legacy.Palette.WHITE_A1A, Theme.Legacy.Palette.WHITE_A00, Shader.TileMode.CLAMP);
                 cardSheenH = bh;
             }
             c.save();
@@ -1949,14 +1949,14 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             c.restore();
         }
         if (fc < 0.99f) {
-            veil.setColor(Ui.alpha(0xFF000000, 0.08f * (1 - fc)));
+            veil.setColor(Ui.alpha(Theme.Legacy.Palette.BLACK_AFF, 0.08f * (1 - fc)));
             c.drawRoundRect(cell, r, r, veil);
         }
-        border.setColor(0x14FFFFFF);
+        border.setColor(Theme.Legacy.Palette.WHITE_A14);
         c.drawRoundRect(cell, r, r, border);
         if (f > 0.01f) {
             rim.setShader(null);
-            rim.setColor(Ui.alpha(0xFFFFFFFF, 0.4f * fc));
+            rim.setColor(Ui.alpha(Theme.Legacy.Palette.WHITE_AFF, 0.4f * fc));
             rim.setStrokeWidth(1.5f * k);
             c.drawRoundRect(cell, r, r, rim);
             rim.setStrokeWidth(2.5f * k);
@@ -2002,7 +2002,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         tmp.set((w - tw) / 2f - padX, toastTop, (w + tw) / 2f + padX, toastTop + th + 2 * padY);
         int save = c.saveLayerAlpha(tmp.left - 4, tmp.top - 4, tmp.right + 4, tmp.bottom + 4, Math.round(255 * a));
         scene.glass(c, tmp, Math.min(tmp.height() / 2, 32 * k), SMOKE, 0.55f, 0, 0, 0.02f, 1);
-        Symbols.draw(getContext(), c, "bell", tmp.left + padX + iconW / 2, tmp.centerY(), icon, 0xEBFFFFFF);
+        Symbols.draw(getContext(), c, "bell", tmp.left + padX + iconW / 2, tmp.centerY(), icon, Theme.Legacy.Palette.WHITE_AEB);
         c.translate(tmp.left + padX + iconW + 16 * k, tmp.top + padY);
         toast.draw(c);
         c.restoreToCount(save);
@@ -2846,7 +2846,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     /** The Ember field behind Explore; the Ultramarine one comes in with the drawer (one field per screen). */
     private void drawLightSky(Canvas c) {
         fill.setShader(null);
-        fill.setColor(0xFF000000);
+        fill.setColor(Theme.Legacy.Palette.BLACK_AFF);
         c.drawRect(screen, fill);
         float d = Ui.clamp(drawer.value);
         if (fieldEmber != null && d < 0.999f) {
@@ -2891,7 +2891,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 }
             }
             Paint p = i == tab ? lTabOn : lTab;
-            if (i == tab) lTabOn.setColor(blend(M_INK, 0xFF000000, focus));
+            if (i == tab) lTabOn.setColor(blend(M_INK, Theme.Legacy.Palette.BLACK_AFF, focus));
             c.drawText(label, lx, L_TAB_BASE * k, p);
         }
         if (showcase()) {
@@ -2963,7 +2963,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             c.drawBitmap(img, null, cell, bitmapPaint);
         } else {
             fill.setShader(null);
-            fill.setColor(0x14FFFFFF);
+            fill.setColor(Theme.Legacy.Palette.WHITE_A14);
             c.drawRect(cell, fill);
         }
         if (f > 0.01f) {
@@ -3022,7 +3022,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                     c.drawBitmap(poster, null, r, bitmapPaint);
                 } else {
                     fill.setShader(null);
-                    fill.setColor(0x14FFFFFF);
+                    fill.setColor(Theme.Legacy.Palette.WHITE_A14);
                     c.drawRect(r, fill);
                 }
                 float f = Ui.clamp(cardFocus[i].value);
@@ -3110,7 +3110,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         float pad = 24 * k * s, bh = 7 * k * s, y = card.bottom - pad - bh;
         tmp.set(card.left + pad, y, card.right - pad, y + bh);
         fill.setShader(null);
-        fill.setColor(0x80000000);
+        fill.setColor(Theme.Legacy.Palette.BLACK_A80);
         c.drawRect(tmp, fill);
         tmp.right = tmp.left + Math.max(bh, tmp.width() * progress);
         fill.setColor(M_INK);
@@ -3136,7 +3136,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 c.drawRect(r, fill);
             }
             Symbols.drawSharp(getContext(), c, lightButtons.get(i).symbol, r.centerX(), r.centerY(), 27 * k,
-                    blend(M_INK, 0xFF000000, f));
+                    blend(M_INK, Theme.Legacy.Palette.BLACK_AFF, f));
             if (f > 0.01f) {
                 String label = caps(lightButtons.get(i).label);
                 float half = lTip.measureText(label) / 2;

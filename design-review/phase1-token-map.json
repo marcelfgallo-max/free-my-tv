@@ -1,0 +1,600 @@
+{
+  "HomeColor": {
+    "SMOKE": {
+      "type": "int",
+      "value": "0xFF111113",
+      "consumer": "HomeView.SMOKE"
+    },
+    "INK": {
+      "type": "int",
+      "value": "0xFF1C1C1E",
+      "consumer": "HomeView.INK"
+    },
+    "WHITE": {
+      "type": "int",
+      "value": "0xFFF5F5F7",
+      "consumer": "HomeView.WHITE"
+    },
+    "UP_COLOR": {
+      "type": "int",
+      "value": "0xFF30D158",
+      "consumer": "HomeView.UP_COLOR"
+    },
+    "DOWN_COLOR": {
+      "type": "int",
+      "value": "0xFFFF453A",
+      "consumer": "HomeView.DOWN_COLOR"
+    },
+    "M_INK": {
+      "type": "int",
+      "value": "0xFFFFFFFF",
+      "consumer": "HomeView.M_INK"
+    },
+    "M_MUTED": {
+      "type": "int",
+      "value": "0xB8FFFFFF",
+      "consumer": "HomeView.M_MUTED"
+    },
+    "M_HAIRLINE": {
+      "type": "int",
+      "value": "0x8CFFFFFF",
+      "consumer": "HomeView.M_HAIRLINE"
+    },
+    "M_UP": {
+      "type": "int",
+      "value": "0xFF5EDCFF",
+      "consumer": "HomeView.M_UP"
+    },
+    "M_DOWN": {
+      "type": "int",
+      "value": "0xFFFF5A3C",
+      "consumer": "HomeView.M_DOWN"
+    },
+    "L_INK": {
+      "type": "int",
+      "value": "0xFF1D1D1F",
+      "consumer": "HomeView.L_INK"
+    },
+    "L_DIM": {
+      "type": "int",
+      "value": "0xFF6E6E73",
+      "consumer": "HomeView.L_DIM"
+    },
+    "L_FAINT": {
+      "type": "int",
+      "value": "0xFF8E8E93",
+      "consumer": "HomeView.L_FAINT"
+    }
+  },
+  "AppColor": {
+    "NETFLIX_TOP": {
+      "type": "int",
+      "value": "0xFF0A0A0A",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "NETFLIX_BOTTOM": {
+      "type": "int",
+      "value": "0xFF000000",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "YOUTUBE_TOP": {
+      "type": "int",
+      "value": "0xFF1C1C1E",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "YOUTUBE_BOTTOM": {
+      "type": "int",
+      "value": "0xFF09090A",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "GLOBOPLAY_TOP": {
+      "type": "int",
+      "value": "0xFFFF8A1F",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "GLOBOPLAY_BOTTOM": {
+      "type": "int",
+      "value": "0xFFFF2D5A",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "PRIME_TOP": {
+      "type": "int",
+      "value": "0xFF2AA8FF",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "PRIME_BOTTOM": {
+      "type": "int",
+      "value": "0xFF0A68D4",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "DISNEY_TOP": {
+      "type": "int",
+      "value": "0xFF173584",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "DISNEY_BOTTOM": {
+      "type": "int",
+      "value": "0xFF08143F",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "MAX_TOP": {
+      "type": "int",
+      "value": "0xFF5C30E8",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "MAX_BOTTOM": {
+      "type": "int",
+      "value": "0xFF221684",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "APPLETV_TOP": {
+      "type": "int",
+      "value": "0xFF1C1C1E",
+      "consumer": "HomeView.TILE_STYLE"
+    },
+    "APPLETV_BOTTOM": {
+      "type": "int",
+      "value": "0xFF000000",
+      "consumer": "HomeView.TILE_STYLE"
+    }
+  },
+  "Palette": {
+    "WHITE_AFF": {
+      "type": "int",
+      "value": "0xFFFFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_AC7": {
+      "type": "int",
+      "value": "0xC7FFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_AD1": {
+      "type": "int",
+      "value": "0xD1FFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "BLACK_A59": {
+      "type": "int",
+      "value": "0x59000000",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_AF2": {
+      "type": "int",
+      "value": "0xF2FFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "BLACK_A99": {
+      "type": "int",
+      "value": "0x99000000",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_AB8": {
+      "type": "int",
+      "value": "0xB8FFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_A99": {
+      "type": "int",
+      "value": "0x99FFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_AB3": {
+      "type": "int",
+      "value": "0xB3FFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_AEB": {
+      "type": "int",
+      "value": "0xEBFFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_AAD": {
+      "type": "int",
+      "value": "0xADFFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "GLASS_DAY": {
+      "type": "int",
+      "value": "0xFFEBEBF0",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "GLASS_NIGHT": {
+      "type": "int",
+      "value": "0xFF141416",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "TEXT_DIM_NIGHT": {
+      "type": "int",
+      "value": "0xFF98989D",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "APP_FALLBACK": {
+      "type": "int",
+      "value": "0xFF161618",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_A73": {
+      "type": "int",
+      "value": "0x73FFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "BLACK_AFF": {
+      "type": "int",
+      "value": "0xFF000000",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "CEC_FOCUSED": {
+      "type": "int",
+      "value": "0xFF0B12E6",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "BLACK_AA8": {
+      "type": "int",
+      "value": "0xA8000000",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_A1A": {
+      "type": "int",
+      "value": "0x1AFFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_A00": {
+      "type": "int",
+      "value": "0x00FFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_A14": {
+      "type": "int",
+      "value": "0x14FFFFFF",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "BLACK_A80": {
+      "type": "int",
+      "value": "0x80000000",
+      "consumer": "HomeView drawing paints and blend endpoints"
+    }
+  },
+  "HomeText": {
+    "LABEL_PAINT_SIZE": {
+      "type": "int",
+      "value": "25",
+      "consumer": "HomeView.labelPaint"
+    },
+    "TITLE_PAINT_SIZE": {
+      "type": "int",
+      "value": "76",
+      "consumer": "HomeView.titlePaint"
+    },
+    "META_PAINT_SIZE": {
+      "type": "int",
+      "value": "29",
+      "consumer": "HomeView.metaPaint"
+    },
+    "CLOCK_PAINT_SIZE": {
+      "type": "int",
+      "value": "176",
+      "consumer": "HomeView.clockPaint"
+    },
+    "L_TITLE_SIZE": {
+      "type": "int",
+      "value": "124",
+      "consumer": "HomeView.lTitle"
+    },
+    "L_GREETING_SIZE": {
+      "type": "int",
+      "value": "40",
+      "consumer": "HomeView.lGreeting"
+    },
+    "L_TAB_SIZE": {
+      "type": "int",
+      "value": "28",
+      "consumer": "HomeView.lTab"
+    },
+    "L_TAB_ON_SIZE": {
+      "type": "int",
+      "value": "28",
+      "consumer": "HomeView.lTabOn"
+    },
+    "L_CARD_TITLE_SIZE": {
+      "type": "int",
+      "value": "34",
+      "consumer": "HomeView.lCardTitle"
+    },
+    "L_CARD_META_SIZE": {
+      "type": "int",
+      "value": "23",
+      "consumer": "HomeView.lCardMeta"
+    },
+    "BADGE_PAINT_SIZE": {
+      "type": "int",
+      "value": "20",
+      "consumer": "HomeView.badgePaint"
+    },
+    "L_QUOTE_SIZE": {
+      "type": "int",
+      "value": "24",
+      "consumer": "HomeView.lQuote"
+    },
+    "L_TIP_SIZE": {
+      "type": "int",
+      "value": "22",
+      "consumer": "HomeView.lTip"
+    },
+    "L_DATE_SIZE": {
+      "type": "int",
+      "value": "34",
+      "consumer": "HomeView.lDate"
+    },
+    "L_CLOCK_SIZE": {
+      "type": "int",
+      "value": "200",
+      "consumer": "HomeView.lClock"
+    },
+    "L_WEATHER_SIZE": {
+      "type": "int",
+      "value": "34",
+      "consumer": "HomeView.lWeather"
+    },
+    "L_CLOCK_QUOTE_SIZE": {
+      "type": "int",
+      "value": "28",
+      "consumer": "HomeView.lClockQuote"
+    },
+    "BUTTON_PAINT_SIZE": {
+      "type": "int",
+      "value": "29",
+      "consumer": "HomeView.buttonPaint"
+    },
+    "CAPSULE_TEXT_SIZE": {
+      "type": "int",
+      "value": "29",
+      "consumer": "HomeView.capsuleText"
+    },
+    "TIP_PAINT_SIZE": {
+      "type": "int",
+      "value": "25",
+      "consumer": "HomeView.tipPaint"
+    },
+    "QUOTE_PAINT_SIZE": {
+      "type": "int",
+      "value": "21",
+      "consumer": "HomeView.quotePaint"
+    },
+    "STALE_QUOTE_SIZE": {
+      "type": "int",
+      "value": "21",
+      "consumer": "HomeView.staleQuote"
+    },
+    "ROW_TITLE_SIZE": {
+      "type": "int",
+      "value": "25",
+      "consumer": "HomeView.rowTitle"
+    },
+    "DRAWER_LABEL_SIZE": {
+      "type": "int",
+      "value": "23",
+      "consumer": "HomeView.drawerLabel"
+    },
+    "CARD_TITLE_SIZE": {
+      "type": "int",
+      "value": "25",
+      "consumer": "HomeView.cardTitle"
+    },
+    "CARD_TEXT_SIZE": {
+      "type": "int",
+      "value": "29",
+      "consumer": "HomeView.cardText"
+    },
+    "CARD_DIM_SIZE": {
+      "type": "int",
+      "value": "23",
+      "consumer": "HomeView.cardDim"
+    },
+    "CARD_DIM_RIGHT_SIZE": {
+      "type": "int",
+      "value": "21",
+      "consumer": "HomeView.cardDimRight"
+    },
+    "BIG_TEMP_SIZE": {
+      "type": "int",
+      "value": "100",
+      "consumer": "HomeView.bigTemp"
+    },
+    "HOUR_PAINT_SIZE": {
+      "type": "int",
+      "value": "22",
+      "consumer": "HomeView.hourPaint"
+    },
+    "HOUR_TEMP_SIZE": {
+      "type": "int",
+      "value": "26",
+      "consumer": "HomeView.hourTemp"
+    },
+    "PRICE_PAINT_SIZE": {
+      "type": "int",
+      "value": "26",
+      "consumer": "HomeView.pricePaint"
+    },
+    "CHANGE_PAINT_SIZE": {
+      "type": "int",
+      "value": "21",
+      "consumer": "HomeView.changePaint"
+    },
+    "SHEET_TITLE_SIZE": {
+      "type": "int",
+      "value": "40",
+      "consumer": "HomeView.sheetTitle"
+    },
+    "GRID_LABEL_SIZE": {
+      "type": "int",
+      "value": "24",
+      "consumer": "HomeView.gridLabel"
+    },
+    "TOAST_PAINT_SIZE": {
+      "type": "int",
+      "value": "26",
+      "consumer": "HomeView.toastPaint"
+    },
+    "M_LABEL_SIZE": {
+      "type": "int",
+      "value": "26",
+      "consumer": "HomeView.mLabel"
+    },
+    "M_CELL_SIZE": {
+      "type": "int",
+      "value": "21",
+      "consumer": "HomeView.mCell"
+    },
+    "M_NAME_SIZE": {
+      "type": "int",
+      "value": "31",
+      "consumer": "HomeView.mName"
+    },
+    "M_PRICE_SIZE": {
+      "type": "int",
+      "value": "31",
+      "consumer": "HomeView.mPrice"
+    },
+    "M_CHANGE_SIZE": {
+      "type": "int",
+      "value": "25",
+      "consumer": "HomeView.mChange"
+    },
+    "M_MUTED_SIZE": {
+      "type": "int",
+      "value": "22",
+      "consumer": "HomeView.mMuted"
+    },
+    "M_HOUR_SIZE": {
+      "type": "int",
+      "value": "24",
+      "consumer": "HomeView.mHour"
+    },
+    "M_HOUR_TEMP_SIZE": {
+      "type": "int",
+      "value": "38",
+      "consumer": "HomeView.mHourTemp"
+    },
+    "M_BIG_SIZE": {
+      "type": "int",
+      "value": "184",
+      "consumer": "HomeView.mBig"
+    },
+    "M_BIG_DEGREE_SIZE": {
+      "type": "int",
+      "value": "84",
+      "consumer": "HomeView.mBigDegree"
+    },
+    "TEAM_BIG_SIZE": {
+      "type": "int",
+      "value": "26",
+      "consumer": "HomeView.teamBig"
+    },
+    "TEAM_SMALL_SIZE": {
+      "type": "int",
+      "value": "21",
+      "consumer": "HomeView.teamSmall"
+    },
+    "TEAM_TAG_SIZE": {
+      "type": "int",
+      "value": "21",
+      "consumer": "HomeView.teamTag"
+    },
+    "LABEL_PAINT_TRACKING": {
+      "type": "float",
+      "value": "0.1f",
+      "consumer": "HomeView.labelPaint"
+    },
+    "TITLE_PAINT_TRACKING": {
+      "type": "float",
+      "value": "0.005f",
+      "consumer": "HomeView.titlePaint"
+    },
+    "META_PAINT_TRACKING": {
+      "type": "float",
+      "value": "0.014f",
+      "consumer": "HomeView.metaPaint"
+    },
+    "CLOCK_PAINT_TRACKING": {
+      "type": "float",
+      "value": "-0.01f",
+      "consumer": "HomeView.clockPaint"
+    },
+    "L_TITLE_TRACKING": {
+      "type": "float",
+      "value": "-0.05f",
+      "consumer": "HomeView.lTitle"
+    },
+    "L_GREETING_TRACKING": {
+      "type": "float",
+      "value": "-0.02f",
+      "consumer": "HomeView.lGreeting"
+    },
+    "L_TAB_TRACKING": {
+      "type": "float",
+      "value": "-0.01f",
+      "consumer": "HomeView.lTab"
+    },
+    "L_TAB_ON_TRACKING": {
+      "type": "float",
+      "value": "-0.01f",
+      "consumer": "HomeView.lTabOn"
+    },
+    "L_CARD_TITLE_TRACKING": {
+      "type": "float",
+      "value": "-0.03f",
+      "consumer": "HomeView.lCardTitle"
+    },
+    "L_CLOCK_TRACKING": {
+      "type": "float",
+      "value": "-0.01f",
+      "consumer": "HomeView.lClock"
+    },
+    "M_LABEL_TRACKING": {
+      "type": "float",
+      "value": "-0.01f",
+      "consumer": "HomeView.mLabel"
+    },
+    "M_CELL_TRACKING": {
+      "type": "float",
+      "value": "-0.01f",
+      "consumer": "HomeView.mCell"
+    },
+    "M_NAME_TRACKING": {
+      "type": "float",
+      "value": "-0.02f",
+      "consumer": "HomeView.mName"
+    },
+    "M_PRICE_TRACKING": {
+      "type": "float",
+      "value": "-0.02f",
+      "consumer": "HomeView.mPrice"
+    },
+    "M_CHANGE_TRACKING": {
+      "type": "float",
+      "value": "-0.01f",
+      "consumer": "HomeView.mChange"
+    },
+    "M_HOUR_TEMP_TRACKING": {
+      "type": "float",
+      "value": "-0.035f",
+      "consumer": "HomeView.mHourTemp"
+    },
+    "M_BIG_TRACKING": {
+      "type": "float",
+      "value": "-0.055f",
+      "consumer": "HomeView.mBig"
+    },
+    "TEAM_BIG_TRACKING": {
+      "type": "float",
+      "value": "-0.01f",
+      "consumer": "HomeView.teamBig"
+    },
+    "M_CELL_MIN_SIZE": {
+      "type": "int",
+      "value": "17",
+      "consumer": "HomeView.drawDrawerTile"
+    }
+  }
+}
