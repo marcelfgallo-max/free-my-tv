@@ -42,3 +42,8 @@ Marcel confirmou que o Claude Code não estava instalando e autorizou este APK. 
 ## Screensaver Night capturado
 
 Captura real da TV: The Simpsons, relógio08:43, clima19°. Cards compactos e arredondados, fotografia visível sutilmente pelas superfícies, dígitos brancos, dois pontos e clima em laranja. Legenda legível e completa, moldura da foto preservada. Transparência visual confirmada; valor230/255 verificado no código, não medido pela captura. Day e Home atualizada ainda aguardam capturas.
+
+
+## Screensaver Day capturado
+
+Captura real da TV: Doctor X: Mafia in White, relógio08:46, clima19°. Cards claros menores, transparência sutil, números e título escuros legíveis, dois pontos e clima em laranja. Legenda inteira visível e moldura preservada. Screensaver conferido visualmente em Day e Night. Ainda falta captura da Home atualizada.

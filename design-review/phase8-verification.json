@@ -50,6 +50,11 @@
   "visual_night": {
     "capture": "screenshots/phase8-night-screensaver.png",
     "observed": "The Simpsons, 08:43. Compact rounded cards; photo visible through surfaces; white digits; orange colon, cloud icon and 19°; caption fully visible; rounded photo frame preserved.",
-    "limits": "Visual appearance confirmed. Alpha230 verified in code, not measured from screenshot. Day and updated Home captures pending."
+    "limits": "Visual appearance confirmed. Alpha230 verified in code, not measured from screenshot. Updated Home captures pending."
+  },
+  "visual_day": {
+    "capture": "screenshots/phase8-day-screensaver.png",
+    "observed": "Doctor X: Mafia in White, 08:46. Compact light cards, subtle photo transparency, dark digits and title, orange colon, cloud and 19°. Full caption visible and rounded photo frame preserved.",
+    "limits": "Screensaver Day and Night visually checked. Updated Home captures pending."
   }
 }
