@@ -122,6 +122,7 @@ final class German {
                         + "Unter Einstellungen → Netzwerk und Internet das Netzwerk entfernen und neu verbinden (Netzwerke außer Reichweite "
                         + "erscheinen dort nicht: Claude Code entfernt sie vom Computer aus), dann noch einmal versuchen.";
             // Home Settings, Shelf and Remote Buttons
+            case "Theme": return "Design";
             case "Language": return "Sprache";
             case "Temperature": return "Temperatur";
             case "Automatic": return "Automatisch";

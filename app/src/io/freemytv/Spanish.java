@@ -88,6 +88,7 @@ final class Spanish {
             case "Accept “Allow USB debugging?” on the TV (tick “Always allow”).": return "Acepta “¿Permitir depuración USB?” en el TV (marca “Permitir siempre”).";
             case "Free My TV's home screen ran into a problem.\nGoing back to the TV's original home screen…": return "La pantalla de inicio de Free My TV tuvo un problema.\nVolviendo a la pantalla original del TV…";
             // Home Settings, Shelf and Remote Buttons (#15, #16, #17)
+            case "Theme": return "Tema";
             case "Language": return "Idioma";
             case "Temperature": return "Temperatura";
             case "Automatic": return "Automático";

@@ -11,9 +11,9 @@ Build e comparação de instruções: design-review/phase1-verification.json. Ho
 
 ## Pendência confirmada por Marcel, 22/10/2026
 
-- [ ] Restaurar os temas Day e Night no app da TV, incluindo a opção de alternar entre eles. A entrega do design system só estará completa quando os dois estiverem disponíveis.
+- [ ] Validar na TV os modos Day e Night restaurados na fase 5, incluindo alternância, gaveta e escolha persistente. Implementação compilada; instalação e validação pendentes.
 
-Atualmente a Home permanece fixa em Night; declarar os tokens Day não implementa a troca de tema. Na etapa de temas, inspecionar e reutilizar as preferências existentes, aplicar a paleta correspondente na Home e na gaveta e verificar a persistência da escolha. Preservar o foco laranja e a legibilidade dos logos nas duas variantes. Validar ambos na TV, pedindo autorização antes de instalar. Esta anotação não altera o APK instalado.
+Fase 5 implementa a troca por Ajustes do Início > Tema, com Day e Night. A versão instalada permanece na fase 4 até autorização de nova instalação. Verificar ambos os modos, a gaveta e a persistência ao reabrir antes de concluir esta pendência.
 
 ## Contrato dos tokens
 
@@ -23,7 +23,7 @@ Atualmente a Home permanece fixa em Night; declarar os tokens Day não implement
 - Tamanhos de texto são textSize lógico; tracking é em. Inter, pesos e optical sizes existentes são preservados.
 - Tempos MS são milissegundos. RESPONSE_S é parâmetro da mola em segundos, não duração fixa; DAMPING é adimensional.
 - Valores iguais de componentes diferentes podem permanecer separados. Não normalizar margens, raios ou cores parecidas durante a extração.
-- HomeView continua com night = 1 e checkNight fixo. Fundo, dock, seleção de aba e foco da Home usam os novos tokens até a fase 3. Day e as demais formas serão aplicados em etapas posteriores.
+- Na fase 5, checkNight resolve a preferência salva para night = 0 ou 1 ao abrir e retomar a Home. A troca é imediata e invalida as camadas; não há animação de tema por frame.
 - Os helpers tone/blend atuais continuam no mesmo local, preservando interpolação e arredondamento.
 
 ## Componentes
@@ -108,6 +108,34 @@ roundImage reutiliza BitmapShader em cache no Android 9. Não foi acrescentado b
 Os botões circulares mantêm seus centros e regiões de navegação de 72 unidades. A proposta de tamanho 88 não entra nesta etapa para evitar mudanças de posição junto das formas. Cards de clima/cotações e entradas da gaveta, grade Todos os Apps e ajustes ainda não recebem este redesenho. O dock compartilhado muda tanto na Home quanto na gaveta. Day continua reservado.
 
 Validação local: build JDK 17, quatro fontes novas/alteradas compiladas contra API 28, assinatura do APK e nove verificações de transparência/recorte. A instalação foi autorizada e concluída. Capturas reais confirmaram os sete logos da TV, o recorte do YouTube, os cantos dos pôsteres e o foco sobre YouTube. Não houve captura separada da gaveta ou de botão circular focado.
+
+
+### Fase 5, seleção Day e Night
+
+A preferência de tema não existia neste branch. Foi acrescentada ao armazenamento SharedPreferences `settings`, chave `theme`, valores `day` e `night`. Prefs.themeMode e Prefs.setThemeMode reutilizam o mesmo caminho de persistência e incremento de versão das demais preferências. O padrão é Night, também usado para valores desconhecidos. A linha Tema é a terceira de Ajustes do Início; OK, esquerda ou direita alternam o valor. Os nomes Day e Night identificam os modos em todos os idiomas; o rótulo Tema tem tradução nos cinco idiomas suportados.
+
+| Papel | Day | Night aplicado |
+|---|---|---|
+| BACKGROUND | #E6E5E8 | #202124 |
+| SURFACE | #FAF9FB | #2B2C2F |
+| LOGO | #292B2E | #F5F5F7 |
+| TEXT_PRIMARY | #292B2E | #FFFFFF |
+| TEXT_SECONDARY | #62636A | 0xB8FFFFFF |
+| DIVIDER | #D7D7DD | 0x8CFFFFFF |
+| DISABLED | #88898F | 0x73FFFFFF |
+| POSITIVE | #62636A | #5EDCFF |
+| NEGATIVE | #C43B24 | #FF5A3C |
+| PLACEHOLDER | 0x14292B2E | 0x14FFFFFF |
+| CEC_ACTIVE sem foco | #21854C | #5EDCFF |
+| ACCENT / FOCUS | #FF5A20 | #FF5A20 |
+
+Os endpoints Night de tinta, divisores e indicadores preservam os valores já instalados. Eles ainda diferem da paleta alvo completa em PROPOSTA-TOKENS.md; não foram normalizados durante a restauração. O indicador CEC focado conserva o azul anterior, e a barra de progresso sobre a arte permanece branca nas duas variantes.
+
+Consumidores: título/relógio, saudação, abas não selecionadas, metadados, placar, separadores, nomes e ícones das entradas, clima, cotações e placeholders. Os logos já tinham os dois filtros preparados. O cache dos widgets inclui o modo e a versão das preferências, para não reutilizar texto claro depois da troca para Day.
+
+Home e ajustes executam no processo :home. A preferência é lida ao criar/retomar a Home, fora do desenho por frame. Night continua o padrão de instalações anteriores. O tema não muda configurações do Android, launcher padrão ou horários do protetor de tela. Ajustes, screensaver e sobreposição Todos os Apps conservam sua aparência própria nesta fase. Não há modo automático nem crossfade nesta restauração.
+
+A lista de ajustes passa a ter 12 linhas na configuração BRL, dentro das 12 molas de foco existentes, usando a altura reduzida já prevista. Cidade, clima e cotações tiveram seus índices deslocados para preservar as ações corretas. Build, API 28, assinatura e 15 testes de modo/contraste passaram. A persistência real ao reabrir e a aparência dos dois modos precisam do checkpoint na TV.
 
 
 ## Catálogo implementado

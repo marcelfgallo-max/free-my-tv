@@ -675,13 +675,14 @@ public class SettingsActivity extends Activity {
         // MARK: - Home Settings and Remote Buttons
 
         private static final String[] LANGUAGES = {"auto", "pt", "en", "es", "de", "ru"}, UNITS = {"auto", "C", "F"};
-        /** Home Settings: language, temperature, weather, city, quotes, then one row per coin. */
-        private static final int WEATHER_ROW = 2, CITY_ROW = 3, QUOTES_ROW = 4, COIN_ROWS = 5;
+        /** Home Settings: language, temperature, theme, weather, city, quotes, then one row per coin. */
+        private static final int THEME_ROW = 2, WEATHER_ROW = 3, CITY_ROW = 4, QUOTES_ROW = 5, COIN_ROWS = 6;
 
         private String[] settingLabels() {
             List<String> l = new ArrayList<>();
             l.add(Ui.tr("Idioma", "Language"));
             l.add(Ui.tr("Temperatura", "Temperature"));
+            l.add(Ui.tr("Tema", "Theme"));
             l.add(Ui.tr("Widget do clima", "Weather widget"));
             l.add(Ui.tr("Cidade", "City"));
             l.add(Ui.tr("Widget de cotações", "Quotes widget"));
@@ -697,6 +698,7 @@ public class SettingsActivity extends Activity {
                     : lang.equals("de") ? "Deutsch" : lang.equals("ru") ? "Русский" : Ui.tr("Automático", "Automatic");
             String unit = Prefs.temperature();
             v[1] = unit.equals("C") ? "°C" : unit.equals("F") ? "°F" : Ui.tr("Automática", "Automatic");
+            v[THEME_ROW] = Theme.MODE_DAY.equals(Prefs.themeMode()) ? "Day" : "Night";
             v[WEATHER_ROW] = onOff(Prefs.weather());
             v[CITY_ROW] = !cityStatus.isEmpty() ? cityStatus : Prefs.city().isEmpty() ? "—" : Prefs.city();
             v[QUOTES_ROW] = !Prefs.quotes() ? onOff(false) : Prefs.quotesTop() ? onOff(true) : Ui.tr("Só na gaveta", "Drawer only");
@@ -705,7 +707,7 @@ public class SettingsActivity extends Activity {
             return v;
         }
 
-        /** Home Settings in reais has 11 rows: shorter ones, so they all fit on the screen. */
+        /** Home Settings in reais has 12 rows: shorter ones, so they all fit on the screen. */
         private float listRowH() {
             return screen == HOME_SETTINGS && settingLabels().length > 10 ? 60 : LIST_ROW_H;
         }
@@ -771,6 +773,9 @@ public class SettingsActivity extends Activity {
                     Prefs.setTemperature(UNITS[(at + dir + UNITS.length) % UNITS.length]);
                     break;
                 }
+                case THEME_ROW:
+                    Prefs.setThemeMode(Theme.MODE_DAY.equals(Prefs.themeMode()) ? Theme.MODE_NIGHT : Theme.MODE_DAY);
+                    break;
                 case WEATHER_ROW: Prefs.setWeather(!Prefs.weather()); break;
                 case CITY_ROW: return;
                 case QUOTES_ROW: {

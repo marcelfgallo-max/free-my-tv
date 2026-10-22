@@ -53,6 +53,14 @@ final class Prefs {
         version++;
     }
 
+    // MARK: - Home appearance
+
+    static String themeMode() {
+        return Theme.normalizeMode(app == null ? null : sp().getString("theme", Theme.MODE_NIGHT));
+    }
+
+    static void setThemeMode(String value) { put("theme", Theme.normalizeMode(value)); }
+
     // MARK: - Language and units
 
     /** "auto", "pt", "en", "es", "de" or "ru". */

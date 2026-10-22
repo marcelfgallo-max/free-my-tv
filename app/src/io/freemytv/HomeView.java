@@ -83,9 +83,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private static final float GRID_W = Theme.Legacy.HomeLayout.GRID_W, GRID_H = Theme.Legacy.HomeLayout.GRID_H, GRID_GAP = Theme.Legacy.HomeLayout.GRID_GAP, GRID_ROW = Theme.Legacy.HomeLayout.GRID_ROW, GRID_TOP = Theme.Legacy.HomeLayout.GRID_TOP, GRID_RADIUS = Theme.Legacy.HomeLayout.GRID_RADIUS;
     private static final int SMOKE = Theme.Legacy.HomeColor.SMOKE, INK = Theme.Legacy.HomeColor.INK, WHITE = Theme.Legacy.HomeColor.WHITE;
     private static final int UP_COLOR = Theme.Legacy.HomeColor.UP_COLOR, DOWN_COLOR = Theme.Legacy.HomeColor.DOWN_COLOR;
-    // Modern 80s: white type on the fields, 55% white hairlines instead of boxes, cyan up and red-orange down.
-    private static final int M_INK = Theme.Legacy.HomeColor.M_INK, M_MUTED = Theme.Legacy.HomeColor.M_MUTED, M_HAIRLINE = Theme.Legacy.HomeColor.M_HAIRLINE;
-    private static final int M_UP = Theme.Legacy.HomeColor.M_UP, M_DOWN = Theme.Legacy.HomeColor.M_DOWN;
+    // Resolved Home ink colors; Night preserves the previously validated values.
+    private int M_INK = Theme.Legacy.HomeColor.M_INK, M_MUTED = Theme.Legacy.HomeColor.M_MUTED, M_HAIRLINE = Theme.Legacy.HomeColor.M_HAIRLINE;
+    private int M_UP = Theme.Legacy.HomeColor.M_UP, M_DOWN = Theme.Legacy.HomeColor.M_DOWN;
     private static final long TOAST_MS = Theme.Legacy.HomeMotion.TOAST_MS, FADE_MS = Theme.Legacy.HomeMotion.FADE_MS;
     /** Blur radii of the shadow and shadowDeep paints (Shadows needs them to draw the same blur on older TVs). */
     private static final float SHADOW_BLUR = Theme.Legacy.HomeEffect.SHADOW_BLUR, DEEP_BLUR = Theme.Legacy.HomeEffect.DEEP_BLUR;
@@ -138,8 +138,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private int zone = Z_SHELF;
 
     // Night look (like Apple's "Automatic" appearance): darker from sunset to sunrise, with a 2 s transition.
-    private boolean nightTarget;
-    private float night = 1;            // Modern 80s is always dark: 1 (tone() picks the dark color)
+    private boolean nightTarget, themeInitialized;
+    private float night = 1;            // Restored from the saved appearance preference before drawing.
     private final int[] neutralGlassPx = new int[Backdrop.GW * Backdrop.GH], neutralFrostPx = new int[Backdrop.FW * Backdrop.FH];
 
     // At the top: tabs (0 to 2) and icon-only buttons (3 to 5); the three cards
@@ -709,6 +709,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         teamTag = Ui.text(Ui.regular, Theme.Legacy.HomeText.TEAM_TAG_SIZE * k, M_UP);
         teamImage = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
         capsCache.clear();
+        applyTone();
     }
 
     /** `s` in capitals (in the app's language), made once: the drawing code asks every frame. */
@@ -953,24 +954,32 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     /** The glass the toasts and the All Apps sheet are drawn with: a plain dark tone (there's no photo behind). */
     private void neutralGlass() {
-        int color = blend(Theme.Legacy.Palette.GLASS_DAY, Theme.Legacy.Palette.GLASS_NIGHT, night);
+        int color = Theme.Legacy.Palette.GLASS_NIGHT;
         java.util.Arrays.fill(neutralFrostPx, color);
         java.util.Arrays.fill(neutralGlassPx, color);
         scene.setFrost(neutralFrostPx);
         scene.setGlassImage(neutralGlassPx);
     }
 
-    /** Modern 80s has no light theme: the palette stays dark. Only the glass of the All Apps sheet needs setting up. */
-    private void checkNight(boolean animate) {
-        if (nightTarget) return;
-        nightTarget = true;
+    /** Apply saved Home appearance on resume; no animation or repeated disk reads while drawing. */
+    private void checkNight(boolean unusedAnimate) {
+        boolean target = Theme.MODE_NIGHT.equals(Prefs.themeMode());
+        if (themeInitialized && nightTarget == target) return;
+        themeInitialized = true;
+        nightTarget = target;
+        night = target ? 1 : 0;
+        M_INK = Theme.color(Theme.TEXT_PRIMARY, target);
+        M_MUTED = Theme.color(Theme.TEXT_SECONDARY, target);
+        M_HAIRLINE = Theme.color(Theme.DIVIDER, target);
+        M_UP = Theme.color(Theme.POSITIVE, target);
+        M_DOWN = Theme.color(Theme.NEGATIVE, target);
+        if (lTitle != null) applyTone();
         neutralGlass();
-        heroDirty = statusDirty = tilesDirty = drawerDirty = true;
-        sky.invalidate();
-        platter.invalidate();
+        heroDirty = statusDirty = tilesDirty = drawerDirty = gridDirty = true;
+        invalidateAll();
     }
 
-    /** How dark it is: always 1 (Modern 80s has no light theme). */
+    /** Current endpoint: 0 for Day, 1 for Night. */
     private float dark() {
         return night;
     }
@@ -999,6 +1008,20 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         lWeather.setColor(tone(L_DIM, Theme.Legacy.Palette.TEXT_DIM_NIGHT));
         lClockQuote.setColor(tone(L_DIM, Theme.Legacy.Palette.TEXT_DIM_NIGHT));
         staleQuote.setColor(tone(L_FAINT, Theme.Legacy.Palette.WHITE_A99));
+        mLabel.setColor(M_INK);
+        mLabelRight.setColor(M_INK);
+        mCell.setColor(M_INK);
+        mName.setColor(M_INK);
+        mPrice.setColor(M_INK);
+        mMuted.setColor(M_MUTED);
+        mMutedRight.setColor(M_MUTED);
+        mHour.setColor(M_MUTED);
+        mHourTemp.setColor(M_INK);
+        mBig.setColor(M_INK);
+        mBigDegree.setColor(M_INK);
+        teamBig.setColor(M_INK);
+        teamSmall.setColor(M_MUTED);
+        teamTag.setColor(M_UP);
     }
 
     private boolean tickHeroFade(long up) {
@@ -1495,6 +1518,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     }
 
     private void drawDrawer(Canvas c) {
+        applyTone();
         if (drawerItems.isEmpty()) return;
         // The apps (the shelf, moved up with the drawer open): a caps label and their names over its top hairline.
         if (!shelf.isEmpty()) {
@@ -1536,7 +1560,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             c.drawRect(cellRect, fill);
         }
         boolean off = it.kind == HomeApps.INPUT && !it.connected;
-        int ink = blend(off ? Theme.Legacy.Palette.WHITE_A73 : M_INK, Theme.color(Theme.ON_ACCENT_SMALL, night >= 0.5f), f);
+        int ink = blend(off ? Theme.color(Theme.DISABLED, night >= 0.5f) : M_INK, Theme.color(Theme.ON_ACCENT_SMALL, night >= 0.5f), f);
         Symbols.drawSharp(getContext(), c, it.symbol, cx, cellRect.top + cellRect.height() * 0.36f, 34 * k, ink);
         String label = caps(it.label);
         mCell.setColor(ink);
@@ -1548,7 +1572,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if (it.kind == HomeApps.INPUT && it.number != null && Cec.on(Integer.parseInt(it.number))) {
             // The device on this port is on (HDMI-CEC): a dot at the top right (cyan: the system has no green).
             fill.setShader(null);
-            fill.setColor(f > 0.5f ? Theme.Legacy.Palette.CEC_FOCUSED : M_UP);
+            fill.setColor(f > 0.5f ? Theme.Legacy.Palette.CEC_FOCUSED : Theme.color(Theme.CEC_ACTIVE, night >= 0.5f));
             c.drawCircle(cellRect.right - Theme.Legacy.HomeLayout.CEC_INSET_X * k, cellRect.top + Theme.Legacy.HomeLayout.CEC_INSET_Y * k, Theme.Legacy.HomeLayout.CEC_DOT_RADIUS * k, fill);
         }
     }
@@ -2894,7 +2918,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             roundImage(c, img, cell, Theme.POSTER_RADIUS * k);
         } else {
             fill.setShader(null);
-            fill.setColor(Theme.Legacy.Palette.WHITE_A14);
+            fill.setColor(Theme.color(Theme.PLACEHOLDER, night >= 0.5f));
             c.drawRoundRect(cell, Theme.POSTER_RADIUS * k, Theme.POSTER_RADIUS * k, fill);
         }
         if (f > 0.01f) {
@@ -2953,7 +2977,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                     roundImage(c, poster, r, Theme.POSTER_RADIUS * k);
                 } else {
                     fill.setShader(null);
-                    fill.setColor(Theme.Legacy.Palette.WHITE_A14);
+                    fill.setColor(Theme.color(Theme.PLACEHOLDER, night >= 0.5f));
                     c.drawRoundRect(r, Theme.POSTER_RADIUS * k, Theme.POSTER_RADIUS * k, fill);
                 }
                 float f = Ui.clamp(cardFocus[i].value);
@@ -3044,7 +3068,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         fill.setColor(Theme.Legacy.Palette.BLACK_A80);
         c.drawRect(tmp, fill);
         tmp.right = tmp.left + Math.max(bh, tmp.width() * progress);
-        fill.setColor(M_INK);
+        fill.setColor(Theme.Legacy.Palette.WHITE_AFF);
         c.drawRect(tmp, fill);
     }
 

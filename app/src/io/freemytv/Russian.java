@@ -121,6 +121,7 @@ final class Russian {
             case "The TV was updated; Free My TV is still on.": return "Телевизор обновлён; Free My TV по-прежнему включён.";
             case "Connecting…": return "Подключение…";
             case "Accept “Allow USB debugging?” on the TV (tick “Always allow”).": return "На телевизоре разрешите отладку по USB и отметьте «Всегда разрешать».";
+            case "Theme": return "Тема";
             case "Language": return "Язык";
             case "Temperature": return "Температура";
             case "Automatic": return "Автоматически";

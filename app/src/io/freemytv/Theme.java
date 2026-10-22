@@ -28,7 +28,16 @@ final class Theme {
     static final int LOGO_DAY = 0xFF292B2E;
     static final int LOGO_NIGHT = 0xFFF5F5F7;
 
-    /** Endpoint colors only. The home remains night-only until the Day phase. */
+    static final String MODE_DAY = "day", MODE_NIGHT = "night";
+    static final int TEXT_PRIMARY = 7, TEXT_SECONDARY = 8, DIVIDER = 9, DISABLED = 10;
+    static final int POSITIVE = 11, NEGATIVE = 12, PLACEHOLDER = 13, CEC_ACTIVE = 14;
+
+    /** Unset or unrecognized settings keep the installed Night appearance. */
+    static String normalizeMode(String value) {
+        return MODE_DAY.equals(value) ? MODE_DAY : MODE_NIGHT;
+    }
+
+    /** Endpoint colors only. Switching is immediate, avoiding a per-frame theme crossfade. */
     static int color(int role, boolean night) {
         switch (role) {
             case BACKGROUND: return night ? BACKGROUND_NIGHT : BACKGROUND_DAY;
@@ -38,6 +47,15 @@ final class Theme {
             case ON_ACCENT: return ACCENT_INK_LARGE;
             case ON_ACCENT_SMALL: return ACCENT_INK_SMALL;
             case LOGO: return night ? LOGO_NIGHT : LOGO_DAY;
+            // Keep validated Night ink values while enabling legible Day endpoints.
+            case TEXT_PRIMARY: return night ? Legacy.HomeColor.M_INK : 0xFF292B2E;
+            case TEXT_SECONDARY: return night ? Legacy.HomeColor.M_MUTED : 0xFF62636A;
+            case DIVIDER: return night ? Legacy.HomeColor.M_HAIRLINE : 0xFFD7D7DD;
+            case DISABLED: return night ? Legacy.Palette.WHITE_A73 : 0xFF88898F;
+            case POSITIVE: return night ? Legacy.HomeColor.M_UP : 0xFF62636A;
+            case NEGATIVE: return night ? Legacy.HomeColor.M_DOWN : 0xFFC43B24;
+            case PLACEHOLDER: return night ? Legacy.Palette.WHITE_A14 : 0x14292B2E;
+            case CEC_ACTIVE: return night ? Legacy.HomeColor.M_UP : 0xFF21854C;
             default: throw new IllegalArgumentException("Unknown theme color role: " + role);
         }
     }
