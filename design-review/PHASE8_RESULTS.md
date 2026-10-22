@@ -37,3 +37,8 @@ O histórico de avaliação acima foi concluído. A confirmação da versão B n
 ## Instalação autorizada, 22/10/2026
 
 Marcel confirmou que o Claude Code não estava instalando e autorizou este APK. Captura anterior mostra Home Night com Netflix selecionado. adb install -r retornou Success. Aguardando abertura manual do protetor com foto para capturar e validar a nova versão. Nenhuma navegação remota ou alteração do sistema da TV.
+
+
+## Screensaver Night capturado
+
+Captura real da TV: The Simpsons, relógio08:43, clima19°. Cards compactos e arredondados, fotografia visível sutilmente pelas superfícies, dígitos brancos, dois pontos e clima em laranja. Legenda legível e completa, moldura da foto preservada. Transparência visual confirmada; valor230/255 verificado no código, não medido pela captura. Day e Home atualizada ainda aguardam capturas.

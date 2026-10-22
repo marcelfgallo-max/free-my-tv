@@ -46,5 +46,10 @@
     "dot_matrix": 108913,
     "render_cache": "passed, including accent recolor without geometry rebuild and unchanged number width"
   },
-  "before_capture": "screenshots/phase8-before-night-home.png"
+  "before_capture": "screenshots/phase8-before-night-home.png",
+  "visual_night": {
+    "capture": "screenshots/phase8-night-screensaver.png",
+    "observed": "The Simpsons, 08:43. Compact rounded cards; photo visible through surfaces; white digits; orange colon, cloud icon and 19°; caption fully visible; rounded photo frame preserved.",
+    "limits": "Visual appearance confirmed. Alpha230 verified in code, not measured from screenshot. Day and updated Home captures pending."
+  }
 }
