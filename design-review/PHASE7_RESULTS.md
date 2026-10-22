@@ -32,3 +32,7 @@ A prévia Tela de Descanso nos ajustes do próprio Free My TV usa o mesmo DreamV
 Prévia aberta pelo usuário. Foto dos Simpsons, relógio 08:08 pontilhado, data/clima e legenda visíveis. Moldura arredondada e cores Day confirmadas, sem placar. Não há cotações visíveis neste estado, portanto esse trecho não foi validado. Arquivo screenshots/phase7-day-photo-1.png. A sequência de fotos, Night e a ativação automática ainda aguardam conferência.
 
 A segunda captura mostra Matchbox the Movie com legenda correspondente e relógio atualizado para 08:09. Confirma progressão do slideshow; capturas estáticas não comprovam suavidade da transição ou desempenho. Arquivo screenshots/phase7-day-photo-2.png. Solicitada alternância para Night pelo controle.
+
+## Captura Night na TV
+
+Arquivo screenshots/phase7-night-photo.png: Doctor X: Mafia in White, relógio 08:13 branco pontilhado, fundo grafite e painéis mais claros, data/clima, legenda e foto arredondada. Sem placar. A alternância entre temas e o retorno à prévia foram feitos pelo controle. Não há cotações visíveis. Day e Night estão documentados para a revisão de layout solicitada por Marcel. A ativação automática, o estado sem foto e o desempenho continuam sem validação específica.

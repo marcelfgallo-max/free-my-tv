@@ -24,7 +24,7 @@
   },
   "football": "No Team instance, listener, refresh or draw call remains in DreamView",
   "preview": "Offline SVG layout specimens using production DotDisplay and DrawerSymbols. Placeholder photo, sample data and host text rendering, not Android screenshots. Inspected Day, Night and fallback.",
-  "installation": "Authorized installation succeeded; Day screensaver preview and subsequent photo verified on TV. Night and automatic DreamService pending.",
+  "installation": "Authorized installation succeeded. Day and Night previews captured on TV, with photo progression confirmed in Day. Automatic DreamService, fallback and performance not verified.",
   "limitations": [
     "No real TV screenshots of phase 7 yet",
     "Crossfade, bitmap shader/color filter and performance require on-device review",
@@ -37,7 +37,10 @@
       "screenshot": "screenshots/phase7-day-photo-1.png",
       "observed": "The Simpsons photo with rounded corners, Day panels, dotted 08:08 clock, date and weather, readable title/metadata, no football. No quotes visible in this state."
     },
-    "night": "pending",
+    "night": {
+      "screenshot": "screenshots/phase7-night-photo.png",
+      "observed": "Doctor X: Mafia in White, graphite background and panels, white dotted 08:13 clock, date and weather, readable caption, rounded photo and no football. No quotes visible."
+    },
     "photo_change": {
       "screenshot": "screenshots/phase7-day-photo-2.png",
       "observed": "A later capture shows Matchbox the Movie and matching caption, clock advanced from 08:08 to 08:09. Confirms slideshow progression, not transition smoothness or frame time."
