@@ -2,7 +2,7 @@
 
 ## Estado da implementação
 
-Fase 1 concluída para o primeiro lote de 293 tokens, com validação visual da Home. Fase 2 instalada com autorização de Marcel: fundo grafite e superfície da barra de apps na Home e na gaveta. Cores confirmadas nas capturas reais; aguardar o próximo OK antes de aplicar foco laranja.
+Fase 1 concluída para o primeiro lote de 293 tokens, com validação visual da Home. Fase 2 instalada com autorização de Marcel: fundo grafite e superfície da barra de apps na Home e na gaveta. Cores confirmadas nas capturas reais. Fase 3 aprovada e compilada: seleção de aba e foco laranja. Instalação e capturas da fase 3 aguardam autorização específica.
 
 Base: 8569d2127ac1577921764e6ea541dd798f085cb9. Trabalho exclusivo no worktree free-my-tv-design, branch design-system.
 Build e comparação de instruções: design-review/phase1-verification.json. Home validada com capturas reais antes/depois: zero diferença em 1.911.600 pixels fora do cabeçalho dinâmico de relógio e saudação. Gaveta e ajustes ainda não possuem capturas pareadas. Build sozinho não comprova equivalência de pixels.
@@ -15,7 +15,7 @@ Build e comparação de instruções: design-review/phase1-verification.json. Ho
 - Tamanhos de texto são textSize lógico; tracking é em. Inter, pesos e optical sizes existentes são preservados.
 - Tempos MS são milissegundos. RESPONSE_S é parâmetro da mola em segundos, não duração fixa; DAMPING é adimensional.
 - Valores iguais de componentes diferentes podem permanecer separados. Não normalizar margens, raios ou cores parecidas durante a extração.
-- HomeView continua com night = 1 e checkNight fixo. Na fase 2, apenas o fundo e a superfície arredondada do dock usam os novos tokens. Day, foco laranja e as demais formas serão aplicados em etapas posteriores.
+- HomeView continua com night = 1 e checkNight fixo. Fundo, dock, seleção de aba e foco da Home usam os novos tokens até a fase 3. Day e as demais formas serão aplicados em etapas posteriores.
 - Os helpers tone/blend atuais continuam no mesmo local, preservando interpolação e arredondamento.
 
 ## Componentes
@@ -58,6 +58,26 @@ A especificação completa de valores alvo, estados, contrastes e sequência est
 A seleção de endpoint usa night >= 0.5f, com night fixo em 1 no comportamento atual. Não há transição Day/Night implementada. O helper rejeita papéis desconhecidos. drawRect e drawRoundRect são compatíveis com API 28. Não há blur ou sombra no novo fundo/dock.
 
 A Home não decodifica mais fields/ember.png e fields/ultra.png. Os assets continuam no projeto para consumidores existentes, inclusive ajustes. Pôsteres, logos, ícones, foco, ações e layout permanecem nesta etapa com os valores anteriores.
+
+
+### Tokens semânticos da fase 3
+
+| Token/API | Valor | Consumidor |
+|---|---|---|
+| ACCENT / FOCUS | papéis 2 e 3, #FF5A20 em Day e Night | Seleção da aba e foco da Home |
+| ON_ACCENT | papel 4, #FFFFFF | Texto de 28 unidades da aba ativa |
+| ON_ACCENT_SMALL | papel 5, #292B2E | Rótulos menores e símbolos em controles preenchidos |
+| ACCENT_ORANGE | 0xFFFF5A20 | Endpoint compartilhado de seleção e foco |
+| ACCENT_INK_LARGE | 0xFFFFFFFF | Endpoint do texto grande sobre o accent |
+| ACCENT_INK_SMALL | 0xFF292B2E | Endpoint de rótulos pequenos e símbolos sobre o accent |
+| TAB_HEIGHT / TAB_RADIUS | 56 / 28 | Cápsula da aba, dentro da região de navegação existente |
+| TAB_FOCUS_GAP / TAB_FOCUS_STROKE | 4 / 3 | Deslocamento da linha central do contorno externo e sua espessura |
+
+A aba ativa, inclusive Explore, mantém a cápsula laranja quando o foco sai dela. O foco sobre a aba acrescenta um anel laranja separado do preenchimento por uma faixa do fundo. Esse segundo sinal evita confundir categoria selecionada com posição atual do controle. Não há halo ou blur.
+
+Pôsteres, cards de conteúdo e apps do dock recebem contorno laranja, mantendo suas medidas anteriores. Os controles de utilidade, entradas e atalhos da gaveta usam preenchimento laranja e texto/símbolo escuro. A grade Todos os Apps usa o contorno laranja com alpha igual ao progresso de foco, chegando a 100%, em vez dos 40% brancos anteriores. As molas, durações, ações, bounds de navegação e tamanhos de arte permanecem iguais. As cores do indicador HDMI-CEC e das cotações continuam com seus próprios significados.
+
+Ajustes continua com o visual da fase 1. Day ainda não é selecionável. Os contrastes estáticos são aproximadamente 3,12:1 para branco/laranja e 4,55:1 para texto escuro/laranja. A leitura à distância e os estados animados precisam ser conferidos na TV. Os raios dos pôsteres e botões redondos pertencem às próximas etapas.
 
 
 ## Catálogo implementado

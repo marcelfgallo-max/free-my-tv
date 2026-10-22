@@ -6,6 +6,17 @@ final class Theme {
 
     static final int BACKGROUND = 0;
     static final int SURFACE = 1;
+    static final int ACCENT = 2;
+    static final int FOCUS = 3;
+    static final int ON_ACCENT = 4;
+    static final int ON_ACCENT_SMALL = 5;
+    static final int ACCENT_ORANGE = 0xFFFF5A20;
+    static final int ACCENT_INK_LARGE = 0xFFFFFFFF;
+    static final int ACCENT_INK_SMALL = 0xFF292B2E;
+    static final float TAB_HEIGHT = 56f;
+    static final float TAB_RADIUS = 28f;
+    static final float TAB_FOCUS_GAP = 4f;
+    static final float TAB_FOCUS_STROKE = 3f;
     static final int BACKGROUND_DAY = 0xFFE6E5E8;
     static final int BACKGROUND_NIGHT = 0xFF202124;
     static final int SURFACE_DAY = 0xFFFAF9FB;
@@ -17,6 +28,10 @@ final class Theme {
         switch (role) {
             case BACKGROUND: return night ? BACKGROUND_NIGHT : BACKGROUND_DAY;
             case SURFACE: return night ? SURFACE_NIGHT : SURFACE_DAY;
+            case ACCENT:
+            case FOCUS: return ACCENT_ORANGE;
+            case ON_ACCENT: return ACCENT_INK_LARGE;
+            case ON_ACCENT_SMALL: return ACCENT_INK_SMALL;
             default: throw new IllegalArgumentException("Unknown theme color role: " + role);
         }
     }

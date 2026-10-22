@@ -1334,7 +1334,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             float out = Theme.Legacy.HomeEffect.FOCUS_GAP * k + Theme.Legacy.HomeEffect.FOCUS_HALF_STROKE * k;
             tmp.set(cell.left - out, cell.top - out, cell.right + out, cell.bottom + out);
             rim.setShader(null);
-            rim.setColor(Ui.alpha(M_INK, f));
+            rim.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), f));
             rim.setStrokeWidth(Theme.Legacy.HomeEffect.FOCUS_STROKE * k);
             c.drawRect(tmp, rim);
         }
@@ -1556,11 +1556,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         float cx = cellRect.centerX();
         if (f > 0.01f) {
             fill.setShader(null);
-            fill.setColor(Ui.alpha(M_INK, f));
+            fill.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), f));
             c.drawRect(cellRect, fill);
         }
         boolean off = it.kind == HomeApps.INPUT && !it.connected;
-        int ink = blend(off ? Theme.Legacy.Palette.WHITE_A73 : M_INK, Theme.Legacy.Palette.BLACK_AFF, f);
+        int ink = blend(off ? Theme.Legacy.Palette.WHITE_A73 : M_INK, Theme.color(Theme.ON_ACCENT_SMALL, night >= 0.5f), f);
         Symbols.drawSharp(getContext(), c, it.symbol, cx, cellRect.top + cellRect.height() * 0.36f, 34 * k, ink);
         String label = caps(it.label);
         mCell.setColor(ink);
@@ -1930,7 +1930,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         c.drawRoundRect(cell, r, r, border);
         if (f > 0.01f) {
             rim.setShader(null);
-            rim.setColor(Ui.alpha(Theme.Legacy.Palette.WHITE_AFF, Theme.Legacy.HomeEffect.GRID_RIM_ALPHA * fc));
+            rim.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), fc));
             rim.setStrokeWidth(Theme.Legacy.HomeEffect.GRID_FOCUS_STROKE * k);
             c.drawRoundRect(cell, r, r, rim);
             rim.setStrokeWidth(Theme.Legacy.HomeEffect.RIM_STROKE * k);
@@ -2705,8 +2705,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     private void layoutLight() {
         if (lTab == null) return;
-        // Caps tabs 64 px apart; a focused one inverts in a cell 16 px wider than its label on each side.
-        // The cell ends on the hairline's own row, so a focused tab reads as one block sitting on the line.
+        // Tab hit regions and spacing stay unchanged; the active capsule is drawn within each region.
         float pad = 16 * k, tabTop = L_TABBAR_TOP * k, tabBottom = tabRuleBottom();
         float x = MARGIN * k;
         for (int i = 0; i < TAB_COUNT; i++) {
@@ -2832,26 +2831,30 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         c.drawText(greetingText, MARGIN * k + lTitle.measureText(clockText) + 48 * k, L_TITLE_BASE * k, lGreeting);
         // Your team, between the greeting and the corner buttons: the last result (or the score now) and the next game.
         Team.draw(c, topRects[TAB_COUNT].left - 40 * k, 104 * k, 142 * k, k, teamBig, teamSmall, teamTag, teamImage, rule());
-        // Tab strip: caps labels over a hairline, a 3 px white segment under the selected one; with focus on the tabs,
-        // the selected one inverts (white cell, black label).
+        // The active category remains orange. A separate outer ring marks remote focus.
         hairline(c, MARGIN * k, CONTENT_R * k, L_TAB_RULE * k);
-        float focus = Ui.clamp(topFocus[tab].value);
         for (int i = 0; i < TAB_COUNT; i++) {
             RectF r = topRects[i];
             String label = caps(tabs()[i]);
             float lx = r.left + 16 * k;
+            tmp.set(r.left, r.top, r.right, r.top + Theme.TAB_HEIGHT * k);
             if (i == tab) {
                 fill.setShader(null);
-                fill.setColor(M_INK);
-                // 3 px ending where the hairline ends (it covers the line's row, as the focused cell does).
-                c.drawRect(lx, tabRuleBottom() - Math.round(3 * k), lx + lTabOn.measureText(label), tabRuleBottom(), fill);
-                if (focus > 0.01f) {
-                    fill.setColor(Ui.alpha(M_INK, focus));
-                    c.drawRect(r, fill);
-                }
+                fill.setColor(Theme.color(Theme.ACCENT, night >= 0.5f));
+                c.drawRoundRect(tmp, Theme.TAB_RADIUS * k, Theme.TAB_RADIUS * k, fill);
+            }
+            float focus = Ui.clamp(topFocus[i].value);
+            if (focus > 0.01f) {
+                tmp.inset(-Theme.TAB_FOCUS_GAP * k, -Theme.TAB_FOCUS_GAP * k);
+                float radius = (Theme.TAB_RADIUS + Theme.TAB_FOCUS_GAP) * k;
+                rim.setShader(null);
+                rim.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), focus));
+                rim.setStrokeWidth(Theme.TAB_FOCUS_STROKE * k);
+                c.drawRoundRect(tmp, radius, radius, rim);
+                rim.setStrokeWidth(Theme.Legacy.HomeEffect.RIM_STROKE * k);
             }
             Paint p = i == tab ? lTabOn : lTab;
-            if (i == tab) lTabOn.setColor(blend(M_INK, Theme.Legacy.Palette.BLACK_AFF, focus));
+            if (i == tab) lTabOn.setColor(Theme.color(Theme.ON_ACCENT, night >= 0.5f));
             c.drawText(label, lx, L_TAB_BASE * k, p);
         }
         if (showcase()) {
@@ -2930,7 +2933,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             float out = Theme.Legacy.HomeEffect.FOCUS_GAP * k + Theme.Legacy.HomeEffect.FOCUS_HALF_STROKE * k;
             tmp.set(cell.left - out, cell.top - out, cell.right + out, cell.bottom + out);
             rim.setShader(null);
-            rim.setColor(Ui.alpha(M_INK, f));
+            rim.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), f));
             rim.setStrokeWidth(Theme.Legacy.HomeEffect.FOCUS_STROKE * k);
             c.drawRect(tmp, rim);
         }
@@ -2948,7 +2951,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     /**
      * Explore's showcase: per row the genre's label in caps on a hairline (the focused title at its right), and the
-     * posters under it; the focused one gets the 3 px white outline. Arrows outside the margins when there are more
+     * posters under it; the focused one gets the 3 px orange outline. Arrows outside the margins when there are more
      * pairs of genres before or after.
      */
     private void drawShowcase(Canvas c) {
@@ -2990,7 +2993,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                     float out = Theme.Legacy.HomeEffect.FOCUS_GAP * k + Theme.Legacy.HomeEffect.FOCUS_HALF_STROKE * k;
                     tmp.set(r.left - out, r.top - out, r.right + out, r.bottom + out);
                     rim.setShader(null);
-                    rim.setColor(Ui.alpha(M_INK, f));
+                    rim.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), f));
                     rim.setStrokeWidth(Theme.Legacy.HomeEffect.FOCUS_STROKE * k);
                     c.drawRect(tmp, rim);
                 }
@@ -3078,8 +3081,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     }
 
     /**
-     * Live TV, HDMI Inputs and Settings: square cells with a hairline border; the focused one inverts (white, black
-     * symbol) and its name appears below it.
+     * Live TV, HDMI Inputs and Settings: square cells with a hairline border; the focused one uses orange with a dark
+     * symbol and its name appears below it.
      */
     private void drawLightButtons(Canvas c) {
         applyTone();
@@ -3092,11 +3095,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             vline(c, r.right - 1, r.top, r.bottom);
             if (f > 0.01f) {
                 fill.setShader(null);
-                fill.setColor(Ui.alpha(M_INK, f));
+                fill.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), f));
                 c.drawRect(r, fill);
             }
             Symbols.drawSharp(getContext(), c, lightButtons.get(i).symbol, r.centerX(), r.centerY(), 27 * k,
-                    blend(M_INK, Theme.Legacy.Palette.BLACK_AFF, f));
+                    blend(M_INK, Theme.color(Theme.ON_ACCENT_SMALL, night >= 0.5f), f));
             if (f > 0.01f) {
                 String label = caps(lightButtons.get(i).label);
                 float half = lTip.measureText(label) / 2;

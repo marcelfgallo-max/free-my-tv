@@ -1,0 +1,37 @@
+{
+  "base_commit": "55c83c9bb9c13b488f5e81c0a487de4e8cec8aae",
+  "build": "JDK 17, build.sh succeeded",
+  "theme_compiles_against_api_28": true,
+  "apk_signature_verified_min_api_28": true,
+  "apk_sha256": "c5f9e18b4f0960378594865ab909f2dcc11b1f56300bcacd022d1b631f044746",
+  "changed_classes": [
+    "io/freemytv/Theme$Legacy$Frame.class",
+    "io/freemytv/Theme$Legacy$SettingsEffect.class",
+    "io/freemytv/Theme$Legacy$HomeLayout.class",
+    "io/freemytv/Theme$Legacy$Palette.class",
+    "io/freemytv/Theme$Legacy$AppColor.class",
+    "io/freemytv/Theme$Legacy$HomeText.class",
+    "io/freemytv/Theme$Legacy$SettingsColor.class",
+    "io/freemytv/HomeView.class",
+    "io/freemytv/Theme$Legacy$SettingsText.class",
+    "io/freemytv/Theme$Legacy$Font.class",
+    "io/freemytv/Theme$Legacy$SettingsMotion.class",
+    "io/freemytv/Theme$Legacy$HomeEffect.class",
+    "io/freemytv/Theme$Legacy.class",
+    "io/freemytv/Theme$Legacy$SettingsLayout.class",
+    "io/freemytv/Theme.class",
+    "io/freemytv/Theme$Legacy$Canvas.class",
+    "io/freemytv/Theme$Legacy$HomeMotion.class",
+    "io/freemytv/Theme$Legacy$HomeColor.class"
+  ],
+  "unchanged_class_count": 77,
+  "changed_sources": [
+    "app/src/io/freemytv/HomeView.java",
+    "app/src/io/freemytv/Theme.java"
+  ],
+  "assets_unchanged": true,
+  "protected_files_unchanged": true,
+  "legacy_tokens_unchanged": true,
+  "installation": "Pending new explicit user authorization",
+  "screenshots": []
+}
