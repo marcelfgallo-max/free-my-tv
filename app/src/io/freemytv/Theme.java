@@ -44,6 +44,13 @@ final class Theme {
     static final float WEATHER_DETAIL_SIZE = 20f, WEATHER_CONDITION_ICON_SIZE = 40f, WEATHER_ICON_SIZE = 48f;
     static final float DOTTED_RULE_STEP = 6f, DOTTED_RULE_RADIUS = 0.85f;
 
+    // Home refinement: aligned outer edges and a consistent vertical rhythm.
+    static final float HOME_TAB_RULE_Y = 256f;
+    static final float HOME_GENRE_BASE_1 = 296f, HOME_GENRE_BASE_2 = 584f;
+    static final float HOME_POSTER_OFFSET = 32f, HOME_GENRE_RULE_OFFSET = 16f;
+    static final float HOME_TAB_PADDING = 16f, HOME_TAB_GAP = 32f;
+    static final float HOME_DETAIL_GAP = 32f, HOME_META_GAP = 24f;
+
     // Screensaver: shared endpoints, quiet photo frame and cached information panels.
     static final long DREAM_SHOW_MS = 30_000, DREAM_FADE_MS = 3_000, DREAM_FIRST_MS = 1_600;
     static final float DREAM_PHOTO_INSET = 64f, DREAM_PHOTO_RADIUS = 48f, DREAM_PANEL_RADIUS = 32f;

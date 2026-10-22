@@ -97,7 +97,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     // The tab bar is a 68 px capsule; the cards sit on the 5-column grid (the wide one spans 3).
     private static final float L_TITLE_BASE = Theme.Legacy.HomeLayout.L_TITLE_BASE, L_TABBAR_TOP = Theme.Legacy.HomeLayout.L_TABBAR_TOP, L_TABBAR_H = Theme.Legacy.HomeLayout.L_TABBAR_H, L_CARDS_TOP = Theme.Legacy.HomeLayout.L_CARDS_TOP, L_CARD_H = Theme.Legacy.HomeLayout.L_CARD_H;
     // Modern 80s tab strip: caps labels on a baseline, a hairline under the row, a 3 px segment under the selected one.
-    private static final float L_TAB_BASE = Theme.Legacy.HomeLayout.L_TAB_BASE, L_TAB_RULE = Theme.Legacy.HomeLayout.L_TAB_RULE, L_TAB_GAP = Theme.Legacy.HomeLayout.L_TAB_GAP;
+    private static final float L_TAB_BASE = Theme.Legacy.HomeLayout.L_TAB_BASE, L_TAB_RULE = Theme.HOME_TAB_RULE_Y;
     private static final float L_TALL_W = Theme.Legacy.HomeLayout.L_TALL_W, L_CARD_GAP = Theme.Legacy.HomeLayout.L_CARD_GAP, L_BUTTON = Theme.Legacy.HomeLayout.L_BUTTON, L_BUTTON_GAP = Theme.Legacy.HomeLayout.L_BUTTON_GAP, L_BUTTON_CY = Theme.Legacy.HomeLayout.L_BUTTON_CY;
     private static final float L_PLATTER_TOP = Theme.Legacy.HomeLayout.L_PLATTER_TOP, L_TILE_H = Theme.Legacy.HomeLayout.L_TILE_H;
     private static final float L_DATE_BASE = Theme.Legacy.HomeLayout.L_DATE_BASE, L_CLOCK_BASE = Theme.Legacy.HomeLayout.L_CLOCK_BASE, L_WEATHER_BASE = Theme.Legacy.HomeLayout.L_WEATHER_BASE, L_QUOTES_BASE = Theme.Legacy.HomeLayout.L_QUOTES_BASE;
@@ -113,7 +113,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private static final int Z_TOP = 4, Z_CARDS = 5;
     // Explore's showcase: two genres, 11 posters (2:3) each, filling the margins exactly (11 × 138 + 10 × 21 = 1728).
     private static final int SHOW_COLS = Theme.Legacy.HomeLayout.SHOW_COLS;
-    private static final float SHOW_W = Theme.Legacy.HomeLayout.SHOW_W, SHOW_H = Theme.Legacy.HomeLayout.SHOW_H, SHOW_GAP = Theme.Legacy.HomeLayout.SHOW_GAP, SHOW_LABEL_1 = Theme.Legacy.HomeLayout.SHOW_LABEL_1, SHOW_LABEL_2 = Theme.Legacy.HomeLayout.SHOW_LABEL_2;
+    private static final float SHOW_W = Theme.Legacy.HomeLayout.SHOW_W, SHOW_H = Theme.Legacy.HomeLayout.SHOW_H, SHOW_GAP = Theme.Legacy.HomeLayout.SHOW_GAP, SHOW_LABEL_1 = Theme.HOME_GENRE_BASE_1, SHOW_LABEL_2 = Theme.HOME_GENRE_BASE_2;
 
     private final Activity activity;
     private final Scene scene = new Scene();
@@ -721,9 +721,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         return up;
     }
 
-    /** The bottom edge of the tab row's hairline (whole pixels). */
-    private int tabRuleBottom() {
-        return Math.round(L_TAB_RULE * k) + Math.max(1, Math.round(k));
+    /** Home separators share the poster grid and use quiet opaque theme ink. */
+    private void homeRule(Canvas c, float y) {
+        fill.setShader(null);
+        fill.setColor(Theme.color(Theme.SOFT_DIVIDER, night >= 0.5f));
+        float top = Math.round(y);
+        c.drawRect(Math.round(MARGIN * k), top, Math.round(CONTENT_R * k),
+                top + Math.max(1, Math.round(k)), fill);
     }
 
     /** A 1 px hairline across [x0, x1] at y. */
@@ -2728,13 +2732,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     private void layoutLight() {
         if (lTab == null) return;
-        // Tab hit regions and spacing stay unchanged; the active capsule is drawn within each region.
-        float pad = 16 * k, tabTop = L_TABBAR_TOP * k, tabBottom = tabRuleBottom();
+        // Capsule edges and accessible hit regions share the same safe-area grid.
+        float pad = Theme.HOME_TAB_PADDING * k, tabTop = L_TABBAR_TOP * k, tabBottom = tabTop + Theme.TAB_HEIGHT * k;
         float x = MARGIN * k;
         for (int i = 0; i < TAB_COUNT; i++) {
             float tw = lTabOn.measureText(caps(tabs()[i]));
-            topRects[i].set(Math.round(x - pad), Math.round(tabTop), Math.round(x + tw + pad), tabBottom);
-            x += tw + L_TAB_GAP * k;
+            topRects[i].set(Math.round(x), Math.round(tabTop), Math.round(x + tw + 2 * pad), Math.round(tabBottom));
+            x += tw + 2 * pad + Theme.HOME_TAB_GAP * k;
         }
         float b = L_BUTTON * k, right = CONTENT_R * k, cy = L_BUTTON_CY * k;
         for (int i = 2; i >= 0; i--) {
@@ -2760,7 +2764,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         for (int i = 0; i < n && i < cardRects.length; i++) {
             boolean second = i >= showRow1;
             int col = second ? i - showRow1 : i;
-            float top = ((second ? SHOW_LABEL_2 : SHOW_LABEL_1) + 30) * k, x = (MARGIN + col * (SHOW_W + SHOW_GAP)) * k;
+            float top = ((second ? SHOW_LABEL_2 : SHOW_LABEL_1) + Theme.HOME_POSTER_OFFSET) * k, x = (MARGIN + col * (SHOW_W + SHOW_GAP)) * k;
             cardRects[i].set(Math.round(x), Math.round(top), Math.round(x) + Math.round(SHOW_W * k), Math.round(top) + Math.round(SHOW_H * k));
         }
     }
@@ -2853,27 +2857,17 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         float clockWidth = headerDots.draw(c, clockText, MARGIN * k, L_TITLE_BASE * k,
                 Theme.CLOCK_DOT_HEIGHT * k, 400 * k, lTitle);
         c.drawText(greetingText, MARGIN * k + clockWidth + 48 * k, L_TITLE_BASE * k, lGreeting);
-        // The active category remains orange. A separate outer ring marks remote focus.
-        hairline(c, MARGIN * k, CONTENT_R * k, L_TAB_RULE * k);
+        // Remote focus selects the category; the filled capsule is the sole tab highlight.
+        homeRule(c, L_TAB_RULE * k);
         for (int i = 0; i < TAB_COUNT; i++) {
             RectF r = topRects[i];
             String label = caps(tabs()[i]);
-            float lx = r.left + 16 * k;
+            float lx = r.left + Theme.HOME_TAB_PADDING * k;
             tmp.set(r.left, r.top, r.right, r.top + Theme.TAB_HEIGHT * k);
             if (i == tab) {
                 fill.setShader(null);
                 fill.setColor(Theme.color(Theme.ACCENT, night >= 0.5f));
                 c.drawRoundRect(tmp, Theme.TAB_RADIUS * k, Theme.TAB_RADIUS * k, fill);
-            }
-            float focus = Ui.clamp(topFocus[i].value);
-            if (focus > 0.01f) {
-                tmp.inset(-Theme.TAB_FOCUS_GAP * k, -Theme.TAB_FOCUS_GAP * k);
-                float radius = (Theme.TAB_RADIUS + Theme.TAB_FOCUS_GAP) * k;
-                rim.setShader(null);
-                rim.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), focus));
-                rim.setStrokeWidth(Theme.TAB_FOCUS_STROKE * k);
-                c.drawRoundRect(tmp, radius, radius, rim);
-                rim.setStrokeWidth(Theme.Legacy.HomeEffect.RIM_STROKE * k);
             }
             Paint p = i == tab ? lTabOn : lTab;
             if (i == tab) lTabOn.setColor(Theme.color(Theme.ON_ACCENT, night >= 0.5f));
@@ -2984,17 +2978,28 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             int genre = 2 * genrePage + row;
             if (genre >= 2 * Genres.pages()) break;
             float base = (row == 0 ? SHOW_LABEL_1 : SHOW_LABEL_2) * k;
-            c.drawText(caps(Genres.label(genre)), left, base, mLabel);
-            hairline(c, left, right, base + 14 * k);
+            String genreLabel = caps(Genres.label(genre));
+            float genreBudget = (right - left) * .38f;
+            fitPaint.set(mLabel);
+            String visibleGenre = TextUtils.ellipsize(genreLabel, fitPaint, genreBudget, TextUtils.TruncateAt.END).toString();
+            c.drawText(visibleGenre, left, base, mLabel);
+            homeRule(c, base + Theme.HOME_GENRE_RULE_OFFSET * k);
             int from = row == 0 ? 0 : showRow1, to = row == 0 ? showRow1 : cards.size();
             if (focused >= from && focused < to) {
                 // The focused title at the right of its row's label: "MATCHBOX THE MOVIE  2025 · APPLE TV".
                 Recs.Pick p = cards.get(focused);
-                float x = right - mMutedRight.measureText(p.meta);
-                c.drawText(p.meta, right, base, mMutedRight);
+                float detailLeft = left + Math.max(mLabel.measureText(visibleGenre), 320 * k) + Theme.HOME_DETAIL_GAP * k;
+                float available = Math.max(0, right - detailLeft);
+                fitPaint.set(mMutedRight);
+                String meta = TextUtils.ellipsize(p.meta == null ? "" : p.meta, fitPaint,
+                        Math.min(360 * k, available * .45f), TextUtils.TruncateAt.END).toString();
+                float x = right - mMutedRight.measureText(meta);
+                c.drawText(meta, right, base, mMutedRight);
                 String title = caps(p.title);
+                float titleRight = x - (meta.isEmpty() ? 0 : Theme.HOME_META_GAP * k);
                 fitPaint.set(mLabelRight);
-                c.drawText(TextUtils.ellipsize(title, fitPaint, x - left - 520 * k, TextUtils.TruncateAt.END).toString(), x - 18 * k, base, mLabelRight);
+                c.drawText(TextUtils.ellipsize(title, fitPaint, Math.max(0, titleRight - detailLeft),
+                        TextUtils.TruncateAt.END).toString(), titleRight, base, mLabelRight);
             }
             if (from == to) {
                 c.drawText(genres.loading(genrePage) ? Ui.tr("Carregando…", "Loading…", "Cargando…")
@@ -3023,7 +3028,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             }
         }
         // More pairs of genres: arrows in the side margins, at the middle of the two rows.
-        float cy = ((SHOW_LABEL_1 + 30 + SHOW_LABEL_2 + 30 + SHOW_H) / 2) * k, size = 34 * k;
+        float cy = ((SHOW_LABEL_1 + Theme.HOME_POSTER_OFFSET + SHOW_LABEL_2 + Theme.HOME_POSTER_OFFSET + SHOW_H) / 2) * k, size = 34 * k;
         if (genrePage < Genres.pages() - 1) Symbols.drawSharp(getContext(), c, "chevron_right", (CONTENT_R + MARGIN / 2) * k, cy, size, M_MUTED);
         if (genrePage > 0) {
             float cx = MARGIN / 2 * k;
