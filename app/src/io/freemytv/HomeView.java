@@ -15,6 +15,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.media.tv.TvInputManager;
 import android.os.Handler;
 import android.os.Looper;
@@ -77,7 +78,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     // Corner capsule: the height and top offset of the tvOS tab bar (68 and 46).
     private static final float CAPSULE_TOP = Theme.Legacy.HomeLayout.CAPSULE_TOP, CAPSULE_H = Theme.Legacy.HomeLayout.CAPSULE_H, BUTTON = Theme.Legacy.HomeLayout.BUTTON;
     // Bottom drawer (measured with it open; everything moves up by SHIFT).
-    private static final float SHIFT = Theme.Legacy.HomeLayout.SHIFT, ROW_TITLE = Theme.Legacy.HomeLayout.ROW_TITLE, ROW_TOP = Theme.Legacy.HomeLayout.ROW_TOP, ROW_H = Theme.Legacy.HomeLayout.ROW_H, CARDS_TOP = Theme.Legacy.HomeLayout.CARDS_TOP, CARDS_H = Theme.Legacy.HomeLayout.CARDS_H;
+    private static final float SHIFT = Theme.DRAWER_SHIFT, ROW_TITLE = Theme.DRAWER_TITLE_BASE, ROW_TOP = Theme.DRAWER_ROW_TOP, ROW_H = Theme.DRAWER_ROW_HEIGHT, CARDS_TOP = Theme.WIDGET_TOP, CARDS_H = Theme.WIDGET_HEIGHT;
     // "All Apps" sheet.
     private static final int COLUMNS = Theme.Legacy.HomeLayout.COLUMNS, VISIBLE_ROWS = Theme.Legacy.HomeLayout.VISIBLE_ROWS;
     private static final float GRID_W = Theme.Legacy.HomeLayout.GRID_W, GRID_H = Theme.Legacy.HomeLayout.GRID_H, GRID_GAP = Theme.Legacy.HomeLayout.GRID_GAP, GRID_ROW = Theme.Legacy.HomeLayout.GRID_ROW, GRID_TOP = Theme.Legacy.HomeLayout.GRID_TOP, GRID_RADIUS = Theme.Legacy.HomeLayout.GRID_RADIUS;
@@ -157,6 +158,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private final List<HomeApps.Item> lightButtons = new ArrayList<>();
     private Paint badgePaint;
     private Paint mBigDegree;
+    private Paint drawerHeading, drawerMeta;
+    private String[] drawerLabelValues = new String[0], drawerLabelFitted = new String[0];
+    private float[] drawerLabelSizes = new float[0];
+    private final Paint detailPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final DotDisplay headerDots = new DotDisplay(), largeClockDots = new DotDisplay(), temperatureDots = new DotDisplay();
+    private final RectF weatherContent = new RectF(), quotesContent = new RectF();
     private String nowDigits = "";
     private Paint mLabel, mLabelRight, mCell, mName, mPrice, mChange, mMuted, mMutedRight, mHour, mHourTemp, mBig;
     private final java.util.HashMap<String, String> capsCache = new java.util.HashMap<>();
@@ -671,23 +678,28 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         mLabel.setLetterSpacing(Theme.Legacy.HomeText.M_LABEL_TRACKING);
         mLabelRight = new Paint(mLabel);
         mLabelRight.setTextAlign(Paint.Align.RIGHT);
-        mCell = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.M_CELL_SIZE * k, M_INK);
-        mCell.setLetterSpacing(Theme.Legacy.HomeText.M_CELL_TRACKING);
+        drawerHeading = Ui.text(Typeface.MONOSPACE, Theme.DRAWER_LABEL_SIZE * k, M_INK);
+        drawerHeading.setLetterSpacing(Theme.DRAWER_TRACKING);
+        drawerMeta = Ui.text(Typeface.MONOSPACE, Theme.DRAWER_META_SIZE * k, M_INK);
+        drawerMeta.setLetterSpacing(Theme.DRAWER_TRACKING);
+        drawerMeta.setTextAlign(Paint.Align.RIGHT);
+        mCell = Ui.text(Typeface.MONOSPACE, Theme.DRAWER_CELL_TEXT_SIZE * k, M_INK);
+        mCell.setLetterSpacing(Theme.DRAWER_TRACKING);
         mCell.setTextAlign(Paint.Align.CENTER);
-        mName = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.M_NAME_SIZE * k, M_INK);
+        mName = Ui.text(Typeface.MONOSPACE, Theme.MARKET_TEXT_SIZE * k, M_INK);
         mName.setLetterSpacing(Theme.Legacy.HomeText.M_NAME_TRACKING);
-        mPrice = Ui.numbers(Ui.displayMedium, Theme.Legacy.HomeText.M_PRICE_SIZE * k, M_INK);
+        mPrice = Ui.numbers(Typeface.MONOSPACE, Theme.MARKET_TEXT_SIZE * k, M_INK);
         mPrice.setLetterSpacing(Theme.Legacy.HomeText.M_PRICE_TRACKING);
         mPrice.setTextAlign(Paint.Align.RIGHT);
-        mChange = Ui.numbers(Ui.displayMedium, Theme.Legacy.HomeText.M_CHANGE_SIZE * k, M_UP);
+        mChange = Ui.numbers(Typeface.MONOSPACE, Theme.MARKET_CHANGE_SIZE * k, M_UP);
         mChange.setLetterSpacing(Theme.Legacy.HomeText.M_CHANGE_TRACKING);
         mChange.setTextAlign(Paint.Align.RIGHT);
-        mMuted = Ui.numbers(Ui.regular, Theme.Legacy.HomeText.M_MUTED_SIZE * k, M_MUTED);
+        mMuted = Ui.numbers(Typeface.MONOSPACE, Theme.WEATHER_DETAIL_SIZE * k, M_MUTED);
         mMutedRight = new Paint(mMuted);
         mMutedRight.setTextAlign(Paint.Align.RIGHT);
-        mHour = Ui.numbers(Ui.regular, Theme.Legacy.HomeText.M_HOUR_SIZE * k, M_MUTED);
+        mHour = Ui.numbers(Typeface.MONOSPACE, Theme.WEATHER_HOUR_SIZE * k, M_MUTED);
         mHour.setTextAlign(Paint.Align.CENTER);
-        mHourTemp = Ui.numbers(Ui.displayMedium, Theme.Legacy.HomeText.M_HOUR_TEMP_SIZE * k, M_INK);
+        mHourTemp = Ui.numbers(Typeface.MONOSPACE, Theme.WEATHER_HOUR_TEMP_SIZE * k, M_INK);
         mHourTemp.setLetterSpacing(Theme.Legacy.HomeText.M_HOUR_TEMP_TRACKING);
         mHourTemp.setTextAlign(Paint.Align.CENTER);
         mBig = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.M_BIG_SIZE * k, M_INK);   // proportional digits: a "1" isn't as wide as an "8"
@@ -986,6 +998,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         lClockQuote.setColor(tone(L_DIM, Theme.Legacy.Palette.TEXT_DIM_NIGHT));
         staleQuote.setColor(tone(L_FAINT, Theme.Legacy.Palette.WHITE_A99));
         mLabel.setColor(M_INK);
+        drawerHeading.setColor(M_INK);
+        drawerMeta.setColor(M_INK);
         mLabelRight.setColor(M_INK);
         mCell.setColor(M_INK);
         mName.setColor(M_INK);
@@ -1140,8 +1154,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             s.append(it.label);
         }
         appsLine = s.toString().toUpperCase(Ui.locale());
-        if (mLabelRight != null) {
-            fitPaint.set(mLabelRight);
+        if (drawerMeta != null) {
+            fitPaint.set(drawerMeta);
             appsLine = TextUtils.ellipsize(appsLine, fitPaint, (CONTENT_R - MARGIN - 300) * k, TextUtils.TruncateAt.END).toString();
         }
     }
@@ -1172,6 +1186,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         fill.setColor(Theme.color(Theme.SURFACE, night >= 0.5f));
         float radius = Theme.DOCK_RADIUS * k;
         c.drawRoundRect(platterRect, radius, radius, fill);
+        detailPaint.setColor(Theme.color(Theme.SOFT_DIVIDER, night >= 0.5f));
+        detailPaint.setStrokeWidth(Theme.SEPARATOR_STROKE * k);
+        float half = Theme.DOCK_SEPARATOR_HEIGHT * k / 2;
+        for (int i = 1; i < tileRects.length; i++) {
+            float x = (tileRects[i - 1].right + tileRects[i].left) / 2;
+            c.drawLine(x, platterRect.centerY() - half, x, platterRect.centerY() + half, detailPaint);
+        }
     }
 
     /** The quotes row's text and sizes, for one set of coins, prices and text size. */
@@ -1438,8 +1459,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     private void layoutDrawer() {
         int n = drawerItems.size();
+        drawerLabelValues = new String[n];
+        drawerLabelFitted = new String[n];
+        drawerLabelSizes = new float[n];
         float left = MARGIN * k, right = CONTENT_R * k;
-        // Inputs and shortcuts: two equal halves 48 px apart, each split evenly into cells (no gaps: hairlines).
+        // Input and shortcut navigation bounds are also the rounded cards, with visible gaps.
         float groupGap = Theme.Legacy.HomeLayout.DRAWER_GROUP_GAP * k, top = ROW_TOP * k;
         int groups = drawerInputs > 0 && drawerInputs < n ? 2 : 1;
         float half = groups == 2 ? (right - left - groupGap) / 2 : right - left;
@@ -1447,7 +1471,10 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             boolean second = groups == 2 && i >= drawerInputs;
             int count = groups == 2 ? (second ? n - drawerInputs : drawerInputs) : n, at = second ? i - drawerInputs : i;
             float x0 = left + (second ? half + groupGap : 0), cw = half / Math.max(1, count);
-            drawerRects[i].set(Math.round(x0 + at * cw), Math.round(top), Math.round(x0 + (at + 1) * cw), Math.round(top + ROW_H * k));
+            float gap = Theme.DRAWER_CELL_GAP * k;
+            cw = (half - Math.max(0, count - 1) * gap) / Math.max(1, count);
+            drawerRects[i].set(Math.round(x0 + at * (cw + gap)), Math.round(top),
+                    Math.round(x0 + at * (cw + gap) + cw), Math.round(top + ROW_H * k));
         }
         float cardsTop = CARDS_TOP * k, split = left + (right - left) * 0.585f;
         float weatherRight = split - 16 * k, quotesLeft = split + 16 * k;
@@ -1461,6 +1488,10 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         // A card that is off gives its room to the other one.
         weatherCard.set(Math.round(left), Math.round(cardsTop), Math.round(qt ? weatherRight : right), Math.round(cardsTop + CARDS_H * k));
         quotesCard.set(Math.round(wx ? quotesLeft : left), Math.round(cardsTop), Math.round(right), Math.round(cardsTop + CARDS_H * k));
+        weatherContent.set(weatherCard);
+        quotesContent.set(quotesCard);
+        weatherContent.inset(Theme.WIDGET_PADDING * k, Theme.WIDGET_PADDING * k);
+        quotesContent.inset(Theme.WIDGET_PADDING * k, Theme.WIDGET_PADDING * k);
         drawerDirty = true;
     }
 
@@ -1487,8 +1518,22 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         return Ui.alpha(tone(L_INK, Theme.Legacy.Palette.WHITE_AFF), alpha);
     }
 
-    /** The drawer's sections have no box: only their content and hairlines. */
+    /** Opaque rounded surface, without blur or a shadow pass on the TV GPU. */
     private void drawerCard(Canvas c, RectF r) {
+        fill.setShader(null);
+        fill.setColor(Theme.color(Theme.SURFACE, night >= 0.5f));
+        c.drawRoundRect(r, Theme.DRAWER_CARD_RADIUS * k, Theme.DRAWER_CARD_RADIUS * k, fill);
+    }
+
+    private void dottedRule(Canvas c, float x0, float y0, float x1, float y1) {
+        detailPaint.setColor(Theme.color(Theme.SOFT_DIVIDER, night >= 0.5f));
+        float length = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
+        if (length <= 0) return;
+        float step = Theme.DOTTED_RULE_STEP * k, radius = Theme.DOTTED_RULE_RADIUS * k;
+        for (float at = radius; at < length - radius; at += step) {
+            float t = at / length;
+            c.drawCircle(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, radius, detailPaint);
+        }
     }
 
     private void drawDrawer(Canvas c) {
@@ -1497,52 +1542,48 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         // The apps (the shelf, moved up with the drawer open): a caps label and their names over its top hairline.
         if (!shelf.isEmpty()) {
             float base = tileRects[0].top - SHIFT * k - 54 * k;
-            c.drawText(caps(Ui.tr("Apps", "Apps")), MARGIN * k, base, mLabel);
-            c.drawText(appsLine, CONTENT_R * k, base, mLabelRight);
+            c.drawText(caps(Ui.tr("Apps", "Apps")), MARGIN * k, base, drawerHeading);
+            c.drawText(appsLine, CONTENT_R * k, base, drawerMeta);
         }
         float titleBase = ROW_TITLE * k;
         if (drawerInputs > 0) {
-            c.drawText(caps(Ui.tr("Entradas", "Inputs")), drawerRects[0].left, titleBase, mLabel);
-            drawCellRow(c, 0, drawerInputs);
+            c.drawText(caps(Ui.tr("Entradas", "Inputs")), drawerRects[0].left, titleBase, drawerHeading);
         }
         if (drawerInputs < drawerItems.size()) {
-            c.drawText(caps(Ui.tr("Atalhos", "Shortcuts")), drawerRects[drawerInputs].left, titleBase, mLabel);
-            drawCellRow(c, drawerInputs, drawerItems.size());
+            c.drawText(caps(Ui.tr("Atalhos", "Shortcuts")), drawerRects[drawerInputs].left, titleBase, drawerHeading);
         }
         for (int i = 0; i < drawerItems.size(); i++) drawDrawerTile(c, i);
         if (Prefs.weather()) drawWeatherCard(c, weatherCard);
         if (HomeData.quotesCard()) drawQuotesCard(c, quotesCard);
     }
 
-    /** A group of cells: hairlines above and below it and between the cells. */
-    private void drawCellRow(Canvas c, int from, int to) {
-        RectF a = drawerRects[from], b = drawerRects[to - 1];
-        hairline(c, a.left, b.right, a.top);
-        hairline(c, a.left, b.right, a.bottom);
-        for (int i = from + 1; i < to; i++) vline(c, drawerRects[i].left, a.top, a.bottom);
-    }
-
-    /** A drawer cell: symbol and caps name; an input with no device is dimmed. Focused: it inverts (white, black type). */
+    /** Rounded input/shortcut surface, larger symbol and a high-contrast orange focus. */
     private void drawDrawerTile(Canvas c, int i) {
         HomeApps.Item it = drawerItems.get(i);
         float f = Ui.clamp(drawerFocus[i].value);
         RectF cellRect = drawerRects[i];
         float cx = cellRect.centerX();
-        if (f > 0.01f) {
-            fill.setShader(null);
-            fill.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), f));
-            c.drawRect(cellRect, fill);
-        }
+        fill.setShader(null);
+        fill.setColor(blend(Theme.color(Theme.SURFACE, night >= 0.5f), Theme.color(Theme.FOCUS, night >= 0.5f), f));
+        c.drawRoundRect(cellRect, Theme.DRAWER_CARD_RADIUS * k, Theme.DRAWER_CARD_RADIUS * k, fill);
         boolean off = it.kind == HomeApps.INPUT && !it.connected;
         int ink = blend(off ? Theme.color(Theme.DISABLED, night >= 0.5f) : M_INK, Theme.color(Theme.ON_ACCENT_SMALL, night >= 0.5f), f);
-        Symbols.drawSharp(getContext(), c, it.symbol, cx, cellRect.top + cellRect.height() * 0.36f, 34 * k, ink);
+        Symbols.drawSharp(getContext(), c, it.symbol, cx, cellRect.top + cellRect.height() * 0.40f, Theme.DRAWER_ICON_SIZE * k, ink);
         String label = caps(it.label);
         mCell.setColor(ink);
-        float room = cellRect.width() - 16 * k, wide = mCell.measureText(label);
-        // A long name shrinks a little before it gets cut.
-        if (wide > room) mCell.setTextSize(Math.max(Theme.Legacy.HomeText.M_CELL_MIN_SIZE * k, Theme.Legacy.HomeText.M_CELL_SIZE * k * room / wide));
-        c.drawText(label, cx, cellRect.top + cellRect.height() * 0.74f, mCell);
-        mCell.setTextSize(Theme.Legacy.HomeText.M_CELL_SIZE * k);
+        if (!label.equals(drawerLabelValues[i])) {
+            float room = cellRect.width() - 16 * k, wide = mCell.measureText(label);
+            float size = Theme.DRAWER_CELL_TEXT_SIZE * k;
+            if (wide > room) size = Math.max(Theme.Legacy.HomeText.M_CELL_MIN_SIZE * k, size * room / wide);
+            fitPaint.set(mCell);
+            fitPaint.setTextSize(size);
+            drawerLabelFitted[i] = TextUtils.ellipsize(label, fitPaint, room, TextUtils.TruncateAt.END).toString();
+            drawerLabelValues[i] = label;
+            drawerLabelSizes[i] = size;
+        }
+        mCell.setTextSize(drawerLabelSizes[i]);
+        c.drawText(drawerLabelFitted[i], cx, cellRect.top + cellRect.height() * 0.79f, mCell);
+        mCell.setTextSize(Theme.DRAWER_CELL_TEXT_SIZE * k);
         if (it.kind == HomeApps.INPUT && it.number != null && Cec.on(Integer.parseInt(it.number))) {
             // The device on this port is on (HDMI-CEC): a dot at the top right (cyan: the system has no green).
             fill.setShader(null);
@@ -1554,42 +1595,50 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     /** Weather for your location: now (large), the next 6 hours, and sunrise and sunset. */
     private void drawWeatherCard(Canvas c, RectF r) {
         drawerCard(c, r);
-        if (Ui.LEGACY) weatherSnapshot.draw(c, r, drawerCardsKey(), cc -> drawWeather(cc, r));
-        else drawWeather(c, r);
+        if (Ui.LEGACY) weatherSnapshot.draw(c, r, drawerCardsKey(), cc -> drawWeather(cc, weatherContent));
+        else drawWeather(c, weatherContent);
     }
 
     private void drawWeather(Canvas c, RectF r) {
         refreshDrawerText();
         float x = r.left, labelBase = r.top + Theme.Legacy.HomeLayout.WIDGET_LABEL_BASE * k, rule = r.top + Theme.Legacy.HomeLayout.WIDGET_RULE_Y * k;
-        c.drawText(caps(weatherTitle), x, labelBase, mLabel);
-        hairline(c, r.left, r.right, rule);
+        dottedRule(c, r.left, rule, r.right, rule);
         HomeData.Weather wx = textWeather;
         if (Double.isNaN(wx.temp)) {
+            fitPaint.set(drawerHeading);
+            c.drawText(TextUtils.ellipsize(caps(weatherTitle), fitPaint, r.width(), TextUtils.TruncateAt.END).toString(), x, labelBase, drawerHeading);
             c.drawText(Ui.tr("Sem dados do clima agora.", "No weather data right now."), x, r.top + 120 * k, mMuted);
             return;
         }
         // The condition at the right of the label row, with its symbol after it.
         String condition = caps(HomeData.condition(wx.code, wx.isDay)), symbol = Symbols.weather(wx.code, wx.isDay);
-        float sw = Symbols.width(getContext(), symbol, 26 * k);
-        Symbols.drawSharp(getContext(), c, symbol, r.right - sw / 2, labelBase - Ui.halfCap(mLabel), 26 * k, M_INK);
-        c.drawText(condition, r.right - sw - 12 * k, labelBase, mLabelRight);
-        // The number big and tight, its degree sign small at the top (like a superscript).
-        float tempBase = r.top + Theme.Legacy.HomeLayout.TEMPERATURE_BASE * k, tx = x - Ui.leftBearing(mBig, nowDigits);
-        c.drawText(nowDigits, tx, tempBase, mBig);
-        if (nowDigits.length() < nowTemp.length()) {
-            c.drawText("°", tx + mBig.measureText(nowDigits) + 4 * k, tempBase - Ui.cap(mBig) + Ui.cap(mBigDegree) * 0.9f, mBigDegree);
-        }
-        c.drawText(highLow, x, r.top + Theme.Legacy.HomeLayout.WEATHER_FOOTER_BASE * k, mMuted);
+        float sw = Symbols.width(getContext(), symbol, Theme.WEATHER_CONDITION_ICON_SIZE * k);
+        Symbols.drawSharp(getContext(), c, symbol, r.right - sw / 2, labelBase - Ui.halfCap(drawerHeading), Theme.WEATHER_CONDITION_ICON_SIZE * k, M_INK);
+        float conditionRoom = r.width() * 0.48f - sw - 12 * k;
+        fitPaint.set(drawerMeta);
+        String fittedCondition = TextUtils.ellipsize(condition, fitPaint, conditionRoom, TextUtils.TruncateAt.END).toString();
+        c.drawText(fittedCondition, r.right - sw - 12 * k, labelBase, drawerMeta);
+        float cityRoom = r.width() - sw - 36 * k - drawerMeta.measureText(fittedCondition);
+        fitPaint.set(drawerHeading);
+        c.drawText(TextUtils.ellipsize(caps(weatherTitle), fitPaint, cityRoom, TextUtils.TruncateAt.END).toString(), x, labelBase, drawerHeading);
+        float tempBase = r.top + Theme.Legacy.HomeLayout.TEMPERATURE_BASE * k;
+        float tempRoom = (Theme.Legacy.HomeLayout.WEATHER_HOURS_X - 24) * k;
+        temperatureDots.draw(c, nowTemp, x, tempBase, Theme.TEMPERATURE_DOT_HEIGHT * k, tempRoom, mBig);
+        fitPaint.set(mMuted);
+        c.drawText(TextUtils.ellipsize(highLow, fitPaint, tempRoom, TextUtils.TruncateAt.END).toString(),
+                x, r.top + Theme.Legacy.HomeLayout.WEATHER_FOOTER_BASE * k, mMuted);
         int hours = weatherHours();
         float hx = r.left + Theme.Legacy.HomeLayout.WEATHER_HOURS_X * k, hw = (r.right - hx) / hours;
         for (int i = 0; i < wx.hours.size() && i < hours; i++) {
             float hc = hx + hw * (i + 0.5f);
-            if (i > 0) vline(c, hx + hw * i, r.top + 76 * k, r.top + 251 * k);
+            dottedRule(c, hx + hw * i, r.top + 76 * k, hx + hw * i, r.top + 251 * k);
             c.drawText(hourText[i], hc, r.top + Theme.Legacy.HomeLayout.WEATHER_HOUR_BASE * k, mHour);
-            Symbols.drawSharp(getContext(), c, Symbols.weather(wx.hourCode.get(i), wx.hourDay.get(i)), hc, r.top + Theme.Legacy.HomeLayout.WEATHER_ICON_Y * k, 32 * k, M_INK);
+            Symbols.drawSharp(getContext(), c, Symbols.weather(wx.hourCode.get(i), wx.hourDay.get(i)), hc, r.top + Theme.Legacy.HomeLayout.WEATHER_ICON_Y * k, Theme.WEATHER_ICON_SIZE * k, M_INK);
             c.drawText(hourTempText[i], hc, r.top + Theme.Legacy.HomeLayout.WEATHER_HOUR_TEMP_BASE * k, mHourTemp);
         }
-        c.drawText(sunLine, hx, r.top + Theme.Legacy.HomeLayout.WEATHER_FOOTER_BASE * k, mMuted);
+        fitPaint.set(mMuted);
+        c.drawText(TextUtils.ellipsize(sunLine, fitPaint, r.right - hx, TextUtils.TruncateAt.END).toString(),
+                hx, r.top + Theme.Legacy.HomeLayout.WEATHER_FOOTER_BASE * k, mMuted);
     }
 
     /** Next hours in the weather card: five beside the quotes card, six with the whole width. */
@@ -1657,8 +1706,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     /** Prices in the configured currency with the 24 h change (green/red, like Apple's Stocks app). */
     private void drawQuotesCard(Canvas c, RectF r) {
         drawerCard(c, r);
-        if (Ui.LEGACY) quotesSnapshot.draw(c, r, drawerCardsKey(), cc -> drawPrices(cc, r));
-        else drawPrices(c, r);
+        if (Ui.LEGACY) quotesSnapshot.draw(c, r, drawerCardsKey(), cc -> drawPrices(cc, quotesContent));
+        else drawPrices(c, quotesContent);
     }
 
     /**
@@ -1702,9 +1751,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         float x = r.left, right = r.right;
         refreshDrawerText();
         float labelBase = r.top + Theme.Legacy.HomeLayout.WIDGET_LABEL_BASE * k;
-        c.drawText(caps(quotesTitle()), x, labelBase, mLabel);
-        c.drawText(caps(staleText), right, labelBase, mLabelRight);
-        hairline(c, r.left, r.right, r.top + 53 * k);
+        c.drawText(caps(quotesTitle()), x, labelBase, drawerHeading);
+        c.drawText(caps(staleText), right, labelBase, drawerMeta);
+        dottedRule(c, r.left, r.top + 53 * k, r.right, r.top + 53 * k);
         float cap = Ui.cap(mName);
         float priceRight = right - 150 * k;
         // The mini charts sit between the names and the prices, as wide as that room allows (up to 170 px).
@@ -1725,7 +1774,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 mChange.setColor(color);
                 c.drawText(changeText[i], right, base, mChange);
             }
-            hairline(c, r.left, r.right, rule);
+            dottedRule(c, r.left, rule, r.right, rule);
         }
     }
 
@@ -2793,8 +2842,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             return;
         }
         // The time, large and tight, where a title would be; the greeting after it.
-        c.drawText(clockText, MARGIN * k - Ui.leftBearing(lTitle, clockText), L_TITLE_BASE * k, lTitle);
-        c.drawText(greetingText, MARGIN * k + lTitle.measureText(clockText) + 48 * k, L_TITLE_BASE * k, lGreeting);
+        float clockWidth = headerDots.draw(c, clockText, MARGIN * k, L_TITLE_BASE * k,
+                Theme.CLOCK_DOT_HEIGHT * k, 400 * k, lTitle);
+        c.drawText(greetingText, MARGIN * k + clockWidth + 48 * k, L_TITLE_BASE * k, lGreeting);
         // The active category remains orange. A separate outer ring marks remote focus.
         hairline(c, MARGIN * k, CONTENT_R * k, L_TAB_RULE * k);
         for (int i = 0; i < TAB_COUNT; i++) {
@@ -2852,7 +2902,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private void drawClock(Canvas c) {
         float x = MARGIN * k;
         c.drawText(dateText, x - Ui.leftBearing(lDate, dateText), L_DATE_BASE * k, lDate);
-        c.drawText(clockText, x - Ui.leftBearing(lClock, clockText), L_CLOCK_BASE * k, lClock);
+        largeClockDots.draw(c, clockText, x, L_CLOCK_BASE * k,
+                Theme.CLOCK_DOT_LARGE_HEIGHT * k, (CONTENT_R - MARGIN) * k, lClock);
         HomeData.Weather wx = data.weather;
         if (!Prefs.weather() || Double.isNaN(wx.temp)) return;
         if (data.weatherAt != weatherLineAt || Prefs.version != weatherLinePrefs || !Ui.language.equals(weatherLineLanguage)) {

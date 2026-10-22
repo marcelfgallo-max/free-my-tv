@@ -1,0 +1,25 @@
+{
+  "base_commit": "2cfeef6f9f4752b5f9c67ad9cc9eb44f4520453a",
+  "changed_existing_files": [
+    "app/src/io/freemytv/HomeView.java",
+    "app/src/io/freemytv/Theme.java"
+  ],
+  "new_production_sources": [
+    "app/src/io/freemytv/DotMatrix.java",
+    "app/src/io/freemytv/DotDisplay.java"
+  ],
+  "build": "JDK 17, build.sh succeeded",
+  "api28": "All four new/changed sources compile against android-28.jar and core-lambda-stubs.jar",
+  "signature": "apksigner verify --min-sdk-version 28 succeeded",
+  "apk_sha256": "cfdd6c63edc2a59f13f79686aa3bec0b77b904a631582e453163c610164f6157",
+  "geometry_tests": "108613 assertions over all 1440 minutes in 12/24-hour formats, signed temperatures -99 through 199, Unicode minus, fallback values and drawer bounds",
+  "mode_color_tests": "15 existing tests passed",
+  "assets_resources_and_protected_files_unchanged": true,
+  "installation": "Not installed; awaiting specific user authorization",
+  "limitations": [
+    "Dots are an original Canvas recreation from the visual reference, not the original font file",
+    "Drawer uses Android Typeface.MONOSPACE; exact glyph appearance depends on Android font rendering",
+    "No TV screenshots or frame-time measurements yet",
+    "No system settings or home-switch logic changed"
+  ]
+}

@@ -28,6 +28,21 @@ final class Theme {
     static final int LOGO_DAY = 0xFF292B2E;
     static final int LOGO_NIGHT = 0xFFF5F5F7;
 
+    // Phase 6: numeric dot display and rounded drawer, in logical Canvas units.
+    static final float CLOCK_DOT_HEIGHT = 92f, CLOCK_DOT_LARGE_HEIGHT = 148f;
+    static final float TEMPERATURE_DOT_HEIGHT = 142f;
+    static final float DOCK_SEPARATOR_HEIGHT = 64f, SEPARATOR_STROKE = 1.5f;
+    static final int SOFT_DIVIDER = 15;
+    static final float DRAWER_SHIFT = 700f, DRAWER_TITLE_BASE = 418f;
+    static final float DRAWER_ROW_TOP = 450f, DRAWER_ROW_HEIGHT = 168f, DRAWER_CELL_GAP = 12f;
+    static final float DRAWER_CARD_RADIUS = 32f, DRAWER_ICON_SIZE = 48f;
+    static final float WIDGET_TOP = 650f, WIDGET_HEIGHT = 368f, WIDGET_PADDING = 24f;
+    static final float DRAWER_LABEL_SIZE = 25f, DRAWER_META_SIZE = 21f, DRAWER_CELL_TEXT_SIZE = 20f;
+    static final float DRAWER_TRACKING = 0.02f, MARKET_TEXT_SIZE = 26f, MARKET_CHANGE_SIZE = 24f;
+    static final float WEATHER_HOUR_SIZE = 22f, WEATHER_HOUR_TEMP_SIZE = 32f;
+    static final float WEATHER_DETAIL_SIZE = 20f, WEATHER_CONDITION_ICON_SIZE = 32f, WEATHER_ICON_SIZE = 40f;
+    static final float DOTTED_RULE_STEP = 6f, DOTTED_RULE_RADIUS = 0.85f;
+
     static final String MODE_DAY = "day", MODE_NIGHT = "night";
     static final int TEXT_PRIMARY = 7, TEXT_SECONDARY = 8, DIVIDER = 9, DISABLED = 10;
     static final int POSITIVE = 11, NEGATIVE = 12, PLACEHOLDER = 13, CEC_ACTIVE = 14;
@@ -47,6 +62,7 @@ final class Theme {
             case ON_ACCENT: return ACCENT_INK_LARGE;
             case ON_ACCENT_SMALL: return ACCENT_INK_SMALL;
             case LOGO: return night ? LOGO_NIGHT : LOGO_DAY;
+            case SOFT_DIVIDER: return night ? 0xFF48494D : 0xFFD7D7DD;
             // Keep validated Night ink values while enabling legible Day endpoints.
             case TEXT_PRIMARY: return night ? Legacy.HomeColor.M_INK : 0xFF292B2E;
             case TEXT_SECONDARY: return night ? Legacy.HomeColor.M_MUTED : 0xFF62636A;

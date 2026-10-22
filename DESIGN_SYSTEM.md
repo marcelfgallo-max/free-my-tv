@@ -16,6 +16,10 @@ Build e comparação de instruções: design-review/phase1-verification.json. Ho
 
 Capturas reais e 32 verificações de pixels registradas em design-review/PHASE5_RESULTS.md e phase5-pixel-check.json. A confirmação da escolha salva é do usuário; não foi testada após reinício da TV ou encerramento do processo. Commits de implementação: f2d381a e 233083f. Sem push ou merge.
 
+## Fase 6 preparada, aguardando instalação
+
+Números pontilhados no relógio e temperatura, divisórias dos logos, fonte monoespaçada e cards arredondados na gaveta, em Day e Night. Build JDK 17, API 28, assinatura e testes de geometria aprovados. A TV permanece com a fase 5 até nova autorização. Detalhes e limites em design-review/PHASE6_RESULTS.md.
+
 ## Contrato dos tokens
 
 - Tokens Legacy: constantes primitivas static final, inlined pelo Java. Os novos papéis semânticos usam um switch simples, sem alocação no caminho normal, novos shaders ou dependências.
@@ -138,6 +142,31 @@ Home e ajustes executam no processo :home. A preferência é lida ao criar/retom
 
 A lista de ajustes passa a ter 12 linhas na configuração BRL, dentro das 12 molas de foco existentes, usando a altura reduzida já prevista. Cidade, clima e cotações tiveram seus índices deslocados para preservar as ações corretas. Build, API 28, assinatura e 15 testes de modo/contraste passaram. Home Day/Night, gaveta Day e estado final Day conferidos por capturas reais. Marcel confirmou a escolha salva e a alternância nos ajustes; não houve teste após reinício da TV ou encerramento do processo.
 
+
+### Fase 6, tipografia numérica e componentes da gaveta
+
+| Token ou regra | Valor | Uso |
+|---|---|---|
+| CLOCK_DOT_HEIGHT / CLOCK_DOT_LARGE_HEIGHT | 92 / 148 | Altura visível do relógio com recomendações / sem recomendações |
+| TEMPERATURE_DOT_HEIGHT | 142 máximo | Temperatura atual, reduzida para caber em 280 unidades |
+| DotMatrix.RADIUS / GAP | 0,43 / 1,1 passos | Raio dos pontos e espaço entre glifos de sete linhas |
+| Typeface.MONOSPACE | Fonte do sistema Android | Títulos e textos da gaveta; Inter permanece nas abas e pôsteres |
+| DRAWER_LABEL_SIZE / DRAWER_META_SIZE / DRAWER_CELL_TEXT_SIZE | 25 / 21 / 20 | Títulos, metadados e rótulos dos controles |
+| DRAWER_TRACKING | 0,02 em | Títulos e rótulos da gaveta |
+| MARKET_TEXT_SIZE / MARKET_CHANGE_SIZE | 26 / 24 | Nomes, valores e variações das cotações |
+| WEATHER_HOUR_SIZE / WEATHER_HOUR_TEMP_SIZE / WEATHER_DETAIL_SIZE | 22 / 32 / 20 | Horas, temperaturas horárias e rodapés |
+| SOFT_DIVIDER | Day #D7D7DD, Night #48494D | Divisórias do dock e pontilhado dos widgets |
+| DOCK_SEPARATOR_HEIGHT / SEPARATOR_STROKE | 64 / 1,5 | Divisórias verticais entre logos |
+| DRAWER_SHIFT / DRAWER_TITLE_BASE | 700 / 418 | Deslocamento da barra e base dos títulos da gaveta |
+| DRAWER_ROW_TOP / DRAWER_ROW_HEIGHT / DRAWER_CELL_GAP | 450 / 168 / 12 | Retângulos de desenho, foco e navegação dos controles |
+| DRAWER_CARD_RADIUS / DRAWER_ICON_SIZE | 32 / 48 | Cards de entradas e atalhos e seus ícones |
+| WIDGET_TOP / WIDGET_HEIGHT / WIDGET_PADDING | 650 / 368 / 24 | Cards de clima e cotações |
+| WEATHER_CONDITION_ICON_SIZE / WEATHER_ICON_SIZE | 32 / 40 | Ícones de condição atual e previsão horária |
+| DOTTED_RULE_STEP / DOTTED_RULE_RADIUS | 6 / 0,85 | Divisórias pontilhadas de clima e cotações |
+
+DotDisplay guarda a geometria dos números e a refaz somente quando valor ou tamanho muda; a tinta acompanha o tema sem refazer o Path. Há fallback de texto para símbolos não suportados. Temperaturas negativas e com três dígitos têm limite de largura. O desenho é original e baseado nas referências, sem identificação ou incorporação de uma fonte proprietária. Os rótulos abreviados dos controles ficam em cache. O cache de bitmaps dos widgets no Android 9 permanece ativo; os fundos dos cards usam drawRoundRect, sem blur.
+
+Os ícones Material Symbols Rounded existentes continuam os mesmos, ampliados na gaveta. O foco preserva o texto escuro sobre laranja, ainda que a imagem de referência mostre branco. O modo Day/Night, o timer, os dados e as ações permanecem os da fase 5. A validação visual desta etapa aguarda instalação autorizada.
 
 ## Catálogo implementado
 
