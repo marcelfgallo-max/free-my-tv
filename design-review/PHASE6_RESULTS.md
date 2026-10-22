@@ -35,3 +35,7 @@ A pedido de Marcel antes de dormir, o trabalho ficou pronto para a próxima revi
 Marcel autorizou a instalação em 22/10/2026. O hash do APK conferiu com o build validado, e adb install -r retornou Success. O APK contém d7a30f3 e 9beb764. A captura imediatamente anterior mostrou o protetor de tela, portanto não serve de comparação da Home; serão usadas as capturas verificadas da fase 5 como referência. Aguardando abertura da Home pelo controle para conferir Home e gaveta em Day e Night. Conferir o relógio, divisórias dos logos, foco de entrada/atalho, temperatura, linhas pontilhadas e legibilidade de rótulos. Somente depois registrar capturas como resultado real.
 
 Sem push ou merge. A branch sony-bravia-tweaks e o checkout do Claude Code não foram alterados.
+
+## Home Day capturada na TV
+
+Captura real em screenshots/phase6-home-day.png, após reconectar o ADB. Relógio 07:34 pontilhado, sem sobreposição com a saudação; Explore laranja, contorno laranja no pôster de Super Mario, seis divisórias no dock, logos monocromáticos e cantos arredondados confirmados visualmente. Placar ausente. A gaveta e o Night ainda aguardam captura. O catálogo mudou, portanto não é uma comparação de pixels com a fase 5.
