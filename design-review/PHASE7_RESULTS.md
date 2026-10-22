@@ -26,3 +26,9 @@ Instalação autorizada por Marcel e concluída em 22/10/2026, com SHA-256 confe
 Sem push ou merge. O refinamento do rótulo PlayStation da fase 6 continua separado desta etapa.
 
 A prévia Tela de Descanso nos ajustes do próprio Free My TV usa o mesmo DreamView e permite a primeira conferência sem mudar as configurações do sistema. A ativação automática pelo DreamService ainda precisa ser observada separadamente.
+
+## Primeira captura na TV, Day
+
+Prévia aberta pelo usuário. Foto dos Simpsons, relógio 08:08 pontilhado, data/clima e legenda visíveis. Moldura arredondada e cores Day confirmadas, sem placar. Não há cotações visíveis neste estado, portanto esse trecho não foi validado. Arquivo screenshots/phase7-day-photo-1.png. A sequência de fotos, Night e a ativação automática ainda aguardam conferência.
+
+A segunda captura mostra Matchbox the Movie com legenda correspondente e relógio atualizado para 08:09. Confirma progressão do slideshow; capturas estáticas não comprovam suavidade da transição ou desempenho. Arquivo screenshots/phase7-day-photo-2.png. Solicitada alternância para Night pelo controle.
