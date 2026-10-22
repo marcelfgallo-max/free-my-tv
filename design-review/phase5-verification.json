@@ -3,7 +3,7 @@
   "build": "JDK 17 build.sh succeeded",
   "api28_compile": "All seven changed production sources compile against android-28.jar with core-lambda-stubs.jar and existing project classes",
   "apk_signature_verified_min_api_28": true,
-  "apk_sha256": "8d8baaec3a8e0585aa450b79b40d8256d3c079a27ad3db31c2b4cd5910b276e3",
+  "apk_sha256": "54500e40e771a0054db6cc90c5bb9cbbc11560140839398f1a1b86ae628cdab0",
   "mode_and_color_tests": "15 host-side checks passed",
   "changed_classes": [
     "io/freemytv/HomeView$Quotes.class",
@@ -14,13 +14,17 @@
     "io/freemytv/Theme$Legacy$AppColor.class",
     "io/freemytv/Theme$Legacy$HomeText.class",
     "io/freemytv/Theme$Legacy$SettingsColor.class",
+    "io/freemytv/HomeView$3.class",
     "io/freemytv/Russian.class",
     "io/freemytv/Spanish.class",
+    "io/freemytv/HomeView$2.class",
     "io/freemytv/HomeView.class",
     "io/freemytv/Theme$Legacy$SettingsText.class",
     "io/freemytv/Theme$Legacy$Font.class",
     "io/freemytv/Theme$Legacy$SettingsMotion.class",
     "io/freemytv/Theme$Legacy$HomeEffect.class",
+    "io/freemytv/HomeView$Layer.class",
+    "io/freemytv/HomeView$Hero.class",
     "io/freemytv/German.class",
     "io/freemytv/SettingsActivity$SettingsView.class",
     "io/freemytv/Theme$Legacy.class",
@@ -32,7 +36,7 @@
     "io/freemytv/Theme$Legacy$HomeMotion.class",
     "io/freemytv/Theme$Legacy$HomeColor.class"
   ],
-  "unchanged_class_count": 71,
+  "unchanged_class_count": 67,
   "changed_sources": [
     "app/src/io/freemytv/Russian.java",
     "app/src/io/freemytv/HomeView.java",
@@ -52,5 +56,6 @@
     "TV visual verification and persisted-choice reopening check pending",
     "Theme applies to Home and drawer; Settings, screensaver and dark All Apps overlay retain their existing appearance",
     "Manual Day/Night selection only; no automatic schedule or crossfade"
-  ]
+  ],
+  "football_widget": "Removed from Home with its refresh/listener; user requested removal before authorized installation"
 }

@@ -21,3 +21,6 @@ Assets, recursos, arquivos protegidos e tokens Legacy preservados. Relatório: p
 Antes de instalar, obter autorização específica. Capturar Night antes, instalar, confirmar abertura. Pelo controle: Ajustes do Início > Tema > Day, retornar à Home, capturar Home e gaveta. Reabrir os ajustes e confirmar Day salvo. Escolher Night, voltar e capturar para conferir a restauração. Não afirmar validação visual ou persistência real antes desses passos.
 
 Nenhum push ou merge. A anotação de restauração só deve ser concluída depois do checkpoint.
+
+
+Atualização de 22/10/2026: a pedido de Marcel, o placar e o próximo jogo foram removidos do cabeçalho. A Home também deixa de iniciar/atualizar os dados de futebol e registrar seu listener. Posições do relógio, saudação e botões preservadas. Esta remoção acompanha a instalação autorizada de Day e Night.

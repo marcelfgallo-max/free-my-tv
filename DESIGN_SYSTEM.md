@@ -520,3 +520,6 @@ O verificador compara todas as classes existentes e todos os assets/recursos com
 Capturas da Home realizadas antes e depois da instalação autorizada, em design-review/screenshots. Para novas etapas, a captura de referência precisa vir da TV antes de qualquer instalação. Posicionar a tela com o controle remoto, capturar, pedir autorização para instalar, instalar o APK deste worktree e capturar novamente no mesmo estado.
 Home: comparação concluída no estado Explore, John Candy selecionado. A região x=0..899, y=0..179 foi excluída por conter o relógio e a saudação que acompanha sua largura. As diferenças medidas ficaram restritas a x=289..800, y=63..163. Gaveta e ajustes: instruções compiladas equivalentes, validação visual pareada pendente. Não generalizar o resultado da Home para todos os estados.
 Nunca instalar sem autorização expressa de Marcel, nem alterar configuração do sistema da TV. Não executar navegação por ADB. Não publicar APKs ou arquivos privados em commits ou relatórios.
+
+
+Atualização de 22/10/2026: a pedido de Marcel, o placar e o próximo jogo foram removidos do cabeçalho. A Home também deixa de iniciar/atualizar os dados de futebol e registrar seu listener. Posições do relógio, saudação e botões preservadas. Esta remoção acompanha a instalação autorizada de Day e Night.
