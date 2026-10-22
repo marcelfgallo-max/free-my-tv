@@ -32,3 +32,8 @@ Quatro estudos gerados e inspecionados: Day opaco, Day com transparência sutil,
 Marcel aprovou a transparência de 10% e acrescentou accent no ícone e temperatura do clima. Implementação nativa com alpha230 apenas no fundo, relógio616×272, legenda640 de largura e até duas linhas, raios28, margens24. Data e dígitos permanecem na cor do tema; dois pontos e clima usam laranja nos dois modos. Moldura da foto e transições preservadas. O painel cresce quando há cotações e aviso de atualização, sem cortar conteúdo.
 
 O histórico de avaliação acima foi concluído. A confirmação da versão B não é autorização para instalar. A fase8 inclui agora Home e screensaver, mantendo a gaveta. Nenhum comando de TV nesta etapa; a instalação e as capturas seguem pendentes.
+
+
+## Instalação autorizada, 22/10/2026
+
+Marcel confirmou que o Claude Code não estava instalando e autorizou este APK. Captura anterior mostra Home Night com Netflix selecionado. adb install -r retornou Success. Aguardando abertura manual do protetor com foto para capturar e validar a nova versão. Nenhuma navegação remota ou alteração do sistema da TV.

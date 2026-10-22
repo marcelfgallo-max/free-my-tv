@@ -23,12 +23,12 @@
     "app/src/io/freemytv/SettingsActivity.java"
   ],
   "screensaver": "Approved B implemented: alpha230 backgrounds, compact cards, orange colon plus weather icon and current temperature, Day/Night. Photo frame preserved.",
-  "installation": "Not installed. No TV commands in phase8. Awaiting separate authorization.",
+  "installation": "Authorized explicitly by Marcel on 2026-10-22; adb install -r returned Success. Post-install visual validation pending.",
   "limitations": [
     "Home visual check on TV pending",
     "Generated image previews are illustrative and do not prove exact alpha blending or Android typography"
   ],
-  "implementation_commit": "e2891b4",
+  "implementation_commit": "97993e0",
   "previews": {
     "day": [
       "day-opaco.png",
@@ -45,5 +45,6 @@
     "theme": 17,
     "dot_matrix": 108913,
     "render_cache": "passed, including accent recolor without geometry rebuild and unchanged number width"
-  }
+  },
+  "before_capture": "screenshots/phase8-before-night-home.png"
 }
