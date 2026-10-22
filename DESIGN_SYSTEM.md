@@ -9,6 +9,12 @@ Fase 4 aprovada e compilada: logos monocromáticos no dock, pôsteres e foco com
 Base: 8569d2127ac1577921764e6ea541dd798f085cb9. Trabalho exclusivo no worktree free-my-tv-design, branch design-system.
 Build e comparação de instruções: design-review/phase1-verification.json. Home validada com capturas reais antes/depois: zero diferença em 1.911.600 pixels fora do cabeçalho dinâmico de relógio e saudação. Gaveta e ajustes ainda não possuem capturas pareadas. Build sozinho não comprova equivalência de pixels.
 
+## Pendência confirmada por Marcel, 22/10/2026
+
+- [ ] Restaurar os temas Day e Night no app da TV, incluindo a opção de alternar entre eles. A entrega do design system só estará completa quando os dois estiverem disponíveis.
+
+Atualmente a Home permanece fixa em Night; declarar os tokens Day não implementa a troca de tema. Na etapa de temas, inspecionar e reutilizar as preferências existentes, aplicar a paleta correspondente na Home e na gaveta e verificar a persistência da escolha. Preservar o foco laranja e a legibilidade dos logos nas duas variantes. Validar ambos na TV, pedindo autorização antes de instalar. Esta anotação não altera o APK instalado.
+
 ## Contrato dos tokens
 
 - Tokens Legacy: constantes primitivas static final, inlined pelo Java. Os novos papéis semânticos usam um switch simples, sem alocação no caminho normal, novos shaders ou dependências.
