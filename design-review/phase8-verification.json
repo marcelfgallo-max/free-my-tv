@@ -56,5 +56,10 @@
     "capture": "screenshots/phase8-day-screensaver.png",
     "observed": "Doctor X: Mafia in White, 08:46. Compact light cards, subtle photo transparency, dark digits and title, orange colon, cloud and 19°. Full caption visible and rounded photo frame preserved.",
     "limits": "Screensaver Day and Night visually checked. Updated Home captures pending."
+  },
+  "visual_home_day": {
+    "capture": "screenshots/phase8-home-day.png",
+    "observed": "08:47, Explore selected. Orange capsule without outer ring; left edge aligned with headings and posters; subtle separators; both rows and app dock visible without clipping.",
+    "limits": "Night Home and focused-poster metadata pending."
   }
 }

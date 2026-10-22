@@ -47,3 +47,8 @@ Captura real da TV: The Simpsons, relógio08:43, clima19°. Cards compactos e ar
 ## Screensaver Day capturado
 
 Captura real da TV: Doctor X: Mafia in White, relógio08:46, clima19°. Cards claros menores, transparência sutil, números e título escuros legíveis, dois pontos e clima em laranja. Legenda inteira visível e moldura preservada. Screensaver conferido visualmente em Day e Night. Ainda falta captura da Home atualizada.
+
+
+## Home Day capturada
+
+Às08:47, Explore selecionado: cápsula preenchida sem anel externo, limite esquerdo alinhado aos títulos e pôsteres, divisórias discretas e espaçamentos uniformizados. Duas fileiras e barra de apps completas. Pendente captura de Home Night com pôster destacado para conferir título e metadados.
