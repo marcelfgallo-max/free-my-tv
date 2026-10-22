@@ -28,5 +28,5 @@
   ],
   "assets_unchanged": true,
   "failures": [],
-  "visual_validation": "pending real TV before/after screenshots"
+  "visual_validation": "Home static regions pixel-identical; see phase1-pixel-comparison.json. Drawer/settings paired screenshots pending."
 }

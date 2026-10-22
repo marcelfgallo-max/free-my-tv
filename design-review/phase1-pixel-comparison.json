@@ -1,0 +1,52 @@
+{
+  "resolution": [
+    1920,
+    1080
+  ],
+  "full_frame": {
+    "changed_pixels": 9738,
+    "max_channel_difference": 255,
+    "bbox": [
+      289,
+      63,
+      801,
+      164
+    ]
+  },
+  "excluded_region": [
+    0,
+    0,
+    900,
+    180
+  ],
+  "excluded_reason": "Clock changed from 23:13 to 23:17. Greeting follows measured clock width in unchanged original code.",
+  "compared_pixels": 1911600,
+  "outside_clock_header": {
+    "changed_pixels": 0,
+    "max_channel_difference": 0,
+    "bbox": null
+  },
+  "regions": {
+    "navigation": {
+      "changed_pixels": 0,
+      "max_channel_difference": 0,
+      "bbox": null
+    },
+    "posters_and_focus": {
+      "changed_pixels": 0,
+      "max_channel_difference": 0,
+      "bbox": null
+    },
+    "app_dock": {
+      "changed_pixels": 0,
+      "max_channel_difference": 0,
+      "bbox": null
+    },
+    "sports_and_utilities": {
+      "changed_pixels": 0,
+      "max_channel_difference": 0,
+      "bbox": null
+    }
+  },
+  "scope": "Home, Explore, John Candy poster focused. Drawer/settings have equivalent compiled instructions but no paired TV screenshots yet."
+}

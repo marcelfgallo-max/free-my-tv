@@ -1,0 +1,13 @@
+{
+  "source_commit": "cf1ef71436dc20e5067fe40f9c4339510d1b4c43",
+  "apk_sha256": "3ef4156355c88cba4d0e3edddb8dca18b166a9ce3195e16d38106c5e5239d91f",
+  "apk_bytes": 3464968,
+  "jdk": "17.0.20.1",
+  "theme_compiles_against_api_28": true,
+  "apk_signature_verified_min_api_28": true,
+  "installation": "adb install -r returned Success; authorized by Marcel",
+  "tv": "192.168.0.184:5555",
+  "screenshots_before": "screenshots/phase1-home-before.png",
+  "screenshots_after": "screenshots/phase1-home-after.png",
+  "visual_validation": "Home static regions pixel-identical; drawer/settings paired screenshot validation pending"
+}

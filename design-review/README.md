@@ -5,7 +5,7 @@
 3. Leia PROPOSTA-TOKENS.md e confira os quatro alvos em references.
 4. Proposta aprovada por Marcel. Consulte ../DESIGN_SYSTEM.md e PHASE1_RESULTS.md para a extração dos valores legados.
 
-O inventário e a proposta são registros da revisão inicial. A implementação da fase 1 está em Theme.java e nos consumidores HomeView, SettingsActivity e Ui. Nenhum arquivo privado está incluído. A versão existente na TV não foi modificada. Instalação e comparação visual aguardam autorização.
+O inventário e a proposta são registros da revisão inicial. A implementação da fase 1 está em Theme.java e nos consumidores HomeView, SettingsActivity e Ui. Nenhum arquivo privado está incluído. O APK da fase 1 foi instalado na TV com autorização de Marcel. A Home passou na comparação de pixels, exceto o cabeçalho dinâmico excluído. Gaveta e ajustes ainda aguardam comparação pareada. Consulte phase1-build-install.json.
 
 ## Imagens de referência
 

@@ -5,7 +5,7 @@
 Fase 1: extração dos valores existentes para Theme.Legacy. Visual Modern 80s preservado. A aparência Nothing Day/Night é o alvo aprovado para uma fase posterior, não o resultado desta refatoração.
 
 Base: 8569d2127ac1577921764e6ea541dd798f085cb9. Trabalho exclusivo no worktree free-my-tv-design, branch design-system.
-Build e comparação de instruções: design-review/phase1-verification.json. Validação visual por capturas reais da TV ainda pendente. Build não comprova equivalência de pixels.
+Build e comparação de instruções: design-review/phase1-verification.json. Home validada com capturas reais antes/depois: zero diferença em 1.911.600 pixels fora do cabeçalho dinâmico de relógio e saudação. Gaveta e ajustes ainda não possuem capturas pareadas. Build sozinho não comprova equivalência de pixels.
 
 ## Contrato dos tokens
 
@@ -422,6 +422,6 @@ Frost, Backdrop, Shadows, Scene e os assets não são alterados nesta etapa. A p
 
 Compilar sempre com JDK 17 e ./build.sh. Depois executar python3 tools/verify_theme_extraction.py.
 O verificador compara todas as classes existentes e todos os assets/recursos com o build original. Para classes migradas, normaliza índices e alinhamento do constant pool no javap e a codificação equivalente ldc/ldc_w. Os destinos de salto e exceções são comparados por índice da instrução, preservando fluxo, valores e assinaturas. Os hashes binários originais foram preservados; a recanonicalização foi feita apenas sobre classes que coincidiam com esses hashes. Testes de sensibilidade confirmaram a detecção de alterações de constante e destino de salto. As únicas classes novas permitidas são Theme e suas classes internas.
-A captura de referência precisa vir da TV antes de qualquer instalação. Posicionar a tela com o controle remoto, capturar, pedir autorização para instalar, instalar o APK deste worktree e capturar novamente no mesmo estado.
-Comparar home, gaveta e ajustes, descontando relógio e dados remotos que tenham mudado. Não declarar identidade visual até concluir essa validação.
+Capturas da Home realizadas antes e depois da instalação autorizada, em design-review/screenshots. Para novas etapas, a captura de referência precisa vir da TV antes de qualquer instalação. Posicionar a tela com o controle remoto, capturar, pedir autorização para instalar, instalar o APK deste worktree e capturar novamente no mesmo estado.
+Home: comparação concluída no estado Explore, John Candy selecionado. A região x=0..899, y=0..179 foi excluída por conter o relógio e a saudação que acompanha sua largura. As diferenças medidas ficaram restritas a x=289..800, y=63..163. Gaveta e ajustes: instruções compiladas equivalentes, validação visual pareada pendente. Não generalizar o resultado da Home para todos os estados.
 Nunca instalar sem autorização expressa de Marcel, nem alterar configuração do sistema da TV. Não executar navegação por ADB. Não publicar APKs ou arquivos privados em commits ou relatórios.
