@@ -17,6 +17,12 @@ final class DotMatrix {
         if (ch == '°' || ch == '-' || ch == '−') return 3;
         return 0;
     }
+    static int columns(char ch, boolean compact) {
+        return compact && ch == '1' ? 3 : columns(ch);
+    }
+    static int row(char ch, int y, boolean compact) {
+        return compact && ch == '1' ? row(ch, y) >> 1 : row(ch, y);
+    }
     static int row(char ch, int y) {
         if (y < 0 || y > 6) return 0;
         if (ch >= '0' && ch <= '9') return DIGITS[ch - '0'][y];
@@ -30,17 +36,21 @@ final class DotMatrix {
         for (int i = 0; i < text.length(); i++) if (columns(text.charAt(i)) == 0) return false;
         return true;
     }
-    static float widthUnits(String text) {
+    static float widthUnits(String text) { return widthUnits(text, false); }
+    static float widthUnits(String text, boolean compact) {
         if (!supports(text)) return 0;
         float w = 0;
         for (int i = 0; i < text.length(); i++) {
             if (i > 0) w += GAP;
-            w += columns(text.charAt(i)) - 1 + 2 * RADIUS;
+            w += columns(text.charAt(i), compact) - 1 + 2 * RADIUS;
         }
         return w;
     }
     static float fittedHeight(String text, float desired, float maxWidth) {
-        float units = widthUnits(text);
+        return fittedHeight(text, desired, maxWidth, false);
+    }
+    static float fittedHeight(String text, float desired, float maxWidth, boolean compact) {
+        float units = widthUnits(text, compact);
         return units == 0 ? 0 : Math.min(desired, Math.max(0, maxWidth) * HEIGHT / units);
     }
 }

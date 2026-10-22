@@ -25,6 +25,8 @@ public final class ThemeModeTest {
         check(Theme.MODE_NIGHT.equals(Theme.normalizeMode("night")), "Night restore");
         check(Theme.color(Theme.TEXT_PRIMARY, true) == Theme.Legacy.HomeColor.M_INK, "Night primary preserved");
         check(Theme.color(Theme.TEXT_SECONDARY, true) == Theme.Legacy.HomeColor.M_MUTED, "Night secondary preserved");
+        check(Theme.color(Theme.POSITIVE, true) == 0xFFB8B9BF, "Night positive chart is neutral");
+        check(Theme.color(Theme.CEC_ACTIVE, true) == Theme.Legacy.HomeColor.M_UP, "CEC indicator remains separate from market ink");
         check(Theme.color(Theme.DIVIDER, true) == Theme.Legacy.HomeColor.M_HAIRLINE, "Night rule preserved");
         for (boolean night : new boolean[] {false, true}) {
             check(contrast(Theme.color(Theme.TEXT_PRIMARY, night), Theme.color(Theme.BACKGROUND, night)) > 7, "primary text contrast");
@@ -35,6 +37,6 @@ public final class ThemeModeTest {
         boolean rejected = false;
         try { Theme.color(999, false); } catch (IllegalArgumentException expected) { rejected = true; }
         check(rejected, "unknown role rejected");
-        System.out.println("ThemeMode: 15 checks passed");
+        System.out.println("ThemeMode: 17 checks passed");
     }
 }

@@ -162,7 +162,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private String[] drawerLabelValues = new String[0], drawerLabelFitted = new String[0];
     private float[] drawerLabelSizes = new float[0];
     private final Paint detailPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final DotDisplay headerDots = new DotDisplay(), largeClockDots = new DotDisplay(), temperatureDots = new DotDisplay();
+    private final DotDisplay headerDots = new DotDisplay(), largeClockDots = new DotDisplay(), temperatureDots = new DotDisplay(true);
     private final RectF weatherContent = new RectF(), quotesContent = new RectF();
     private String nowDigits = "";
     private Paint mLabel, mLabelRight, mCell, mName, mPrice, mChange, mMuted, mMutedRight, mHour, mHourTemp, mBig;
@@ -1525,6 +1525,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         c.drawRoundRect(r, Theme.DRAWER_CARD_RADIUS * k, Theme.DRAWER_CARD_RADIUS * k, fill);
     }
 
+    private void drawerSymbol(Canvas c, String name, float cx, float cy, float size, int color) {
+        if (!DrawerSymbols.draw(c, name, cx, cy, size, color))
+            Symbols.drawSharp(getContext(), c, name, cx, cy, size, color);
+    }
+
     private void dottedRule(Canvas c, float x0, float y0, float x1, float y1) {
         detailPaint.setColor(Theme.color(Theme.SOFT_DIVIDER, night >= 0.5f));
         float length = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
@@ -1568,7 +1573,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         c.drawRoundRect(cellRect, Theme.DRAWER_CARD_RADIUS * k, Theme.DRAWER_CARD_RADIUS * k, fill);
         boolean off = it.kind == HomeApps.INPUT && !it.connected;
         int ink = blend(off ? Theme.color(Theme.DISABLED, night >= 0.5f) : M_INK, Theme.color(Theme.ON_ACCENT_SMALL, night >= 0.5f), f);
-        Symbols.drawSharp(getContext(), c, it.symbol, cx, cellRect.top + cellRect.height() * 0.40f, Theme.DRAWER_ICON_SIZE * k, ink);
+        int iconInk = blend(off ? Theme.color(Theme.DISABLED, night >= 0.5f) : M_INK,
+                Theme.color(Theme.ON_ACCENT, night >= 0.5f), f);
+        drawerSymbol(c, it.symbol, cx, cellRect.top + cellRect.height() * 0.40f, Theme.DRAWER_ICON_SIZE * k, iconInk);
         String label = caps(it.label);
         mCell.setColor(ink);
         if (!label.equals(drawerLabelValues[i])) {
@@ -1612,8 +1619,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         }
         // The condition at the right of the label row, with its symbol after it.
         String condition = caps(HomeData.condition(wx.code, wx.isDay)), symbol = Symbols.weather(wx.code, wx.isDay);
-        float sw = Symbols.width(getContext(), symbol, Theme.WEATHER_CONDITION_ICON_SIZE * k);
-        Symbols.drawSharp(getContext(), c, symbol, r.right - sw / 2, labelBase - Ui.halfCap(drawerHeading), Theme.WEATHER_CONDITION_ICON_SIZE * k, M_INK);
+        float sw = DrawerSymbols.has(symbol) ? Theme.WEATHER_CONDITION_ICON_SIZE * k
+                : Symbols.width(getContext(), symbol, Theme.WEATHER_CONDITION_ICON_SIZE * k);
+        drawerSymbol(c, symbol, r.right - sw / 2, labelBase - Ui.halfCap(drawerHeading), Theme.WEATHER_CONDITION_ICON_SIZE * k, M_INK);
         float conditionRoom = r.width() * 0.48f - sw - 12 * k;
         fitPaint.set(drawerMeta);
         String fittedCondition = TextUtils.ellipsize(condition, fitPaint, conditionRoom, TextUtils.TruncateAt.END).toString();
@@ -1633,7 +1641,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             float hc = hx + hw * (i + 0.5f);
             dottedRule(c, hx + hw * i, r.top + 76 * k, hx + hw * i, r.top + 251 * k);
             c.drawText(hourText[i], hc, r.top + Theme.Legacy.HomeLayout.WEATHER_HOUR_BASE * k, mHour);
-            Symbols.drawSharp(getContext(), c, Symbols.weather(wx.hourCode.get(i), wx.hourDay.get(i)), hc, r.top + Theme.Legacy.HomeLayout.WEATHER_ICON_Y * k, Theme.WEATHER_ICON_SIZE * k, M_INK);
+            drawerSymbol(c, Symbols.weather(wx.hourCode.get(i), wx.hourDay.get(i)), hc, r.top + Theme.Legacy.HomeLayout.WEATHER_ICON_Y * k, Theme.WEATHER_ICON_SIZE * k, M_INK);
             c.drawText(hourTempText[i], hc, r.top + Theme.Legacy.HomeLayout.WEATHER_HOUR_TEMP_BASE * k, mHourTemp);
         }
         fitPaint.set(mMuted);

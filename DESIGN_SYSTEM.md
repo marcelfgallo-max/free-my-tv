@@ -134,7 +134,7 @@ A preferência de tema não existia neste branch. Foi acrescentada ao armazename
 | CEC_ACTIVE sem foco | #21854C | #5EDCFF |
 | ACCENT / FOCUS | #FF5A20 | #FF5A20 |
 
-Os endpoints Night de tinta, divisores e indicadores preservam os valores já instalados. Eles ainda diferem da paleta alvo completa em PROPOSTA-TOKENS.md; não foram normalizados durante a restauração. O indicador CEC focado conserva o azul anterior, e a barra de progresso sobre a arte permanece branca nas duas variantes.
+Na fase 5, os endpoints Night de tinta, divisores e indicadores preservaram os valores já instalados. A fase 6 altera apenas a tinta positiva das cotações para cinza #B8B9BF, mantendo CEC independente. Eles ainda diferem da paleta alvo completa em PROPOSTA-TOKENS.md; não foram normalizados durante a restauração. O indicador CEC focado conserva o azul anterior, e a barra de progresso sobre a arte permanece branca nas duas variantes.
 
 Consumidores: título/relógio, saudação, abas não selecionadas, metadados, separadores, nomes e ícones das entradas, clima, cotações e placeholders. Os logos já tinham os dois filtros preparados. O cache dos widgets inclui o modo e a versão das preferências, para não reutilizar texto claro depois da troca para Day.
 
@@ -148,7 +148,7 @@ A lista de ajustes passa a ter 12 linhas na configuração BRL, dentro das 12 mo
 | Token ou regra | Valor | Uso |
 |---|---|---|
 | CLOCK_DOT_HEIGHT / CLOCK_DOT_LARGE_HEIGHT | 92 / 148 | Altura visível do relógio com recomendações / sem recomendações |
-| TEMPERATURE_DOT_HEIGHT | 142 máximo | Temperatura atual, reduzida para caber em 280 unidades |
+| TEMPERATURE_DOT_HEIGHT | 158 máximo | Temperatura atual, reduzida para caber em 280 unidades |
 | DotMatrix.RADIUS / GAP | 0,43 / 1,1 passos | Raio dos pontos e espaço entre glifos de sete linhas |
 | Typeface.MONOSPACE | Fonte do sistema Android | Títulos e textos da gaveta; Inter permanece nas abas e pôsteres |
 | DRAWER_LABEL_SIZE / DRAWER_META_SIZE / DRAWER_CELL_TEXT_SIZE | 25 / 21 / 20 | Títulos, metadados e rótulos dos controles |
@@ -159,14 +159,16 @@ A lista de ajustes passa a ter 12 linhas na configuração BRL, dentro das 12 mo
 | DOCK_SEPARATOR_HEIGHT / SEPARATOR_STROKE | 64 / 1,5 | Divisórias verticais entre logos |
 | DRAWER_SHIFT / DRAWER_TITLE_BASE | 700 / 418 | Deslocamento da barra e base dos títulos da gaveta |
 | DRAWER_ROW_TOP / DRAWER_ROW_HEIGHT / DRAWER_CELL_GAP | 450 / 168 / 12 | Retângulos de desenho, foco e navegação dos controles |
-| DRAWER_CARD_RADIUS / DRAWER_ICON_SIZE | 32 / 48 | Cards de entradas e atalhos e seus ícones |
+| DRAWER_CARD_RADIUS / DRAWER_ICON_SIZE | 32 / 56 | Cards de entradas e atalhos e seus ícones |
 | WIDGET_TOP / WIDGET_HEIGHT / WIDGET_PADDING | 650 / 368 / 24 | Cards de clima e cotações |
-| WEATHER_CONDITION_ICON_SIZE / WEATHER_ICON_SIZE | 32 / 40 | Ícones de condição atual e previsão horária |
+| WEATHER_CONDITION_ICON_SIZE / WEATHER_ICON_SIZE | 40 / 48 | Ícones de condição atual e previsão horária |
+| DRAWER_ICON_STROKE | 1,65 em grade de 24 | Espessura uniforme dos pictogramas vetoriais |
+| POSITIVE desde a fase 6 | Day #62636A, Night #B8B9BF | Gráficos e variações positivos neutros; indicador CEC separado |
 | DOTTED_RULE_STEP / DOTTED_RULE_RADIUS | 6 / 0,85 | Divisórias pontilhadas de clima e cotações |
 
 DotDisplay guarda a geometria dos números e a refaz somente quando valor ou tamanho muda; a tinta acompanha o tema sem refazer o Path. Há fallback de texto para símbolos não suportados. Temperaturas negativas e com três dígitos têm limite de largura. O desenho é original e baseado nas referências, sem identificação ou incorporação de uma fonte proprietária. Os rótulos abreviados dos controles ficam em cache. O cache de bitmaps dos widgets no Android 9 permanece ativo; os fundos dos cards usam drawRoundRect, sem blur.
 
-Os ícones Material Symbols Rounded existentes continuam os mesmos, ampliados na gaveta. O foco preserva o texto escuro sobre laranja, ainda que a imagem de referência mostre branco. O modo Day/Night, o timer, os dados e as ações permanecem os da fase 5. A validação visual desta etapa aguarda instalação autorizada.
+DrawerSymbols desenha pictogramas utilitários originais com Paths montados uma vez, traços arredondados e proporções consistentes. Os assets Material Symbols existentes continuam como fallback dos símbolos não cobertos. Na gaveta, o ícone focado é branco sobre laranja, e o texto pequeno permanece escuro para contraste. O algarismo 1 da temperatura tem avanço compacto; os dígitos do relógio têm avanço fixo. O modo Day/Night, o timer, os dados e as ações permanecem os da fase 5. A prévia local foi inspecionada em Day e Night com os renderizadores numéricos e de ícones. A validação visual na TV desta etapa aguarda instalação autorizada.
 
 ## Catálogo implementado
 

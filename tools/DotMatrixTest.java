@@ -29,6 +29,12 @@ public final class DotMatrixTest {
             fits(String.format(Locale.US, "%d:%02d", hour % 12 == 0 ? 12 : hour % 12, minute), Theme.CLOCK_DOT_HEIGHT, 400);
         }
         for (int temp = -99; temp <= 199; temp++) fits(temp + "°", Theme.TEMPERATURE_DOT_HEIGHT, 280);
+        for (int temp = -99; temp <= 199; temp++) {
+            String text = temp + "°";
+            float height = DotMatrix.fittedHeight(text, Theme.TEMPERATURE_DOT_HEIGHT, 280, true);
+            check(DotMatrix.widthUnits(text, true) * height / DotMatrix.HEIGHT <= 280.001f, "compact temperature overflow");
+        }
+        check(DotMatrix.widthUnits("18°", true) < DotMatrix.widthUnits("18°"), "temperature one must be narrower");
         fits("−12°", Theme.TEMPERATURE_DOT_HEIGHT, 280);
         check(!DotMatrix.supports("—"), "missing data must use text fallback");
         check(!DotMatrix.supports("") && !DotMatrix.supports(null), "empty values must use fallback");
