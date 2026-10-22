@@ -556,7 +556,7 @@ Nunca instalar sem autorização expressa de Marcel, nem alterar configuração 
 
 Atualização de 22/10/2026: a pedido de Marcel, o placar e o próximo jogo foram removidos do cabeçalho. A Home também deixa de iniciar/atualizar os dados de futebol e registrar seu listener. Posições do relógio, saudação e botões preservadas. Esta remoção acompanha a instalação autorizada de Day e Night.
 
-## Fase 7, protetor de tela (compilado, instalação pendente)
+## Fase 7, protetor de tela (instalado, conferência visual pendente)
 
 O DreamView passa a compartilhar Day/Night, DotDisplay e os pictogramas da gaveta. O placar e as consultas de futebol foram retirados. Fotos cinematográficas existentes ficam em moldura arredondada; legenda e relógio usam superfícies opacas discretas. Sem foto, o fundo segue o tema, com relógio pontilhado central. Detalhes e validação em design-review/PHASE7_RESULTS.md.
 

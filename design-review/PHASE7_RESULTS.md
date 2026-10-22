@@ -21,6 +21,8 @@ SHA do APK e escopo em phase7-verification.json. Arquivos protegidos, HomeView, 
 
 ## Validação na TV pendente
 
-A instalação exige uma nova autorização de Marcel. Após instalar, abrir o protetor pelo menu da TV ou aguardar sua ativação normal. Capturar foto, relógio, legenda e ausência do placar em Night e Day; observar pelo menos uma troca de foto e testar saída pelo controle. Capturar o estado sem foto somente se ele ocorrer normalmente, sem apagar dados ou configurações para forçá-lo. Build e prévias não comprovam desempenho ou renderização na TV.
+Instalação autorizada por Marcel e concluída em 22/10/2026, com SHA-256 conferido e retorno Success. A captura anterior mostrou a Home Day às 08:05, portanto não é um antes do protetor. Aguardando a abertura pelo controle. Para a conferência, abrir o protetor pelo menu da TV ou aguardar sua ativação normal. Capturar foto, relógio, legenda e ausência do placar em Night e Day; observar pelo menos uma troca de foto e testar saída pelo controle. Capturar o estado sem foto somente se ele ocorrer normalmente, sem apagar dados ou configurações para forçá-lo. Build e prévias não comprovam desempenho ou renderização na TV.
 
 Sem push ou merge. O refinamento do rótulo PlayStation da fase 6 continua separado desta etapa.
+
+A prévia Tela de Descanso nos ajustes do próprio Free My TV usa o mesmo DreamView e permite a primeira conferência sem mudar as configurações do sistema. A ativação automática pelo DreamService ainda precisa ser observada separadamente.

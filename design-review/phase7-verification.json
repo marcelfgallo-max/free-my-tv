@@ -24,11 +24,12 @@
   },
   "football": "No Team instance, listener, refresh or draw call remains in DreamView",
   "preview": "Offline SVG layout specimens using production DotDisplay and DrawerSymbols. Placeholder photo, sample data and host text rendering, not Android screenshots. Inspected Day, Night and fallback.",
-  "installation": "Not installed. Awaiting specific authorization. No TV commands in this phase.",
+  "installation": "Explicitly authorized by Marcel on 2026-10-22, with Claude Code not installing. APK SHA-256 matched the validated build. adb install -r returned Success. Awaiting real screensaver capture.",
   "limitations": [
     "No real TV screenshots of phase 7 yet",
     "Crossfade, bitmap shader/color filter and performance require on-device review",
     "Keeps existing movie/series photo source; no personal album integration",
     "Photo presentation follows the saved manual Day/Night preference, not a new schedule"
-  ]
+  ],
+  "before_capture": "TV was on the Day Home at 08:05; /tmp/freemytv-phase7-before.png is not a screensaver baseline."
 }
