@@ -23,10 +23,11 @@
     "app/src/io/freemytv/SettingsActivity.java"
   ],
   "screensaver": "Approved B implemented: alpha230 backgrounds, compact cards, orange colon plus weather icon and current temperature, Day/Night. Photo frame preserved.",
-  "installation": "Authorized explicitly by Marcel on 2026-10-22; adb install -r returned Success. Post-install visual validation pending.",
+  "installation": "Authorized by Marcel on 2026-10-22; adb install -r returned Success. Home and screensaver subsequently captured in both themes.",
   "limitations": [
-    "Home visual check on TV pending",
-    "Generated image previews are illustrative and do not prove exact alpha blending or Android typography"
+    "Visual checks cover the captured states, not all titles, languages or transition frames.",
+    "Surface alpha230 is verified in code; screenshot confirms visual appearance, not a measured alpha value.",
+    "No runtime frame-rate measurement or automatic DreamService activation test in this phase."
   ],
   "implementation_commit": "97993e0",
   "previews": {
@@ -50,16 +51,21 @@
   "visual_night": {
     "capture": "screenshots/phase8-night-screensaver.png",
     "observed": "The Simpsons, 08:43. Compact rounded cards; photo visible through surfaces; white digits; orange colon, cloud icon and 19°; caption fully visible; rounded photo frame preserved.",
-    "limits": "Visual appearance confirmed. Alpha230 verified in code, not measured from screenshot. Updated Home captures pending."
+    "limits": "Visual appearance checked; exact alpha value verified in code."
   },
   "visual_day": {
     "capture": "screenshots/phase8-day-screensaver.png",
     "observed": "Doctor X: Mafia in White, 08:46. Compact light cards, subtle photo transparency, dark digits and title, orange colon, cloud and 19°. Full caption visible and rounded photo frame preserved.",
-    "limits": "Screensaver Day and Night visually checked. Updated Home captures pending."
+    "limits": "Visual appearance checked; exact alpha value verified in code."
   },
   "visual_home_day": {
     "capture": "screenshots/phase8-home-day.png",
     "observed": "08:47, Explore selected. Orange capsule without outer ring; left edge aligned with headings and posters; subtle separators; both rows and app dock visible without clipping.",
-    "limits": "Night Home and focused-poster metadata pending."
-  }
+    "limits": "Captured selected Explore state; focused poster and metadata checked in Night."
+  },
+  "visual_home_night": {
+    "capture": "screenshots/phase8-home-night.png",
+    "observed": "08:49, Toy Story 5 focused. Orange poster outline, filled Explore capsule without outer ring, title and 2026 Disney+ metadata separated and right-aligned; row headings and separators aligned. No visible clipping or overlap."
+  },
+  "status": "Installed with authorization; Home and screensaver visually checked in Day and Night."
 }

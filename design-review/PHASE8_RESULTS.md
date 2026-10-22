@@ -52,3 +52,12 @@ Captura real da TV: Doctor X: Mafia in White, relógio08:46, clima19°. Cards cl
 ## Home Day capturada
 
 Às08:47, Explore selecionado: cápsula preenchida sem anel externo, limite esquerdo alinhado aos títulos e pôsteres, divisórias discretas e espaçamentos uniformizados. Duas fileiras e barra de apps completas. Pendente captura de Home Night com pôster destacado para conferir título e metadados.
+
+
+## Fase 8 concluída, conferência visual
+
+Home Night capturada às08:49, Toy Story5 destacado: contorno laranja no pôster, Explore preenchido sem anel externo, título separado dos metadados2026 e Disney+, alinhamento à direita e sem sobreposição no estado capturado.
+
+Home e screensaver foram capturados e conferidos em Day e Night. Gaveta permanece sem alteração no bloco de desenho. Build JDK17, API28, assinatura e testes locais passaram. A conferência é visual dos estados registrados, não um teste exaustivo de todos os títulos, idiomas, animações ou desempenho. Não foi testada a ativação automática do DreamService nesta fase.
+
+Commits de implementação: e2891b4 (grade e seleção da Home), 97993e0 (cards translúcidos e accent do screensaver). Instalação autorizada registrada em310a959. Capturas Night screensaver emd818f01, Day screensaver emd605e4b, Home Day em4093557, Home Night neste commit. Sem push ou merge.
