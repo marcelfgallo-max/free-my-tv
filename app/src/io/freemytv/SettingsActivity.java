@@ -116,12 +116,12 @@ public class SettingsActivity extends Activity {
     static final class SettingsView extends View implements Choreographer.FrameCallback {
         private static final int MAIN = 0, HOME_CHOICE = 1, HOME_SETTINGS = 2, REMOTE_KEYS = 3, PICKER = 4, SHELF_EDIT = 5;
         // Modern 80s: the rows touch, a hairline under each (no gaps, no boxes).
-        private static final float LIST_ROW_H = 68, LIST_ROW_GAP = 0;
-        private static final int PICK_VISIBLE = 9;
-        private static final float LIST_X = 1000, LIST_R = 1824, LIST_TOP = 186, ROW_H = 74, ROW_GAP = 0, CHOICE_H = 104;
-        private static final float MARGIN = 96;
+        private static final float LIST_ROW_H = Theme.Legacy.SettingsLayout.LIST_ROW_H, LIST_ROW_GAP = Theme.Legacy.SettingsLayout.LIST_ROW_GAP;
+        private static final int PICK_VISIBLE = Theme.Legacy.SettingsLayout.PICK_VISIBLE;
+        private static final float LIST_X = Theme.Legacy.SettingsLayout.LIST_X, LIST_R = Theme.Legacy.SettingsLayout.LIST_R, LIST_TOP = Theme.Legacy.SettingsLayout.LIST_TOP, ROW_H = Theme.Legacy.SettingsLayout.ROW_H, ROW_GAP = Theme.Legacy.SettingsLayout.ROW_GAP, CHOICE_H = Theme.Legacy.SettingsLayout.CHOICE_H;
+        private static final float MARGIN = Theme.Legacy.SettingsLayout.MARGIN;
         /** Warnings in the system's orange; INK is the type on a focused (white) row. */
-        private static final int AMBER = 0xFFFF7A12, INK = 0xFF000000, HAIRLINE = 0x8CFFFFFF, MUTED = 0xB8FFFFFF;
+        private static final int AMBER = Theme.Legacy.SettingsColor.AMBER, INK = Theme.Legacy.SettingsColor.INK, HAIRLINE = Theme.Legacy.SettingsColor.HAIRLINE, MUTED = Theme.Legacy.SettingsColor.MUTED;
 
         private final SettingsActivity activity;
         private final Scene scene = new Scene();
@@ -179,7 +179,7 @@ public class SettingsActivity extends Activity {
         SettingsView(SettingsActivity a) {
             super(a);
             activity = a;
-            for (int i = 0; i < pop.length; i++) pop[i] = new Spring(0.28f, 0.85f, 0);
+            for (int i = 0; i < pop.length; i++) pop[i] = new Spring(Theme.Legacy.SettingsMotion.FOCUS_RESPONSE_S, Theme.Legacy.SettingsMotion.FOCUS_DAMPING, 0);
             HomeData.Weather wx = HomeData.get(a).weather;
             Shaders.sky(scene.palette, System.currentTimeMillis(), wx.sunrise, wx.sunset);
             scene.setMotion(0.5f, 0.2f);
@@ -289,36 +289,36 @@ public class SettingsActivity extends Activity {
             if (!running) return;
             boolean moving = busy();
             for (Spring s : pop) moving |= !s.settled();
-            if (moving || (field == null && SystemClock.uptimeMillis() - lastSky >= 100)) invalidate();
+            if (moving || (field == null && SystemClock.uptimeMillis() - lastSky >= Theme.Legacy.SettingsMotion.FALLBACK_FRAME_MS)) invalidate();
             Choreographer.getInstance().postFrameCallback(this);
         }
 
         @Override protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
             w = width;
             h = height;
-            k = w / 1920f;
+            k = w / Theme.Legacy.Canvas.WIDTH;
             scene.setSize(w, h);
             screenRect.set(0, 0, w, h);
             // Modern 80s: Inter Display at 500, tight, caps for names; white on the field.
-            title = Ui.text(Ui.displayMedium, 92 * k, 0xFFFFFFFF);
-            title.setLetterSpacing(-0.05f);
-            subtitle = Ui.text(Ui.regular, 26 * k, MUTED);
-            version = Ui.text(Ui.regular, 22 * k, 0x8CFFFFFF);
-            rowLabel = Ui.text(Ui.displayMedium, 28 * k, 0xFFFFFFFF);
-            rowLabel.setLetterSpacing(-0.01f);
-            rowValue = Ui.text(Ui.regular, 26 * k, MUTED);
+            title = Ui.text(Ui.displayMedium, Theme.Legacy.SettingsText.TITLE_SIZE * k, Theme.Legacy.Palette.WHITE_AFF);
+            title.setLetterSpacing(Theme.Legacy.SettingsText.TITLE_TRACKING);
+            subtitle = Ui.text(Ui.regular, Theme.Legacy.SettingsText.SUBTITLE_SIZE * k, MUTED);
+            version = Ui.text(Ui.regular, Theme.Legacy.SettingsText.VERSION_SIZE * k, Theme.Legacy.Palette.WHITE_A8C);
+            rowLabel = Ui.text(Ui.displayMedium, Theme.Legacy.SettingsText.ROW_LABEL_SIZE * k, Theme.Legacy.Palette.WHITE_AFF);
+            rowLabel.setLetterSpacing(Theme.Legacy.SettingsText.ROW_LABEL_TRACKING);
+            rowValue = Ui.text(Ui.regular, Theme.Legacy.SettingsText.ROW_VALUE_SIZE * k, MUTED);
             rowValue.setTextAlign(Paint.Align.RIGHT);
-            rowSub = Ui.text(Ui.regular, 23 * k, MUTED);
-            header = Ui.text(Ui.displayMedium, 22 * k, 0xFFFFFFFF);
-            header.setLetterSpacing(-0.01f);
-            cellLabel = Ui.text(Ui.regular, 25 * k, 0xE6FFFFFF);
-            cellValue = Ui.numbers(Ui.regular, 25 * k, 0xE6FFFFFF);
+            rowSub = Ui.text(Ui.regular, Theme.Legacy.SettingsText.ROW_SUB_SIZE * k, MUTED);
+            header = Ui.text(Ui.displayMedium, Theme.Legacy.SettingsText.HEADER_SIZE * k, Theme.Legacy.Palette.WHITE_AFF);
+            header.setLetterSpacing(Theme.Legacy.SettingsText.HEADER_TRACKING);
+            cellLabel = Ui.text(Ui.regular, Theme.Legacy.SettingsText.CELL_LABEL_SIZE * k, Theme.Legacy.Palette.WHITE_AE6);
+            cellValue = Ui.numbers(Ui.regular, Theme.Legacy.SettingsText.CELL_VALUE_SIZE * k, Theme.Legacy.Palette.WHITE_AE6);
             cellValue.setTextAlign(Paint.Align.RIGHT);
-            warn = Ui.text(Ui.regular, 23 * k, AMBER);
-            notice = new TextPaint(Ui.text(Ui.regular, 23 * k, MUTED));
-            heading = Ui.text(Ui.displayMedium, 34 * k, 0xFFFFFFFF);
-            heading.setLetterSpacing(-0.02f);
-            hint = Ui.text(Ui.regular, 23 * k, MUTED);
+            warn = Ui.text(Ui.regular, Theme.Legacy.SettingsText.WARN_SIZE * k, AMBER);
+            notice = new TextPaint(Ui.text(Ui.regular, Theme.Legacy.SettingsText.NOTICE_SIZE * k, MUTED));
+            heading = Ui.text(Ui.displayMedium, Theme.Legacy.SettingsText.HEADING_SIZE * k, Theme.Legacy.Palette.WHITE_AFF);
+            heading.setLetterSpacing(Theme.Legacy.SettingsText.HEADING_TRACKING);
+            hint = Ui.text(Ui.regular, Theme.Legacy.SettingsText.HINT_SIZE * k, MUTED);
             rule = new Paint();
             rule.setColor(HAIRLINE);
             capsCache.clear();
@@ -326,11 +326,11 @@ public class SettingsActivity extends Activity {
             spinner = new Paint(Paint.ANTI_ALIAS_FLAG);
             spinner.setStyle(Paint.Style.STROKE);
             spinner.setStrokeCap(Paint.Cap.ROUND);
-            spinner.setStrokeWidth(3.5f * k);
+            spinner.setStrokeWidth(Theme.Legacy.SettingsEffect.SPINNER_STROKE * k);
             white = new Paint(Paint.ANTI_ALIAS_FLAG);
-            white.setColor(0xFFFFFFFF);
+            white.setColor(Theme.Legacy.Palette.WHITE_AFF);
             shadow = new Paint(Paint.ANTI_ALIAS_FLAG);
-            shadow.setMaskFilter(new BlurMaskFilter(22 * k, BlurMaskFilter.Blur.NORMAL));
+            shadow.setMaskFilter(new BlurMaskFilter(Theme.Legacy.SettingsEffect.SHADOW_BLUR * k, BlurMaskFilter.Blur.NORMAL));
         }
 
         private void loadField() {
@@ -397,7 +397,7 @@ public class SettingsActivity extends Activity {
         @Override protected void onDraw(Canvas c) {
             if (w == 0) return;
             long now = System.nanoTime();
-            float dt = lastNanos == 0 ? 1 / 60f : Math.min(0.05f, (now - lastNanos) / 1e9f);
+            float dt = lastNanos == 0 ? 1 / Theme.Legacy.Frame.FPS : Math.min(Theme.Legacy.Frame.MAX_STEP_S, (now - lastNanos) / 1e9f);
             lastNanos = now;
             for (int i = 0; i < pop.length; i++) {
                 pop[i].target = i == focus && i < rowCount() ? 1 : 0;
@@ -408,7 +408,7 @@ public class SettingsActivity extends Activity {
             if (field != null) {
                 c.drawBitmap(field, null, screenRect, null);
             } else {
-                if (up - lastSky >= 100) {
+                if (up - lastSky >= Theme.Legacy.SettingsMotion.FALLBACK_FRAME_MS) {
                     lastSky = up;
                     scene.advance(seconds);
                 }
@@ -417,10 +417,10 @@ public class SettingsActivity extends Activity {
 
             // On the left: the name big and tight in caps on a hairline, what it is, the version.
             float x = MARGIN * k;
-            c.drawText("FREE MY TV", x - Ui.leftBearing(title, "FREE MY TV"), 470 * k, title);
-            hairline(c, x, 900 * k, 500 * k);
-            c.drawText(Ui.tr("Início e tela de descanso da TV", "Your TV's home screen and screensaver"), x, 548 * k, subtitle);
-            c.drawText(versionName(getContext()), x, 588 * k, version);
+            c.drawText("FREE MY TV", x - Ui.leftBearing(title, "FREE MY TV"), Theme.Legacy.SettingsLayout.TITLE_BASE * k, title);
+            hairline(c, x, Theme.Legacy.SettingsLayout.TITLE_RULE_RIGHT * k, Theme.Legacy.SettingsLayout.TITLE_RULE_BASE * k);
+            c.drawText(Ui.tr("Início e tela de descanso da TV", "Your TV's home screen and screensaver"), x, Theme.Legacy.SettingsLayout.SUBTITLE_BASE * k, subtitle);
+            c.drawText(versionName(getContext()), x, Theme.Legacy.SettingsLayout.VERSION_BASE * k, version);
 
             if (screen == MAIN) drawMain(c, seconds); else if (screen == HOME_CHOICE) drawChoice(c); else if (screen == PICKER) drawPicker(c); else if (screen == SHELF_EDIT) drawShelfEditor(c); else drawList(c);
         }
@@ -437,11 +437,11 @@ public class SettingsActivity extends Activity {
                 float y = (LIST_TOP + i * (ROW_H + ROW_GAP)) * k;
                 rowRect.set(LIST_X * k, y, LIST_R * k, y + ROW_H * k);
                 float f = drawRowBackground(c, i);
-                int ink = blend(0xF2FFFFFF, INK, f);
+                int ink = blend(Theme.Legacy.Palette.WHITE_AF2, INK, f);
                 rowLabel.setColor(ink);
                 float base = rowRect.centerY() + Ui.halfCap(rowLabel);
-                c.drawText(caps(labels[i]), rowRect.left + 30 * k, base, rowLabel);
-                float right = rowRect.right - 30 * k;
+                c.drawText(caps(labels[i]), rowRect.left + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, base, rowLabel);
+                float right = rowRect.right - Theme.Legacy.SettingsLayout.ROW_PADDING_X * k;
                 if (i >= 2) {
                     float cw = Symbols.width(getContext(), "chevron_right", 22 * k);
                     Symbols.drawSharp(getContext(), c, "chevron_right", right - cw / 2, rowRect.centerY(), 22 * k, blend(MUTED, INK, f));
@@ -452,7 +452,7 @@ public class SettingsActivity extends Activity {
                     String shown = TextUtils.ellipsize(text, new TextPaint(rowValue), 470 * k, TextUtils.TruncateAt.END).toString();
                     c.drawText(shown, right, base, rowValue);
                     float sx = right - rowValue.measureText(shown) - 26 * k;
-                    spinner.setColor(blend(0xFFFFFFFF, INK, f));
+                    spinner.setColor(blend(Theme.Legacy.Palette.WHITE_AFF, INK, f));
                     Ui.spinner(c, sx, rowRect.centerY(), 12 * k, seconds * 1.3f, spinner);
                 } else {
                     rowValue.setColor(blend(MUTED, INK, f));
@@ -464,7 +464,7 @@ public class SettingsActivity extends Activity {
             String error = state.optString("error");
             if (working && (busyText.contains("Permitir") || busyText.contains("Allow") || busyText.contains("разрешите"))) {
                 c.drawText(Ui.tr("Na TV: marque “Sempre permitir” e aperte OK.", "On the TV: tick “Always allow” and press OK."),
-                        LIST_X * k + 30 * k, y, warn);
+                        LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, y, warn);
                 y += 46 * k;
             } else if (!working && !error.isEmpty()) {
                 // The whole message, on up to five lines: some say what to do (the Wi-Fi one, #14).
@@ -475,19 +475,19 @@ public class SettingsActivity extends Activity {
                             .setMaxLines(5).setEllipsize(TextUtils.TruncateAt.END).build();
                 }
                 c.save();
-                c.translate(LIST_X * k + 30 * k, y - errorLayout.getLineBaseline(0));
+                c.translate(LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, y - errorLayout.getLineBaseline(0));
                 errorLayout.draw(c);
                 c.restore();
                 y += errorLayout.getLineBaseline(errorLayout.getLineCount() - 1) - errorLayout.getLineBaseline(0) + 46 * k;
             }
             y = drawComparison(c, y);
-            y = drawRecs(c, y + 30 * k);
+            y = drawRecs(c, y + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k);
             drawNotices(c, y + 44 * k);
         }
 
         /** Home screen picks: status, and the credit TMDB asks for. */
         private float drawRecs(Canvas c, float y) {
-            float x = LIST_X * k + 30 * k;
+            float x = LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k;
             c.drawText(Ui.tr("RECOMENDAÇÕES", "RECOMMENDATIONS"), x, y, header);
             hairline(c, LIST_X * k, LIST_R * k, y + 14 * k);
             String line;
@@ -518,13 +518,13 @@ public class SettingsActivity extends Activity {
         }
 
         private float drawComparison(Canvas c, float y) {
-            float x = LIST_X * k + 30 * k, colA = LIST_R * k - 220 * k, colB = LIST_R * k - 30 * k;
+            float x = LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, colA = LIST_R * k - 220 * k, colB = LIST_R * k - Theme.Legacy.SettingsLayout.ROW_PADDING_X * k;
             c.drawText(Ui.tr("COMPARAÇÃO", "COMPARISON"), x, y, header);
             hairline(c, LIST_X * k, LIST_R * k, y + 14 * k);
             cellValue.setColor(MUTED);
             c.drawText(Ui.tr("Original", "Original"), colA, y, cellValue);
             c.drawText("Free My TV", colB, y, cellValue);
-            cellValue.setColor(0xE6FFFFFF);
+            cellValue.setColor(Theme.Legacy.Palette.WHITE_AE6);
             JSONObject metrics = state.optJSONObject("metrics");
             JSONObject a = metrics == null ? null : metrics.optJSONObject(HomeMode.ORIGINAL);
             JSONObject b = metrics == null ? null : metrics.optJSONObject(HomeMode.FREE);
@@ -540,7 +540,7 @@ public class SettingsActivity extends Activity {
         }
 
         private void drawNotices(Canvas c, float y) {
-            float x = LIST_X * k + 30 * k;
+            float x = LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k;
             c.drawText(Ui.tr("AVISOS", "NOTICES"), x, y, header);
             hairline(c, LIST_X * k, LIST_R * k, y + 14 * k);
             JSONArray notices = state.optJSONArray("notices");
@@ -557,7 +557,7 @@ public class SettingsActivity extends Activity {
 
         /** Home screen choice: Free My TV or the original, with a check on the one in use. */
         private void drawChoice(Canvas c) {
-            c.drawText(caps(Ui.tr("Início", "Home Screen")), LIST_X * k + 30 * k, (LIST_TOP - 24) * k, heading);
+            c.drawText(caps(Ui.tr("Início", "Home Screen")), LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, (LIST_TOP - 24) * k, heading);
             String[][] options = {{"Free My TV", Ui.tr("Sem anúncios, com a tela de descanso nova", "No ads, with the new screensaver")},
                     {Ui.tr("Original", "Original"), Ui.tr("O Início de fábrica da TV", "The TV's factory home screen")}};
             int current = freeActive() ? 0 : 1;
@@ -565,17 +565,17 @@ public class SettingsActivity extends Activity {
                 float y = (LIST_TOP + 20 + i * (CHOICE_H + ROW_GAP)) * k;
                 rowRect.set(LIST_X * k, y, LIST_R * k, y + CHOICE_H * k);
                 float f = drawRowBackground(c, i);
-                rowLabel.setColor(blend(0xFFFFFFFF, INK, f));
-                rowSub.setColor(blend(MUTED, 0xB3000000, f));
-                c.drawText(caps(options[i][0]), rowRect.left + 30 * k, rowRect.top + 44 * k, rowLabel);
-                c.drawText(options[i][1], rowRect.left + 30 * k, rowRect.top + 80 * k, rowSub);
+                rowLabel.setColor(blend(Theme.Legacy.Palette.WHITE_AFF, INK, f));
+                rowSub.setColor(blend(MUTED, Theme.Legacy.Palette.BLACK_AB3, f));
+                c.drawText(caps(options[i][0]), rowRect.left + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, rowRect.top + 44 * k, rowLabel);
+                c.drawText(options[i][1], rowRect.left + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, rowRect.top + 80 * k, rowSub);
                 if (i == current) {
                     float cw = Symbols.width(getContext(), "check", 26 * k);
-                    Symbols.drawSharp(getContext(), c, "check", rowRect.right - 30 * k - cw / 2, rowRect.centerY(), 26 * k, blend(0xFFFFFFFF, INK, f));
+                    Symbols.drawSharp(getContext(), c, "check", rowRect.right - Theme.Legacy.SettingsLayout.ROW_PADDING_X * k - cw / 2, rowRect.centerY(), 26 * k, blend(Theme.Legacy.Palette.WHITE_AFF, INK, f));
                 }
             }
             c.drawText(Ui.tr("A troca leva uns segundos e a tela pisca nas medições.",
-                    "Switching takes a few seconds; the screen blinks while it measures."), LIST_X * k + 30 * k,
+                    "Switching takes a few seconds; the screen blinks while it measures."), LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k,
                     (LIST_TOP + 20 + 2 * (CHOICE_H + ROW_GAP) + 40) * k, hint);
         }
 
@@ -905,7 +905,7 @@ public class SettingsActivity extends Activity {
         }
 
         private void drawShelfEditor(Canvas c) {
-            c.drawText(caps(Ui.tr("Prateleira", "Shelf")), LIST_X * k + 30 * k, (LIST_TOP - 24) * k, heading);
+            c.drawText(caps(Ui.tr("Prateleira", "Shelf")), LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, (LIST_TOP - 24) * k, heading);
             int rows = rowCount();
             for (int i = 0; i < rows; i++) {
                 String[] app = shelfRows.get(pickScroll + i);
@@ -913,16 +913,16 @@ public class SettingsActivity extends Activity {
                 float y = (LIST_TOP + 20 + i * (LIST_ROW_H + LIST_ROW_GAP)) * k;
                 rowRect.set(LIST_X * k, y, LIST_R * k, y + LIST_ROW_H * k);
                 float f = drawRowBackground(c, i);
-                rowLabel.setColor(blend(place >= 0 ? 0xFFFFFFFF : 0x80FFFFFF, place >= 0 ? INK : 0x80000000, f));
+                rowLabel.setColor(blend(place >= 0 ? Theme.Legacy.Palette.WHITE_AFF : Theme.Legacy.Palette.WHITE_A80, place >= 0 ? INK : Theme.Legacy.Palette.BLACK_A80, f));
                 rowValue.setColor(blend(MUTED, INK, f));
                 float base = rowRect.centerY() + Ui.halfCap(rowLabel);
-                c.drawText(TextUtils.ellipsize(caps(app[1]), new TextPaint(rowLabel), 520 * k, TextUtils.TruncateAt.END).toString(), rowRect.left + 30 * k, base, rowLabel);
-                c.drawText(place >= 0 ? "#" + (place + 1) : Ui.tr("Fora", "Off"), rowRect.right - 30 * k, base, rowValue);
+                c.drawText(TextUtils.ellipsize(caps(app[1]), new TextPaint(rowLabel), 520 * k, TextUtils.TruncateAt.END).toString(), rowRect.left + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, base, rowLabel);
+                c.drawText(place >= 0 ? "#" + (place + 1) : Ui.tr("Fora", "Off"), rowRect.right - Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, base, rowValue);
             }
             float hy = (LIST_TOP + 20 + rows * (LIST_ROW_H + LIST_ROW_GAP) + 36) * k;
             c.drawText(Ui.tr("OK põe ou tira da prateleira (até " + HomeApps.MAX_SHELF + "). ← → mudam a ordem.",
                     "OK adds or removes (up to " + HomeApps.MAX_SHELF + "). ← → change the order.",
-                    "OK pone o quita del estante (hasta " + HomeApps.MAX_SHELF + "). ← → cambian el orden."), LIST_X * k + 30 * k, hy, hint);
+                    "OK pone o quita del estante (hasta " + HomeApps.MAX_SHELF + "). ← → cambian el orden."), LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, hy, hint);
         }
 
         private void openPicker(int which) {
@@ -945,23 +945,23 @@ public class SettingsActivity extends Activity {
         /** A long list (the apps): nine rows at a time, the one in use checked. */
         private void drawPicker(Canvas c) {
             String title = pickFor == PICK_CITY ? Ui.tr("Cidade", "City") : keyLabels()[pickFor - 1];
-            c.drawText(caps(title), LIST_X * k + 30 * k, (LIST_TOP - 24) * k, heading);
+            c.drawText(caps(title), LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, (LIST_TOP - 24) * k, heading);
             int rows = rowCount();
             for (int i = 0; i < rows; i++) {
                 int at = pickScroll + i;
                 float y = (LIST_TOP + 20 + i * (LIST_ROW_H + LIST_ROW_GAP)) * k;
                 rowRect.set(LIST_X * k, y, LIST_R * k, y + LIST_ROW_H * k);
                 float f = drawRowBackground(c, i);
-                rowLabel.setColor(blend(0xFFFFFFFF, INK, f));
-                c.drawText(caps(pickLabels.get(at)), rowRect.left + 30 * k, rowRect.centerY() + Ui.halfCap(rowLabel), rowLabel);
+                rowLabel.setColor(blend(Theme.Legacy.Palette.WHITE_AFF, INK, f));
+                c.drawText(caps(pickLabels.get(at)), rowRect.left + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, rowRect.centerY() + Ui.halfCap(rowLabel), rowLabel);
                 if (at == pickCurrent) {
                     float cw = Symbols.width(getContext(), "check", 26 * k);
-                    Symbols.drawSharp(getContext(), c, "check", rowRect.right - 30 * k - cw / 2, rowRect.centerY(), 26 * k, blend(0xFFFFFFFF, INK, f));
+                    Symbols.drawSharp(getContext(), c, "check", rowRect.right - Theme.Legacy.SettingsLayout.ROW_PADDING_X * k - cw / 2, rowRect.centerY(), 26 * k, blend(Theme.Legacy.Palette.WHITE_AFF, INK, f));
                 }
             }
             float hy = (LIST_TOP + 20 + rows * (LIST_ROW_H + LIST_ROW_GAP) + 36) * k;
             c.drawText((pickScroll + focus + 1) + " / " + pickLabels.size() + "  ·  " + Ui.tr("OK escolhe, Voltar cancela.", "OK picks, Back cancels."),
-                    LIST_X * k + 30 * k, hy, hint);
+                    LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, hy, hint);
         }
 
         private void drawList(Canvas c) {
@@ -969,29 +969,29 @@ public class SettingsActivity extends Activity {
             String[] labels = keys ? keyLabels() : settingLabels();
             String[] values = keys ? keyValues() : settingValues();
             c.drawText(caps(keys ? Ui.tr("Botões do Controle", "Remote Buttons") : Ui.tr("Ajustes do Início", "Home Settings")),
-                    LIST_X * k + 30 * k, (LIST_TOP - 24) * k, heading);
+                    LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, (LIST_TOP - 24) * k, heading);
             float rowH = listRowH();
             for (int i = 0; i < labels.length; i++) {
                 float y = (LIST_TOP + 20 + i * (rowH + LIST_ROW_GAP)) * k;
                 rowRect.set(LIST_X * k, y, LIST_R * k, y + rowH * k);
                 float f = drawRowBackground(c, i);
-                rowLabel.setColor(blend(0xFFFFFFFF, INK, f));
+                rowLabel.setColor(blend(Theme.Legacy.Palette.WHITE_AFF, INK, f));
                 boolean locked = !keys && i >= COIN_ROWS && !Prefs.quotes();
-                rowValue.setColor(blend(locked ? 0x59FFFFFF : MUTED, locked ? 0x59000000 : INK, f));
-                if (locked) rowLabel.setColor(blend(0x73FFFFFF, 0x73000000, f));
+                rowValue.setColor(blend(locked ? Theme.Legacy.Palette.WHITE_A59 : MUTED, locked ? Theme.Legacy.Palette.BLACK_A59 : INK, f));
+                if (locked) rowLabel.setColor(blend(Theme.Legacy.Palette.WHITE_A73, Theme.Legacy.Palette.BLACK_A73, f));
                 float base = rowRect.centerY() + Ui.halfCap(rowLabel);
-                c.drawText(caps(labels[i]), rowRect.left + 30 * k, base, rowLabel);
-                c.drawText(values[i], rowRect.right - 30 * k, base, rowValue);
+                c.drawText(caps(labels[i]), rowRect.left + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, base, rowLabel);
+                c.drawText(values[i], rowRect.right - Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, base, rowValue);
             }
             float hy = (LIST_TOP + 20 + labels.length * (rowH + LIST_ROW_GAP) + 36) * k;
-            c.drawText(Ui.tr("OK ou as setas mudam o valor.", "OK or the arrows change the value."), LIST_X * k + 30 * k, hy, hint);
+            c.drawText(Ui.tr("OK ou as setas mudam o valor.", "OK or the arrows change the value."), LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, hy, hint);
             if (keys) {
                 c.drawText(RemoteKeys.VESTEL ? Ui.tr("YouTube, Prime Video e Google Play: a própria TV controla esses botões.",
                         "YouTube, Prime Video and Google Play: the TV itself controls those buttons.")
                         : RemoteKeys.supported() ? Ui.tr("Disney e Globoplay: a própria TV controla esses botões.",
                         "Disney and Globoplay: the TV itself controls those buttons.")
                         : Ui.tr("Esses são os botões do controle da TCL: nesta TV, os botões funcionam como sempre.",
-                        "These are the TCL remote's buttons: on this TV, the buttons work as they always did."), LIST_X * k + 30 * k, hy + 38 * k, hint);
+                        "These are the TCL remote's buttons: on this TV, the buttons work as they always did."), LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, hy + 38 * k, hint);
             }
         }
 

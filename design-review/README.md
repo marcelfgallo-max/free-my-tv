@@ -1,11 +1,11 @@
-# Revisão do design system, aguardando aprovação
+# Revisão do design system e fase 1
 
 1. Leia INVENTARIO.md para os valores existentes.
 2. Abra inventario.html para filtrar as1518 linhas de evidências, ou consulte o CSV.
 3. Leia PROPOSTA-TOKENS.md e confira os quatro alvos em references.
-4. Só depois do OK: criar Theme.java e DESIGN_SYSTEM.md e migrar o legado sem mudança visual.
+4. Proposta aprovada por Marcel. Consulte ../DESIGN_SYSTEM.md e PHASE1_RESULTS.md para a extração dos valores legados.
 
-Esta pasta não é uma implementação nem um build. Nenhum arquivo privado está incluído. Os relatórios são novos e não foram commitados. A versão existente na TV não foi modificada.
+O inventário e a proposta são registros da revisão inicial. A implementação da fase 1 está em Theme.java e nos consumidores HomeView, SettingsActivity e Ui. Nenhum arquivo privado está incluído. A versão existente na TV não foi modificada. Instalação e comparação visual aguardam autorização.
 
 ## Imagens de referência
 

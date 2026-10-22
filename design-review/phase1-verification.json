@@ -1,9 +1,10 @@
 {
   "base_commit": "8569d2127ac1577921764e6ea541dd798f085cb9",
   "jdk": "17.0.20.1",
-  "identical_class_count": 76,
+  "identical_class_count": 75,
   "equivalent_instructions": [
     "io/freemytv/HomeView.class",
+    "io/freemytv/SettingsActivity$SettingsView.class",
     "io/freemytv/Ui.class"
   ],
   "new_theme_classes": [
@@ -17,6 +18,11 @@
     "io/freemytv/Theme$Legacy$HomeMotion.class",
     "io/freemytv/Theme$Legacy$HomeText.class",
     "io/freemytv/Theme$Legacy$Palette.class",
+    "io/freemytv/Theme$Legacy$SettingsColor.class",
+    "io/freemytv/Theme$Legacy$SettingsEffect.class",
+    "io/freemytv/Theme$Legacy$SettingsLayout.class",
+    "io/freemytv/Theme$Legacy$SettingsMotion.class",
+    "io/freemytv/Theme$Legacy$SettingsText.class",
     "io/freemytv/Theme$Legacy.class",
     "io/freemytv/Theme.class"
   ],

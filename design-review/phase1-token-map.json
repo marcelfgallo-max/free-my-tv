@@ -253,6 +253,36 @@
       "type": "int",
       "value": "0x80000000",
       "consumer": "HomeView drawing paints and blend endpoints"
+    },
+    "WHITE_A8C": {
+      "type": "int",
+      "value": "0x8CFFFFFF",
+      "consumer": "SettingsView drawing paints and blend endpoints"
+    },
+    "WHITE_AE6": {
+      "type": "int",
+      "value": "0xE6FFFFFF",
+      "consumer": "SettingsView drawing paints and blend endpoints"
+    },
+    "BLACK_AB3": {
+      "type": "int",
+      "value": "0xB3000000",
+      "consumer": "SettingsView drawing paints and blend endpoints"
+    },
+    "WHITE_A80": {
+      "type": "int",
+      "value": "0x80FFFFFF",
+      "consumer": "SettingsView drawing paints and blend endpoints"
+    },
+    "WHITE_A59": {
+      "type": "int",
+      "value": "0x59FFFFFF",
+      "consumer": "SettingsView drawing paints and blend endpoints"
+    },
+    "BLACK_A73": {
+      "type": "int",
+      "value": "0x73000000",
+      "consumer": "SettingsView drawing paints and blend endpoints"
     }
   },
   "HomeText": {
@@ -1242,6 +1272,226 @@
       "type": "int",
       "value": "400",
       "consumer": "Ui.init Inter wght"
+    }
+  },
+  "SettingsColor": {
+    "AMBER": {
+      "type": "int",
+      "value": "0xFFFF7A12",
+      "consumer": "SettingsView.AMBER"
+    },
+    "INK": {
+      "type": "int",
+      "value": "0xFF000000",
+      "consumer": "SettingsView.INK"
+    },
+    "HAIRLINE": {
+      "type": "int",
+      "value": "0x8CFFFFFF",
+      "consumer": "SettingsView.HAIRLINE"
+    },
+    "MUTED": {
+      "type": "int",
+      "value": "0xB8FFFFFF",
+      "consumer": "SettingsView.MUTED"
+    }
+  },
+  "SettingsText": {
+    "TITLE_SIZE": {
+      "type": "int",
+      "value": "92",
+      "consumer": "SettingsView.title"
+    },
+    "SUBTITLE_SIZE": {
+      "type": "int",
+      "value": "26",
+      "consumer": "SettingsView.subtitle"
+    },
+    "VERSION_SIZE": {
+      "type": "int",
+      "value": "22",
+      "consumer": "SettingsView.version"
+    },
+    "ROW_LABEL_SIZE": {
+      "type": "int",
+      "value": "28",
+      "consumer": "SettingsView.rowLabel"
+    },
+    "ROW_VALUE_SIZE": {
+      "type": "int",
+      "value": "26",
+      "consumer": "SettingsView.rowValue"
+    },
+    "ROW_SUB_SIZE": {
+      "type": "int",
+      "value": "23",
+      "consumer": "SettingsView.rowSub"
+    },
+    "HEADER_SIZE": {
+      "type": "int",
+      "value": "22",
+      "consumer": "SettingsView.header"
+    },
+    "CELL_LABEL_SIZE": {
+      "type": "int",
+      "value": "25",
+      "consumer": "SettingsView.cellLabel"
+    },
+    "CELL_VALUE_SIZE": {
+      "type": "int",
+      "value": "25",
+      "consumer": "SettingsView.cellValue"
+    },
+    "WARN_SIZE": {
+      "type": "int",
+      "value": "23",
+      "consumer": "SettingsView.warn"
+    },
+    "NOTICE_SIZE": {
+      "type": "int",
+      "value": "23",
+      "consumer": "SettingsView.notice"
+    },
+    "HEADING_SIZE": {
+      "type": "int",
+      "value": "34",
+      "consumer": "SettingsView.heading"
+    },
+    "HINT_SIZE": {
+      "type": "int",
+      "value": "23",
+      "consumer": "SettingsView.hint"
+    },
+    "TITLE_TRACKING": {
+      "type": "float",
+      "value": "-0.05f",
+      "consumer": "SettingsView.title"
+    },
+    "ROW_LABEL_TRACKING": {
+      "type": "float",
+      "value": "-0.01f",
+      "consumer": "SettingsView.rowLabel"
+    },
+    "HEADER_TRACKING": {
+      "type": "float",
+      "value": "-0.01f",
+      "consumer": "SettingsView.header"
+    },
+    "HEADING_TRACKING": {
+      "type": "float",
+      "value": "-0.02f",
+      "consumer": "SettingsView.heading"
+    }
+  },
+  "SettingsLayout": {
+    "LIST_ROW_H": {
+      "type": "float",
+      "value": "68f",
+      "consumer": "SettingsView.LIST_ROW_H"
+    },
+    "LIST_ROW_GAP": {
+      "type": "float",
+      "value": "0f",
+      "consumer": "SettingsView.LIST_ROW_GAP"
+    },
+    "LIST_X": {
+      "type": "float",
+      "value": "1000f",
+      "consumer": "SettingsView.LIST_X"
+    },
+    "LIST_R": {
+      "type": "float",
+      "value": "1824f",
+      "consumer": "SettingsView.LIST_R"
+    },
+    "LIST_TOP": {
+      "type": "float",
+      "value": "186f",
+      "consumer": "SettingsView.LIST_TOP"
+    },
+    "ROW_H": {
+      "type": "float",
+      "value": "74f",
+      "consumer": "SettingsView.ROW_H"
+    },
+    "ROW_GAP": {
+      "type": "float",
+      "value": "0f",
+      "consumer": "SettingsView.ROW_GAP"
+    },
+    "CHOICE_H": {
+      "type": "float",
+      "value": "104f",
+      "consumer": "SettingsView.CHOICE_H"
+    },
+    "MARGIN": {
+      "type": "float",
+      "value": "96f",
+      "consumer": "SettingsView.MARGIN"
+    },
+    "PICK_VISIBLE": {
+      "type": "int",
+      "value": "9",
+      "consumer": "SettingsView picker visible rows"
+    },
+    "TITLE_BASE": {
+      "type": "int",
+      "value": "470",
+      "consumer": "SettingsView layout"
+    },
+    "TITLE_RULE_RIGHT": {
+      "type": "int",
+      "value": "900",
+      "consumer": "SettingsView layout"
+    },
+    "TITLE_RULE_BASE": {
+      "type": "int",
+      "value": "500",
+      "consumer": "SettingsView layout"
+    },
+    "SUBTITLE_BASE": {
+      "type": "int",
+      "value": "548",
+      "consumer": "SettingsView layout"
+    },
+    "VERSION_BASE": {
+      "type": "int",
+      "value": "588",
+      "consumer": "SettingsView layout"
+    },
+    "ROW_PADDING_X": {
+      "type": "int",
+      "value": "30",
+      "consumer": "SettingsView layout"
+    }
+  },
+  "SettingsMotion": {
+    "FOCUS_RESPONSE_S": {
+      "type": "float",
+      "value": "0.28f",
+      "consumer": "SettingsView.pop"
+    },
+    "FOCUS_DAMPING": {
+      "type": "float",
+      "value": "0.85f",
+      "consumer": "SettingsView.pop"
+    },
+    "FALLBACK_FRAME_MS": {
+      "type": "int",
+      "value": "100",
+      "consumer": "SettingsView background fallback"
+    }
+  },
+  "SettingsEffect": {
+    "SPINNER_STROKE": {
+      "type": "float",
+      "value": "3.5f",
+      "consumer": "SettingsView.spinner"
+    },
+    "SHADOW_BLUR": {
+      "type": "int",
+      "value": "22",
+      "consumer": "SettingsView.shadow"
     }
   }
 }

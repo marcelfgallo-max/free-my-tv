@@ -18,6 +18,51 @@ def sha(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def canonical(code):
+    """Normalize encoding metadata while preserving values, opcodes and control-flow targets."""
+    parts = code.split('    Code:\n')
+    result = [parts[0]]
+    instruction = re.compile(r'^\s*(\d+):\s+([a-z][a-z0-9_]*)\b(.*)$')
+    for block in parts[1:]:
+        lines = block.splitlines()
+        offsets = [int(m.group(1)) for line in lines if (m := instruction.match(line))]
+        labels = {offset: i for i, offset in enumerate(offsets)}
+        def label(offset):
+            # Reject unmapped targets instead of silently removing control-flow information.
+            return '@' + str(labels[int(offset)])
+        rendered = []
+        exception_table = False
+        for line in lines:
+            m = instruction.match(line)
+            if m:
+                at, op, operands = m.groups()
+                op = 'ldc' if op == 'ldc_w' else op
+                operands, separator, comment = operands.partition('//')
+                operands = re.sub(r'#\d+', '#', operands).strip()
+                if op.startswith('if') or op in ('goto', 'goto_w', 'jsr', 'jsr_w'):
+                    operands = label(operands)
+                rendered.append(label(at) + ': ' + op + ' ' + operands
+                                + ((' // ' + comment.strip()) if separator else ''))
+                continue
+            m = re.match(r'^\s*(-?\d+|default):\s+(\d+)\s*$', line)
+            if m:
+                rendered.append(m.group(1) + ': ' + label(m.group(2)))
+                continue
+            if line.strip() == 'Exception table:':
+                exception_table = True
+            elif exception_table:
+                m = re.match(r'^\s*(\d+)\s+(\d+)\s+(\d+)\s+(.+)$', line)
+                if m:
+                    start, end, target, kind = m.groups()
+                    rendered.append('exception ' + label(start) + ' ' + label(end) + ' ' + label(target) + ' ' + kind)
+                    continue
+                if not line.strip():
+                    exception_table = False
+            rendered.append(line)
+        result.append('\n'.join(rendered))
+    return '\nCode:\n'.join(result)
+
+
 def snapshot():
     java_home = os.environ.get('JAVA_HOME')
     if not java_home:
@@ -32,9 +77,7 @@ def snapshot():
         entry = {'class_sha256': sha(path.read_bytes())}
         if any(path.stem == prefix or path.stem.startswith(prefix + '$') for prefix in MIGRATED):
             code = subprocess.check_output([javap, '-c', '-p', str(path)], text=True)
-            # Constant-pool indices can move when Java adds InnerClasses metadata for Theme.Legacy.
-            # Keep every instruction, jump address, descriptor and resolved constant/reference.
-            code = re.sub(r'#\d+[ \t]*', '# ', code)
+            code = canonical(code)
             entry['instructions_sha256'] = sha(code.encode())
         classes[name] = entry
     if not classes:

@@ -68,6 +68,12 @@ final class Theme {
             static final int WHITE_A00 = 0x00FFFFFF;
             static final int WHITE_A14 = 0x14FFFFFF;
             static final int BLACK_A80 = 0x80000000;
+            static final int WHITE_A8C = 0x8CFFFFFF;
+            static final int WHITE_AE6 = 0xE6FFFFFF;
+            static final int BLACK_AB3 = 0xB3000000;
+            static final int WHITE_A80 = 0x80FFFFFF;
+            static final int WHITE_A59 = 0x59FFFFFF;
+            static final int BLACK_A73 = 0x73000000;
         }
 
         static final class HomeText {
@@ -291,6 +297,68 @@ final class Theme {
             static final int SEMIBOLD_WEIGHT = 600;
             static final int TEXT_OPTICAL_SIZE = 14;
             static final int REGULAR_WEIGHT = 400;
+        }
+
+        static final class SettingsColor {
+            private SettingsColor() {}
+            static final int AMBER = 0xFFFF7A12;
+            static final int INK = 0xFF000000;
+            static final int HAIRLINE = 0x8CFFFFFF;
+            static final int MUTED = 0xB8FFFFFF;
+        }
+
+        static final class SettingsText {
+            private SettingsText() {}
+            static final int TITLE_SIZE = 92;
+            static final int SUBTITLE_SIZE = 26;
+            static final int VERSION_SIZE = 22;
+            static final int ROW_LABEL_SIZE = 28;
+            static final int ROW_VALUE_SIZE = 26;
+            static final int ROW_SUB_SIZE = 23;
+            static final int HEADER_SIZE = 22;
+            static final int CELL_LABEL_SIZE = 25;
+            static final int CELL_VALUE_SIZE = 25;
+            static final int WARN_SIZE = 23;
+            static final int NOTICE_SIZE = 23;
+            static final int HEADING_SIZE = 34;
+            static final int HINT_SIZE = 23;
+            static final float TITLE_TRACKING = -0.05f;
+            static final float ROW_LABEL_TRACKING = -0.01f;
+            static final float HEADER_TRACKING = -0.01f;
+            static final float HEADING_TRACKING = -0.02f;
+        }
+
+        static final class SettingsLayout {
+            private SettingsLayout() {}
+            static final float LIST_ROW_H = 68f;
+            static final float LIST_ROW_GAP = 0f;
+            static final float LIST_X = 1000f;
+            static final float LIST_R = 1824f;
+            static final float LIST_TOP = 186f;
+            static final float ROW_H = 74f;
+            static final float ROW_GAP = 0f;
+            static final float CHOICE_H = 104f;
+            static final float MARGIN = 96f;
+            static final int PICK_VISIBLE = 9;
+            static final int TITLE_BASE = 470;
+            static final int TITLE_RULE_RIGHT = 900;
+            static final int TITLE_RULE_BASE = 500;
+            static final int SUBTITLE_BASE = 548;
+            static final int VERSION_BASE = 588;
+            static final int ROW_PADDING_X = 30;
+        }
+
+        static final class SettingsMotion {
+            private SettingsMotion() {}
+            static final float FOCUS_RESPONSE_S = 0.28f;
+            static final float FOCUS_DAMPING = 0.85f;
+            static final int FALLBACK_FRAME_MS = 100;
+        }
+
+        static final class SettingsEffect {
+            private SettingsEffect() {}
+            static final float SPINNER_STROKE = 3.5f;
+            static final int SHADOW_BLUR = 22;
         }
     }
 }

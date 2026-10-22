@@ -87,35 +87,35 @@
     },
     "io/freemytv/HomeView$1.class": {
       "class_sha256": "cb48ce665c6b152304af25d4530098be9cfd02f92d103957b16f0a80828d2ca1",
-      "instructions_sha256": "bc2ca15825ce2074b6d0670ea5d49e2c218b487c246e0590ee928323e02921f4"
+      "instructions_sha256": "4d941fbd2b81cbdf7dcaf66878889d240620ee161a7e92ab2c97a086b80f2a60"
     },
     "io/freemytv/HomeView$2.class": {
       "class_sha256": "78f9c5b000d4e04d9a3e445a3c0c47a260dd9c5e8974fc88ee984f871e2126da",
-      "instructions_sha256": "ac7d9abcfbe5509465a4e3e041fe610ded5186bb19ab3ce5f65ca62e89fa015c"
+      "instructions_sha256": "42fefa2686255cfe407ec221943d4f2a03ae2cc684715d72dc318436581d28b3"
     },
     "io/freemytv/HomeView$3.class": {
       "class_sha256": "3002ea0918984d64ce690f7031be39d171a2663dddaf8318b9c2c21c0834b3d5",
-      "instructions_sha256": "698664e87039ff5ba45919b6813c03dcc57cfc5baeeb34474f23fcd610271be8"
+      "instructions_sha256": "37059b3888b62d877704d8680ad4ea72b6a0cc317dece9087b084337863e7d4e"
     },
     "io/freemytv/HomeView$Hero.class": {
       "class_sha256": "92595f7c6304d40e57664fb1823cfc3e477850ab96b5f6cc41ba6d0b1d8bbbe9",
-      "instructions_sha256": "54f4697f1f0c9fe511c8286e067be6119b1292cc076455c19ae966274b7514ce"
+      "instructions_sha256": "de0b8b7b8830cd164b6fa702f5eefafe69fe4af729fbce2d197bc875d7986e97"
     },
     "io/freemytv/HomeView$Layer.class": {
       "class_sha256": "2f44408f21ae1bdd65e00071bbf7b94bf7b71f7b07e6c9002e21bb597071312a",
-      "instructions_sha256": "d161b6ad551595a4d708d6cb3cfabceb5a394c47cc8161db7456a088650fc76b"
+      "instructions_sha256": "e0f394683c4149321d953f632ee64d2d001c0d17af290bfd1c6d96d4bba84ab0"
     },
     "io/freemytv/HomeView$Quotes.class": {
       "class_sha256": "86a6d2fd79f13ea9ae6647db71a38d5d10eb0afcf1100dbefdce2187b303305f",
-      "instructions_sha256": "e1dab5a740109045bb8966d1f2d2f932a5e98e254a790d541a59882fadbe11bb"
+      "instructions_sha256": "73d6be38b9c26a608c91c4d7c053002c33123c3db506ead5c81a0b78a770387d"
     },
     "io/freemytv/HomeView$Snapshot.class": {
       "class_sha256": "6fa96dadda7f1b368396b0780baf948b906340a58eedd69424859a16cb9cc784",
-      "instructions_sha256": "42f8da3cb015107065cae6d3530dec8ce1e88ac4f55be45bf7ba7609c94d72ec"
+      "instructions_sha256": "1cb85eb79cb8c68abbdb65d6ef86bf01bf19cf64622b657a7a5c5bc2c60cd868"
     },
     "io/freemytv/HomeView.class": {
       "class_sha256": "9a0d202ba3dbcafcd4744842a8f507570adbf1fbfe2b54606e79d1469dde6b7f",
-      "instructions_sha256": "d9b69245dc297b4d2c6de12e8093bffdd8e736391276d68c6055c2ce8aa8727b"
+      "instructions_sha256": "039f0cbe65296c5de1f27cece1870ced3063240dc328e488a3aa9c3c800efad9"
     },
     "io/freemytv/ModeJob.class": {
       "class_sha256": "819a1345edbf081f086b3e39a89fe12e728462ff018aa3e2034744a91e8600a3"
@@ -185,19 +185,19 @@
     },
     "io/freemytv/SettingsActivity$SettingsView$1.class": {
       "class_sha256": "bc030be4de9729d3ea78d41b95b11b8d44ec17b267398eb8948fe490c8963a57",
-      "instructions_sha256": "546126a1daaf069e2f05a6508e8c61e2754f13b851be518e9a4e38ecdb4659db"
+      "instructions_sha256": "5323fd8809ed7144bdc8fc8029d3c93290e9644de3a4b077dfb8e5041fac33fe"
     },
     "io/freemytv/SettingsActivity$SettingsView$2.class": {
       "class_sha256": "666843c5832d4ce23e0178a2802920125c854fac9083258401c09fc6991e9676",
-      "instructions_sha256": "996957aba397fe9d1d1c09392ac894a7b99822da1308abdb36d6c5bb633e22ac"
+      "instructions_sha256": "4a300689277db22655d7393d3ede02cba0346d0bbd77be42b100017a103293c8"
     },
     "io/freemytv/SettingsActivity$SettingsView.class": {
       "class_sha256": "f41ce9644902a66ccf920ee481e7afe067fa9be5b17b2de05a086a7483b51655",
-      "instructions_sha256": "66555c59bdd641f022397e02df41a15393c313766324642166047e8d3f8d5f6a"
+      "instructions_sha256": "3ad4d977d9db9e297e24e857dbc2055585c1cd2c6cf9368672ecc161703db8bb"
     },
     "io/freemytv/SettingsActivity.class": {
       "class_sha256": "3df5fd0931f60e371fa5d6aaa801aee68405ba7c3096c7e41a21549b79041b89",
-      "instructions_sha256": "8e02bcf6f7b394318fc26de03a2af0eca7b045f404b79a95732d27470600a559"
+      "instructions_sha256": "27f4b4dd32fd3b28e5cacdec5db38b9cef14bbe0cca4e6de3f9da6a31d28c4b3"
     },
     "io/freemytv/Shaders$Palette.class": {
       "class_sha256": "366e9f2b898ec44cf5ccb613fc70adccc05168fa6af126b7b6a06f0feea7ed13"
@@ -240,7 +240,7 @@
     },
     "io/freemytv/Ui.class": {
       "class_sha256": "f0f404ed853bfbf18b0ff8cb716af6bbdad391fa5da61c4ec42221aa2a9f8de5",
-      "instructions_sha256": "e5a28adada24ee623705829a755c6ca8702c4ee27c45c08a88f6743b95ea87eb"
+      "instructions_sha256": "776bccdc6788bb2fcb1e49341f5ed590cec9bc343beb9b67df74a8d4119ce089"
     },
     "io/freemytv/WatchNext.class": {
       "class_sha256": "438942f0951e9108a215e73b8c2be9eaddc116f3178daad664d8f819e50a1ede"

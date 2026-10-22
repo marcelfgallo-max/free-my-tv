@@ -114,6 +114,12 @@ Frost, Backdrop, Shadows, Scene e os assets não são alterados nesta etapa. A p
 | WHITE_A00 | int | 0x00FFFFFF | HomeView drawing paints and blend endpoints |
 | WHITE_A14 | int | 0x14FFFFFF | HomeView drawing paints and blend endpoints |
 | BLACK_A80 | int | 0x80000000 | HomeView drawing paints and blend endpoints |
+| WHITE_A8C | int | 0x8CFFFFFF | SettingsView drawing paints and blend endpoints |
+| WHITE_AE6 | int | 0xE6FFFFFF | SettingsView drawing paints and blend endpoints |
+| BLACK_AB3 | int | 0xB3000000 | SettingsView drawing paints and blend endpoints |
+| WHITE_A80 | int | 0x80FFFFFF | SettingsView drawing paints and blend endpoints |
+| WHITE_A59 | int | 0x59FFFFFF | SettingsView drawing paints and blend endpoints |
+| BLACK_A73 | int | 0x73000000 | SettingsView drawing paints and blend endpoints |
 
 ### Theme.Legacy.HomeText
 
@@ -345,10 +351,77 @@ Frost, Backdrop, Shadows, Scene e os assets não são alterados nesta etapa. A p
 | TEXT_OPTICAL_SIZE | int | 14 | Ui.init Inter opsz |
 | REGULAR_WEIGHT | int | 400 | Ui.init Inter wght |
 
+### Theme.Legacy.SettingsColor
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| AMBER | int | 0xFFFF7A12 | SettingsView.AMBER |
+| INK | int | 0xFF000000 | SettingsView.INK |
+| HAIRLINE | int | 0x8CFFFFFF | SettingsView.HAIRLINE |
+| MUTED | int | 0xB8FFFFFF | SettingsView.MUTED |
+
+### Theme.Legacy.SettingsText
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| TITLE_SIZE | int | 92 | SettingsView.title |
+| SUBTITLE_SIZE | int | 26 | SettingsView.subtitle |
+| VERSION_SIZE | int | 22 | SettingsView.version |
+| ROW_LABEL_SIZE | int | 28 | SettingsView.rowLabel |
+| ROW_VALUE_SIZE | int | 26 | SettingsView.rowValue |
+| ROW_SUB_SIZE | int | 23 | SettingsView.rowSub |
+| HEADER_SIZE | int | 22 | SettingsView.header |
+| CELL_LABEL_SIZE | int | 25 | SettingsView.cellLabel |
+| CELL_VALUE_SIZE | int | 25 | SettingsView.cellValue |
+| WARN_SIZE | int | 23 | SettingsView.warn |
+| NOTICE_SIZE | int | 23 | SettingsView.notice |
+| HEADING_SIZE | int | 34 | SettingsView.heading |
+| HINT_SIZE | int | 23 | SettingsView.hint |
+| TITLE_TRACKING | float | -0.05f | SettingsView.title |
+| ROW_LABEL_TRACKING | float | -0.01f | SettingsView.rowLabel |
+| HEADER_TRACKING | float | -0.01f | SettingsView.header |
+| HEADING_TRACKING | float | -0.02f | SettingsView.heading |
+
+### Theme.Legacy.SettingsLayout
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| LIST_ROW_H | float | 68f | SettingsView.LIST_ROW_H |
+| LIST_ROW_GAP | float | 0f | SettingsView.LIST_ROW_GAP |
+| LIST_X | float | 1000f | SettingsView.LIST_X |
+| LIST_R | float | 1824f | SettingsView.LIST_R |
+| LIST_TOP | float | 186f | SettingsView.LIST_TOP |
+| ROW_H | float | 74f | SettingsView.ROW_H |
+| ROW_GAP | float | 0f | SettingsView.ROW_GAP |
+| CHOICE_H | float | 104f | SettingsView.CHOICE_H |
+| MARGIN | float | 96f | SettingsView.MARGIN |
+| PICK_VISIBLE | int | 9 | SettingsView picker visible rows |
+| TITLE_BASE | int | 470 | SettingsView layout |
+| TITLE_RULE_RIGHT | int | 900 | SettingsView layout |
+| TITLE_RULE_BASE | int | 500 | SettingsView layout |
+| SUBTITLE_BASE | int | 548 | SettingsView layout |
+| VERSION_BASE | int | 588 | SettingsView layout |
+| ROW_PADDING_X | int | 30 | SettingsView layout |
+
+### Theme.Legacy.SettingsMotion
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| FOCUS_RESPONSE_S | float | 0.28f | SettingsView.pop |
+| FOCUS_DAMPING | float | 0.85f | SettingsView.pop |
+| FALLBACK_FRAME_MS | int | 100 | SettingsView background fallback |
+
+### Theme.Legacy.SettingsEffect
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| SPINNER_STROKE | float | 3.5f | SettingsView.spinner |
+| SHADOW_BLUR | int | 22 | SettingsView.shadow |
+
 ## Verificação e instalação
 
 Compilar sempre com JDK 17 e ./build.sh. Depois executar python3 tools/verify_theme_extraction.py.
-O verificador compara todas as classes existentes e todos os assets/recursos com o build original. Para classes migradas, ignora somente índices e alinhamento de constant pool no javap, preservando instruções, destinos de salto, valores e assinaturas. As únicas classes novas permitidas são Theme e suas classes internas.
+O verificador compara todas as classes existentes e todos os assets/recursos com o build original. Para classes migradas, normaliza índices e alinhamento do constant pool no javap e a codificação equivalente ldc/ldc_w. Os destinos de salto e exceções são comparados por índice da instrução, preservando fluxo, valores e assinaturas. Os hashes binários originais foram preservados; a recanonicalização foi feita apenas sobre classes que coincidiam com esses hashes. Testes de sensibilidade confirmaram a detecção de alterações de constante e destino de salto. As únicas classes novas permitidas são Theme e suas classes internas.
 A captura de referência precisa vir da TV antes de qualquer instalação. Posicionar a tela com o controle remoto, capturar, pedir autorização para instalar, instalar o APK deste worktree e capturar novamente no mesmo estado.
 Comparar home, gaveta e ajustes, descontando relógio e dados remotos que tenham mudado. Não declarar identidade visual até concluir essa validação.
 Nunca instalar sem autorização expressa de Marcel, nem alterar configuração do sistema da TV. Não executar navegação por ADB. Não publicar APKs ou arquivos privados em commits ou relatórios.
