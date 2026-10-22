@@ -44,6 +44,14 @@ final class Theme {
     static final float WEATHER_DETAIL_SIZE = 20f, WEATHER_CONDITION_ICON_SIZE = 40f, WEATHER_ICON_SIZE = 48f;
     static final float DOTTED_RULE_STEP = 6f, DOTTED_RULE_RADIUS = 0.85f;
 
+    // Screensaver: shared endpoints, quiet photo frame and cached information panels.
+    static final long DREAM_SHOW_MS = 30_000, DREAM_FADE_MS = 3_000, DREAM_FIRST_MS = 1_600;
+    static final float DREAM_PHOTO_INSET = 64f, DREAM_PHOTO_RADIUS = 48f, DREAM_PANEL_RADIUS = 32f;
+    static final float DREAM_CLOCK_CARD_WIDTH = 680f, DREAM_CLOCK_HEIGHT = 132f;
+    static final float DREAM_FALLBACK_CLOCK_HEIGHT = 220f, DREAM_TITLE_WIDTH = 816f, DREAM_TITLE_SIZE = 52f;
+    static final float DREAM_PHOTO_SATURATION_DAY = .95f, DREAM_PHOTO_SATURATION_NIGHT = .85f;
+    static final float DREAM_PHOTO_BRIGHTNESS_NIGHT = .86f;
+
     static final String MODE_DAY = "day", MODE_NIGHT = "night";
     static final int TEXT_PRIMARY = 7, TEXT_SECONDARY = 8, DIVIDER = 9, DISABLED = 10;
     static final int POSITIVE = 11, NEGATIVE = 12, PLACEHOLDER = 13, CEC_ACTIVE = 14;
