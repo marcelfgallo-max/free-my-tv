@@ -16,4 +16,18 @@ Build JDK 17 concluído; Theme compila contra API 28; assinatura do APK validada
 
 ## Checkpoint na TV
 
-Instalação ainda não realizada nesta fase. Aguardando autorização específica. Nenhuma afirmação de validação visual na TV antes das capturas.
+Instalação autorizada explicitamente por Marcel e concluída com retorno Success. APK conferido por SHA-256 antes da instalação. Home anterior capturada às 23:45, com John Candy selecionado. Home depois capturada às 23:49, novamente com John Candy selecionado e as mesmas fileiras. A captura intermediária às 23:47 mostra o foco sobre Explore, com outras fileiras do catálogo.
+
+As amostras confirmam #FF5A20 no preenchimento de Explore e no contorno do pôster. O anel externo da aba aparece quando ela está focada, separado por uma faixa #202124. Quando o foco vai ao pôster, o anel desaparece e a cápsula permanece laranja. Fundo #202124 e dock #2B2C2F confirmados em ambas as capturas depois.
+
+![Home antes](screenshots/phase3-home-before.png)
+
+![Home depois, pôster em foco](screenshots/phase3-home-after.png)
+
+![Explore em foco](screenshots/phase3-tab-focused.png)
+
+Relatório de amostras: phase3-pixel-check.json. Esta fase muda o visual intencionalmente; não afirma igualdade pixel a pixel da imagem completa. O relógio e a saudação variam entre capturas.
+
+Foco dos apps, entradas e atalhos da gaveta, botões de utilidade e grade Todos os Apps foi atualizado no código, mas ainda não possui capturas específicas nesta fase. Sem medição de desempenho na TV.
+
+Commit de implementação: f149f76. Nenhum push ou merge realizado. Próximo componente depende de novo OK de Marcel; uma próxima instalação exige nova autorização.

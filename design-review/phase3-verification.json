@@ -32,6 +32,12 @@
   "assets_unchanged": true,
   "protected_files_unchanged": true,
   "legacy_tokens_unchanged": true,
-  "installation": "Pending new explicit user authorization",
-  "screenshots": []
+  "installation": "Authorized explicitly by Marcel; adb install -r returned Success",
+  "screenshots": [
+    "screenshots/phase3-home-before.png",
+    "screenshots/phase3-home-after.png",
+    "screenshots/phase3-tab-focused.png"
+  ],
+  "implementation_commit": "f149f76",
+  "visual_validation": "Home verified: active Explore stays #FF5A20 with poster focused, poster outline #FF5A20, outer tab ring only when tab is focused. Background #202124 and dock #2B2C2F preserved at sampled points. Other focus consumers not visually captured."
 }

@@ -2,7 +2,7 @@
 
 ## Estado da implementação
 
-Fase 1 concluída para o primeiro lote de 293 tokens, com validação visual da Home. Fase 2 instalada com autorização de Marcel: fundo grafite e superfície da barra de apps na Home e na gaveta. Cores confirmadas nas capturas reais. Fase 3 aprovada e compilada: seleção de aba e foco laranja. Instalação e capturas da fase 3 aguardam autorização específica.
+Fase 1 concluída para o primeiro lote de 293 tokens, com validação visual da Home. Fase 2 instalada com autorização de Marcel: fundo grafite e superfície da barra de apps na Home e na gaveta. Cores confirmadas nas capturas reais. Fase 3 aprovada e compilada: seleção de aba e foco laranja. Fase 3 instalada com autorização específica e validada na Home: Explore mantém a cápsula laranja com o pôster focado, e o anel externo aparece quando o foco está na aba. Demais consumidores de foco ainda sem captura específica.
 
 Base: 8569d2127ac1577921764e6ea541dd798f085cb9. Trabalho exclusivo no worktree free-my-tv-design, branch design-system.
 Build e comparação de instruções: design-review/phase1-verification.json. Home validada com capturas reais antes/depois: zero diferença em 1.911.600 pixels fora do cabeçalho dinâmico de relógio e saudação. Gaveta e ajustes ainda não possuem capturas pareadas. Build sozinho não comprova equivalência de pixels.

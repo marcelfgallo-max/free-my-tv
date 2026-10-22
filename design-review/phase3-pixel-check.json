@@ -1,0 +1,184 @@
+{
+  "tab_focused": {
+    "file": "screenshots/phase3-tab-focused.png",
+    "size": [
+      1920,
+      1080
+    ],
+    "samples": {
+      "background": {
+        "xy": [
+          40,
+          400
+        ],
+        "rgb": [
+          32,
+          33,
+          36
+        ]
+      },
+      "dock": {
+        "xy": [
+          90,
+          940
+        ],
+        "rgb": [
+          43,
+          44,
+          47
+        ]
+      },
+      "tab_fill": {
+        "xy": [
+          155,
+          222
+        ],
+        "rgb": [
+          255,
+          90,
+          32
+        ]
+      },
+      "tab_focus_ring": {
+        "xy": [
+          155,
+          172
+        ],
+        "rgb": [
+          255,
+          90,
+          32
+        ]
+      },
+      "focus_separation": {
+        "xy": [
+          155,
+          175
+        ],
+        "rgb": [
+          32,
+          33,
+          36
+        ]
+      }
+    }
+  },
+  "note": "Home before and after both show John Candy focused and matching catalog rows. Separate tab-focused capture has different catalog rows. Color samples validate the intended focus states, not full-image pixel equality.",
+  "poster_focused": {
+    "file": "screenshots/phase3-home-after.png",
+    "size": [
+      1920,
+      1080
+    ],
+    "samples": {
+      "background": {
+        "xy": [
+          40,
+          400
+        ],
+        "rgb": [
+          32,
+          33,
+          36
+        ],
+        "expected_rgb": [
+          32,
+          33,
+          36
+        ],
+        "pass": true
+      },
+      "dock": {
+        "xy": [
+          90,
+          940
+        ],
+        "rgb": [
+          43,
+          44,
+          47
+        ],
+        "expected_rgb": [
+          43,
+          44,
+          47
+        ],
+        "pass": true
+      },
+      "active_tab_fill": {
+        "xy": [
+          155,
+          222
+        ],
+        "rgb": [
+          255,
+          90,
+          32
+        ],
+        "expected_rgb": [
+          255,
+          90,
+          32
+        ],
+        "pass": true
+      },
+      "tab_ring_removed": {
+        "xy": [
+          155,
+          172
+        ],
+        "rgb": [
+          32,
+          33,
+          36
+        ],
+        "expected_rgb": [
+          32,
+          33,
+          36
+        ],
+        "pass": true
+      },
+      "poster_focus_left": {
+        "xy": [
+          404,
+          400
+        ],
+        "rgb": [
+          255,
+          90,
+          32
+        ],
+        "expected_rgb": [
+          255,
+          90,
+          32
+        ],
+        "pass": true
+      },
+      "poster_focus_top": {
+        "xy": [
+          480,
+          320
+        ],
+        "rgb": [
+          255,
+          90,
+          32
+        ],
+        "expected_rgb": [
+          255,
+          90,
+          32
+        ],
+        "pass": true
+      }
+    }
+  },
+  "not_visually_captured": [
+    "App dock focus",
+    "Drawer focus",
+    "Utility button focus",
+    "All Apps grid focus"
+  ]
+}
