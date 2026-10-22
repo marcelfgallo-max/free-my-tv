@@ -49,8 +49,8 @@ import java.util.function.Consumer;
  *    buttons (Live TV, HDMI Inputs, Settings), with the focused one's name below it, and the small crypto quotes
  *    (logo + price) at the right end of the tab row;
  *  - three cards with the titles recommended for right now in the selected tab (Recs, from TMDB), or the last ones
- *    watched in your apps (Continue: WatchNext), or what's on each service (Catalog); behind everything, the
- *    Modern 80s fields (Ember here, Ultramarine with the drawer open);
+ *    watched in your apps (Continue: WatchNext), or what's on each service (Catalog); behind everything,
+ *    a flat graphite background;
  *  - at the bottom, the glass shelf with the apps (icons in each brand's color, like the tvOS Dock; the focused one
  *    grows);
  *  - ↓ on the shelf: everything moves up and the bottom drawer appears (inputs, shortcuts, weather for the next hours
@@ -156,9 +156,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private int genrePage, showRow1;    // the pair of genres on screen; how many posters the first row has
     private final List<HomeApps.Item> lightButtons = new ArrayList<>();
     private Paint badgePaint;
-    /** Modern 80s fields, with their blur and grain baked in: Ember behind Explore, Ultramarine behind the drawer. */
-    private Bitmap fieldEmber, fieldUltra;
-    private boolean fieldsLoading;
     private Paint mBigDegree, teamBig, teamSmall, teamTag, teamImage;
     private final Team team;
     private final Team.Listener teamChanged = () -> {
@@ -720,30 +717,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         teamTag = Ui.text(Ui.regular, Theme.Legacy.HomeText.TEAM_TAG_SIZE * k, M_UP);
         teamImage = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
         capsCache.clear();
-        loadFields();
-    }
-
-    /** The two fields, decoded off the UI thread (8 MB each, full color: no banding). */
-    private void loadFields() {
-        if (fieldEmber != null || fieldsLoading) return;
-        fieldsLoading = true;
-        android.content.res.AssetManager assets = getContext().getAssets();
-        LOADER.execute(() -> {
-            Bitmap ember = null, ultra = null;
-            try (java.io.InputStream a = assets.open("fields/ember.png"); java.io.InputStream b = assets.open("fields/ultra.png")) {
-                ember = android.graphics.BitmapFactory.decodeStream(a);
-                ultra = android.graphics.BitmapFactory.decodeStream(b);
-            } catch (java.io.IOException | OutOfMemoryError e) {
-                AppLog.w("fields: " + e);
-            }
-            Bitmap e2 = ember, u2 = ultra;
-            handler.post(() -> {
-                fieldEmber = e2;
-                fieldUltra = u2;
-                fieldsLoading = false;
-                sky.invalidate();
-            });
-        });
     }
 
     /** `s` in capitals (in the app's language), made once: the drawing code asks every frame. */
@@ -819,7 +792,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if (heroMoving || heroDirty || heroFading) heroLayer.invalidate();
         if (drawerItemsMoving || drawerDirty) drawerLayer.invalidate();
         if (gridMoving || gridDirty) sheetLayer.invalidate();
-        if (drawerMoving) sky.invalidate();   // the fields cross-fade with the drawer
         if (drawerWasMoving && !drawerMoving) platter.invalidate();
         drawerWasMoving = drawerMoving;
         tilesDirty = statusDirty = heroDirty = drawerDirty = gridDirty = motionDirty = false;
@@ -1205,11 +1177,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         crispLogos.clear();
     }
 
-    /** Shelf layer: a hairline above and below the apps, across the content width. */
+    /** One opaque surface behind the existing app tiles, moving with the drawer. */
     private void drawPlatter(Canvas c) {
         if (shelf.isEmpty()) return;
-        hairline(c, MARGIN * k, CONTENT_R * k, platterRect.top);
-        hairline(c, MARGIN * k, CONTENT_R * k, platterRect.bottom);
+        fill.setShader(null);
+        fill.setColor(Theme.color(Theme.SURFACE, night >= 0.5f));
+        float radius = Theme.DOCK_RADIUS * k;
+        c.drawRoundRect(platterRect, radius, radius, fill);
     }
 
     /** The quotes row's text and sizes, for one set of coins, prices and text size. */
@@ -2839,25 +2813,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         heroDirty = true;
     }
 
-    /**
-     * Background: the first card's photo, heavily blurred and almost white; without it, a light gradient. At night, the
-     * same photo almost black (or a dark gradient), drawn on top during the transition.
-     */
-    /** The Ember field behind Explore; the Ultramarine one comes in with the drawer (one field per screen). */
+    /** Flat graphite behind both the home and the drawer, without bitmap fields or blur. */
     private void drawLightSky(Canvas c) {
         fill.setShader(null);
-        fill.setColor(Theme.Legacy.Palette.BLACK_AFF);
+        fill.setColor(Theme.color(Theme.BACKGROUND, night >= 0.5f));
         c.drawRect(screen, fill);
-        float d = Ui.clamp(drawer.value);
-        if (fieldEmber != null && d < 0.999f) {
-            imagePaint.setAlpha(255);
-            c.drawBitmap(fieldEmber, null, screen, imagePaint);
-        }
-        if (fieldUltra != null && d > 0.001f) {
-            imagePaint.setAlpha(Math.round(255 * d));
-            c.drawBitmap(fieldUltra, null, screen, imagePaint);
-            imagePaint.setAlpha(255);
-        }
     }
 
     private void drawLightTop(Canvas c) {

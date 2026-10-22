@@ -2,20 +2,20 @@
 
 ## Estado da implementação
 
-Fase 1: extração dos valores existentes para Theme.Legacy. Visual Modern 80s preservado. A aparência Nothing Day/Night é o alvo aprovado para uma fase posterior, não o resultado desta refatoração.
+Fase 1 concluída para o primeiro lote de 293 tokens, com validação visual da Home. Fase 2 em preparação para instalar: fundo grafite e superfície da barra de apps na Home e na gaveta. Aprovação de instalação ainda pendente.
 
 Base: 8569d2127ac1577921764e6ea541dd798f085cb9. Trabalho exclusivo no worktree free-my-tv-design, branch design-system.
 Build e comparação de instruções: design-review/phase1-verification.json. Home validada com capturas reais antes/depois: zero diferença em 1.911.600 pixels fora do cabeçalho dinâmico de relógio e saudação. Gaveta e ajustes ainda não possuem capturas pareadas. Build sozinho não comprova equivalência de pixels.
 
 ## Contrato dos tokens
 
-- Constantes primitivas static final, inlined pelo Java. Sem alocação, lookup, novos shaders ou dependências em runtime.
+- Tokens Legacy: constantes primitivas static final, inlined pelo Java. Os novos papéis semânticos usam um switch simples, sem alocação no caminho normal, novos shaders ou dependências.
 - Coordenadas e tamanhos usam o Canvas lógico 1920 × 1080; multiplicar por k como no código original. Não converter para dp/sp.
 - ARGB contém alpha exato. WHITE_Axx e BLACK_Axx usam o byte hexadecimal xx, não uma porcentagem arredondada.
 - Tamanhos de texto são textSize lógico; tracking é em. Inter, pesos e optical sizes existentes são preservados.
 - Tempos MS são milissegundos. RESPONSE_S é parâmetro da mola em segundos, não duração fixa; DAMPING é adimensional.
 - Valores iguais de componentes diferentes podem permanecer separados. Não normalizar margens, raios ou cores parecidas durante a extração.
-- HomeView continua com night = 1 e checkNight fixo. Não ativar Day, laranja ou arredondamento nesta fase.
+- HomeView continua com night = 1 e checkNight fixo. Na fase 2, apenas o fundo e a superfície arredondada do dock usam os novos tokens. Day, foco laranja e as demais formas serão aplicados em etapas posteriores.
 - Os helpers tone/blend atuais continuam no mesmo local, preservando interpolação e arredondamento.
 
 ## Componentes
@@ -30,7 +30,7 @@ Build e comparação de instruções: design-review/phase1-verification.json. Ho
 | Linha de ajuste | SettingsLayout, SettingsText, SettingsColor | Mesma lógica de preferências e troca de home | Herdar tokens, sem inventar nova tela |
 | Aba | HomeLayout.L_TAB*, HomeText.L_TAB*, HomeColor | Mesma seleção, foco e navegação | Seleção laranja, distinta do foco atual |
 
-## Paleta alvo, ainda não aplicada
+## Paleta alvo, aplicação por etapa
 
 | Papel | Day | Night |
 |---|---|---|
@@ -40,8 +40,25 @@ Build e comparação de instruções: design-review/phase1-verification.json. Ho
 | TEXT_SECONDARY | #62636A | #B8B9BF |
 | ACCENT / FOCUS | #FF5A20 | #FF5A20 |
 
-A especificação completa de valores alvo, estados, contrastes e sequência está em [PROPOSTA-TOKENS.md](design-review/PROPOSTA-TOKENS.md). Não substituir os valores Legacy pelos alvos antes da comparação na TV e do próximo OK.
-A futura API Theme.color(role, night) será introduzida na fase visual; não existe lookup de cor novo nesta etapa.
+A especificação completa de valores alvo, estados, contrastes e sequência está em [PROPOSTA-TOKENS.md](design-review/PROPOSTA-TOKENS.md). Os 293 tokens Legacy preservam os valores extraídos. Os novos valores ficam fora de Legacy.
+
+### Tokens semânticos da fase 2
+
+| Token/API | Valor | Consumidor |
+|---|---|---|
+| BACKGROUND | papel 0 | HomeView.drawLightSky |
+| SURFACE | papel 1 | HomeView.drawPlatter |
+| BACKGROUND_NIGHT | 0xFF202124 | Fundo sólido da Home e da gaveta |
+| SURFACE_NIGHT | 0xFF2B2C2F | Superfície opaca da barra de apps |
+| BACKGROUND_DAY | 0xFFE6E5E8 | Endpoint reservado; Day ainda não está ativo |
+| SURFACE_DAY | 0xFFFAF9FB | Endpoint reservado; Day ainda não está ativo |
+| DOCK_RADIUS | 48 unidades lógicas | Cantos da barra; bounds e posições dos apps preservados |
+| color(role, night) | int ARGB | Retorna endpoint Day/Night sem alocação no caminho normal |
+
+A seleção de endpoint usa night >= 0.5f, com night fixo em 1 no comportamento atual. Não há transição Day/Night implementada. O helper rejeita papéis desconhecidos. drawRect e drawRoundRect são compatíveis com API 28. Não há blur ou sombra no novo fundo/dock.
+
+A Home não decodifica mais fields/ember.png e fields/ultra.png. Os assets continuam no projeto para consumidores existentes, inclusive ajustes. Pôsteres, logos, ícones, foco, ações e layout permanecem nesta etapa com os valores anteriores.
+
 
 ## Catálogo implementado
 
@@ -420,7 +437,7 @@ Frost, Backdrop, Shadows, Scene e os assets não são alterados nesta etapa. A p
 
 ## Verificação e instalação
 
-Compilar sempre com JDK 17 e ./build.sh. Depois executar python3 tools/verify_theme_extraction.py.
+Compilar sempre com JDK 17 e ./build.sh. tools/verify_theme_extraction.py é uma verificação histórica exclusiva da fase 1; deve falhar após mudanças visuais intencionais. Não atualizar sua baseline para fazer a fase 2 passar. As evidências da fase 2 ficam em design-review/phase2-verification.json.
 O verificador compara todas as classes existentes e todos os assets/recursos com o build original. Para classes migradas, normaliza índices e alinhamento do constant pool no javap e a codificação equivalente ldc/ldc_w. Os destinos de salto e exceções são comparados por índice da instrução, preservando fluxo, valores e assinaturas. Os hashes binários originais foram preservados; a recanonicalização foi feita apenas sobre classes que coincidiam com esses hashes. Testes de sensibilidade confirmaram a detecção de alterações de constante e destino de salto. As únicas classes novas permitidas são Theme e suas classes internas.
 Capturas da Home realizadas antes e depois da instalação autorizada, em design-review/screenshots. Para novas etapas, a captura de referência precisa vir da TV antes de qualquer instalação. Posicionar a tela com o controle remoto, capturar, pedir autorização para instalar, instalar o APK deste worktree e capturar novamente no mesmo estado.
 Home: comparação concluída no estado Explore, John Candy selecionado. A região x=0..899, y=0..179 foi excluída por conter o relógio e a saudação que acompanha sua largura. As diferenças medidas ficaram restritas a x=289..800, y=63..163. Gaveta e ajustes: instruções compiladas equivalentes, validação visual pareada pendente. Não generalizar o resultado da Home para todos os estados.

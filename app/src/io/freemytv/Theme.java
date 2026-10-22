@@ -1,8 +1,25 @@
 package io.freemytv;
 
-/** Visual constants. Legacy preserves the pre-design-system rendering exactly. */
+/** Semantic visual tokens; Legacy preserves values from the pre-design-system rendering. */
 final class Theme {
     private Theme() {}
+
+    static final int BACKGROUND = 0;
+    static final int SURFACE = 1;
+    static final int BACKGROUND_DAY = 0xFFE6E5E8;
+    static final int BACKGROUND_NIGHT = 0xFF202124;
+    static final int SURFACE_DAY = 0xFFFAF9FB;
+    static final int SURFACE_NIGHT = 0xFF2B2C2F;
+    static final float DOCK_RADIUS = 48f;
+
+    /** Endpoint colors only. The home remains night-only until the Day phase. */
+    static int color(int role, boolean night) {
+        switch (role) {
+            case BACKGROUND: return night ? BACKGROUND_NIGHT : BACKGROUND_DAY;
+            case SURFACE: return night ? SURFACE_NIGHT : SURFACE_DAY;
+            default: throw new IllegalArgumentException("Unknown theme color role: " + role);
+        }
+    }
 
     /** Existing Canvas units and ARGB values. Do not substitute the new palette here. */
     static final class Legacy {
