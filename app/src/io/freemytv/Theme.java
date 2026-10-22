@@ -53,9 +53,13 @@ final class Theme {
 
     // Screensaver: shared endpoints, quiet photo frame and cached information panels.
     static final long DREAM_SHOW_MS = 30_000, DREAM_FADE_MS = 3_000, DREAM_FIRST_MS = 1_600;
-    static final float DREAM_PHOTO_INSET = 64f, DREAM_PHOTO_RADIUS = 48f, DREAM_PANEL_RADIUS = 32f;
-    static final float DREAM_CLOCK_CARD_WIDTH = 680f, DREAM_CLOCK_HEIGHT = 132f;
-    static final float DREAM_FALLBACK_CLOCK_HEIGHT = 220f, DREAM_TITLE_WIDTH = 816f, DREAM_TITLE_SIZE = 52f;
+    static final float DREAM_PHOTO_INSET = 64f, DREAM_PHOTO_RADIUS = 48f, DREAM_PANEL_RADIUS = 28f;
+    static final float DREAM_CLOCK_CARD_WIDTH = 616f, DREAM_CLOCK_HEIGHT = 116f;
+    static final float DREAM_FALLBACK_CLOCK_HEIGHT = 220f, DREAM_TITLE_WIDTH = 592f, DREAM_TITLE_SIZE = 48f;
+    static final int DREAM_SURFACE_ALPHA = 230; // 90% opacity, rounded to an 8-bit alpha.
+    static final float DREAM_PANEL_PADDING = 24f, DREAM_CLOCK_CARD_HEIGHT = 272f;
+    static final float DREAM_CLOCK_BASELINE = 328f, DREAM_CLOCK_RULE_Y = 168f;
+    static final float DREAM_HEADER_SIZE = 20f, DREAM_META_SIZE = 20f;
     static final float DREAM_PHOTO_SATURATION_DAY = .95f, DREAM_PHOTO_SATURATION_NIGHT = .85f;
     static final float DREAM_PHOTO_BRIGHTNESS_NIGHT = .86f;
 

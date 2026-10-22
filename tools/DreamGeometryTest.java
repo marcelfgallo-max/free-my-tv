@@ -34,10 +34,10 @@ public final class DreamGeometryTest {
                     int hour = minute / 60;
                     String text = String.format(java.util.Locale.US, twelve ? "%d:%02d" : "%02d:%02d",
                             twelve ? (hour % 12 == 0 ? 12 : hour % 12) : hour, minute % 60);
-                    float max = (Theme.DREAM_CLOCK_CARD_WIDTH - 64)*scale;
+                    float max = (Theme.DREAM_CLOCK_CARD_WIDTH - 2 * Theme.DREAM_PANEL_PADDING)*scale;
                     float h = DotMatrix.fittedHeight(text,Theme.DREAM_CLOCK_HEIGHT*scale,max);
                     require(DotMatrix.widthUnits(text)*h/DotMatrix.HEIGHT <= max+.01f, "corner clock exceeds panel");
-                    require(344*scale-h >= 180*scale+24*scale, "clock overlaps date separator");
+                    require(Theme.DREAM_CLOCK_BASELINE*scale-h >= (Theme.DREAM_CLOCK_RULE_Y+24)*scale, "clock overlaps date separator");
                     h = DotMatrix.fittedHeight(text,Theme.DREAM_FALLBACK_CLOCK_HEIGHT*scale,1120*scale);
                     require(DotMatrix.widthUnits(text)*h/DotMatrix.HEIGHT<=1120*scale+.01f,"fallback clock too wide");
                 }

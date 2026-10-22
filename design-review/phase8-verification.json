@@ -1,9 +1,9 @@
 {
   "base": "8e1bec5",
   "build": "JDK 17 build.sh passed",
-  "api28": "HomeView and Theme compile against android-28.jar",
+  "api28": "HomeView, DreamView, DotDisplay and Theme compile against android-28.jar",
   "signature": "apksigner verify --min-sdk-version 28 passed",
-  "apk_sha256": "89bf4b1ce125e13110adf474d1bef6a740cf4985cdf9cca3c9fdb4fd7d03a5fa",
+  "apk_sha256": "071cd32e50d7ae5a9919ef803adcc3536210b94e85f7e367e31eaffeadaa76c5",
   "home_changes": [
     "Selected tab uses only the orange fill, no outer focus ring",
     "Capsule left edge aligned at x=96 with clock, labels and poster grid",
@@ -20,11 +20,10 @@
     "app/src/io/freemytv/Adb.java",
     "app/src/io/freemytv/ModeJob.java",
     "app/src/io/freemytv/Watchdog.java",
-    "app/src/io/freemytv/DreamView.java",
     "app/src/io/freemytv/SettingsActivity.java"
   ],
-  "screensaver": "No production changes in this stage yet. Compact card sizes, orange colon and 90%/100% opacity are preview alternatives awaiting selection.",
-  "installation": "Not installed. No TV commands in phase8.",
+  "screensaver": "Approved B implemented: alpha230 backgrounds, compact cards, orange colon plus weather icon and current temperature, Day/Night. Photo frame preserved.",
+  "installation": "Not installed. No TV commands in phase8. Awaiting separate authorization.",
   "limitations": [
     "Home visual check on TV pending",
     "Generated image previews are illustrative and do not prove exact alpha blending or Android typography"
@@ -40,5 +39,11 @@
       "night-transparente.png"
     ],
     "scope": "Generated visual studies, not screenshots or exact layout/alpha measurements. Original photo frame remains required in production."
+  },
+  "tests": {
+    "dream_geometry": 55010,
+    "theme": 17,
+    "dot_matrix": 108913,
+    "render_cache": "passed, including accent recolor without geometry rebuild and unchanged number width"
   }
 }

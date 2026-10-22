@@ -12,7 +12,7 @@ Gaveta preservada, inclusive layout, ícones, superfícies e tipografia. Seu blo
 
 Build JDK 17, API 28 e assinatura passaram. Coordenadas e limites da grade foram verificados localmente. Ainda não instalado nem conferido na TV.
 
-## Screensaver, prévias para escolher antes de aplicar
+## Screensaver, histórico das prévias antes da aprovação
 
 Interpretamos os retângulos anotados como cards mais compactos: relógio aproximadamente 616 × 272, legenda aproximadamente 640 × 196, mantendo suas âncoras e reduzindo o espaço vazio. Conteúdo longo deverá poder aumentar a altura da legenda até duas linhas, sem truncar o título desnecessariamente.
 
@@ -25,3 +25,10 @@ Sem instalação, push ou merge. A escolha do screensaver e a autorização para
 ## Prévia entregue
 
 Quatro estudos gerados e inspecionados: Day opaco, Day com transparência sutil, Night opaco e Night com transparência sutil. Houve variações de fonte e de enquadramento na geração, sobretudo na moldura Day. A implementação deverá manter a moldura arredondada atual e usar dimensões, fontes e alpha definidos em código. Proposta recomendada: 90% de opacidade no fundo dos cards, conteúdos opacos e dois pontos laranja. Nenhuma dessas opções foi instalada. Home compilada no commit e2891b4.
+
+
+## Opção B aprovada e implementada
+
+Marcel aprovou a transparência de 10% e acrescentou accent no ícone e temperatura do clima. Implementação nativa com alpha230 apenas no fundo, relógio616×272, legenda640 de largura e até duas linhas, raios28, margens24. Data e dígitos permanecem na cor do tema; dois pontos e clima usam laranja nos dois modos. Moldura da foto e transições preservadas. O painel cresce quando há cotações e aviso de atualização, sem cortar conteúdo.
+
+O histórico de avaliação acima foi concluído. A confirmação da versão B não é autorização para instalar. A fase8 inclui agora Home e screensaver, mantendo a gaveta. Nenhum comando de TV nesta etapa; a instalação e as capturas seguem pendentes.

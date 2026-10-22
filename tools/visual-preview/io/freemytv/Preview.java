@@ -18,6 +18,15 @@ public class Preview {
   require(Path.rebuilds==before&&Path.circles==circles,"theme change rebuilt number geometry");
   display.draw(test,"10:52",0,100,92,400,testInk);require(Path.rebuilds==before+1,"new minute did not rebuild");
   display.draw(test,"—",0,100,92,400,testInk);require(test.texts==1,"text fallback missing");
+  Canvas accented=new Canvas();DotDisplay dual=new DotDisplay(false,true);
+  float normalWidth=display.draw(new Canvas(),"08:09",0,116,116,568,testInk);
+  float accentWidth=dual.draw(accented,"08:09",0,116,116,568,testInk,ink(Theme.ACCENT_ORANGE,24));
+  require(normalWidth==accentWidth,"accent changed clock geometry");
+  require(accented.svg.toString().contains("fill=\"#ff5a20\""),"colon accent missing");
+  int cached=Path.rebuilds, cachedCircles=Path.circles;
+  dual.draw(accented,"08:09",0,116,116,568,ink(0xff292b2e,24),ink(Theme.ACCENT_ORANGE,24));
+  require(Path.rebuilds==cached&&Path.circles==cachedCircles,"accent recolor rebuilt geometry");
+  require(Theme.DREAM_SURFACE_ALPHA==Math.round(.9f*255),"surface opacity incorrect");
   for(String name:new String[]{"controller","settop","airplay","handheld","live_tv","apps","settings","tv_settings","bedtime","cloud","rainy","sunny","foggy","thunderstorm"})require(DrawerSymbols.draw(test,name,50,50,48,0xff000000),"missing "+name);
   require(!DrawerSymbols.draw(test,"unknown",50,50,48,0xff000000),"unknown symbol must use original fallback");
   require(test.saves==test.restores,"unbalanced Canvas state");

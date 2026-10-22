@@ -8,13 +8,23 @@ import android.graphics.Path;
 final class DotDisplay {
     private final Path dots = new Path();
     private final boolean compact;
+    private final Path punctuation;
     DotDisplay() { this(false); }
-    DotDisplay(boolean compact) { this.compact = compact; }
+    DotDisplay(boolean compact) { this(compact, false); }
+    DotDisplay(boolean compact, boolean accentColon) {
+        this.compact = compact;
+        punctuation = accentColon ? new Path() : null;
+    }
     private String value = "";
     private float height = -1, width;
 
     float draw(Canvas canvas, String text, float x, float baseline, float desiredHeight,
                float maxWidth, Paint ink) {
+        return draw(canvas, text, x, baseline, desiredHeight, maxWidth, ink, ink);
+    }
+
+    float draw(Canvas canvas, String text, float x, float baseline, float desiredHeight,
+               float maxWidth, Paint ink, Paint colonInk) {
         if (!DotMatrix.supports(text)) {
             canvas.drawText(text, x, baseline, ink);
             return ink.measureText(text);
@@ -24,6 +34,7 @@ final class DotDisplay {
             value = text;
             height = h;
             dots.rewind();
+            if (punctuation != null) punctuation.rewind();
             float step = h / DotMatrix.HEIGHT, offset = 0, radius = DotMatrix.RADIUS * step;
             for (int i = 0; i < text.length(); i++) {
                 char ch = text.charAt(i);
@@ -32,7 +43,7 @@ final class DotDisplay {
                     int bits = DotMatrix.row(ch, y, compact);
                     for (int col = 0; col < cols; col++) {
                         if ((bits & (1 << (cols - col - 1))) != 0)
-                            dots.addCircle(offset + col * step + radius, y * step + radius - h,
+                            (ch == ':' && punctuation != null ? punctuation : dots).addCircle(offset + col * step + radius, y * step + radius - h,
                                     radius, Path.Direction.CW);
                     }
                 }
@@ -43,6 +54,7 @@ final class DotDisplay {
         canvas.save();
         canvas.translate(x, baseline);
         canvas.drawPath(dots, ink);
+        if (punctuation != null) canvas.drawPath(punctuation, colonInk);
         canvas.restore();
         return width;
     }

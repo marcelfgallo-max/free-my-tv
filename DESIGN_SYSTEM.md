@@ -563,10 +563,10 @@ O DreamView passa a compartilhar Day/Night, DotDisplay e os pictogramas da gavet
 | Token | Valor | Uso |
 | --- | --- | --- |
 | DREAM_PHOTO_INSET / DREAM_PHOTO_RADIUS | 64 / 48 | Moldura da foto, Canvas lógico 1920 × 1080 |
-| DREAM_PANEL_RADIUS | 32 | Relógio, legenda e estado sem foto |
-| DREAM_CLOCK_CARD_WIDTH / DREAM_CLOCK_HEIGHT | 680 / 132 | Painel e relógio com foto |
+| DREAM_PANEL_RADIUS | 28 | Relógio, legenda e estado sem foto |
+| DREAM_CLOCK_CARD_WIDTH / DREAM_CLOCK_HEIGHT | 616 / 116 | Painel e relógio com foto |
 | DREAM_FALLBACK_CLOCK_HEIGHT | 220 | Relógio sem foto |
-| DREAM_TITLE_WIDTH / DREAM_TITLE_SIZE | 816 / 52 | Título em até duas linhas |
+| DREAM_TITLE_WIDTH / DREAM_TITLE_SIZE | 592 / 48 | Título em até duas linhas |
 | DREAM_PHOTO_SATURATION_DAY / NIGHT | 0,95 / 0,85 | Tratamento suave da fotografia |
 | DREAM_PHOTO_BRIGHTNESS_NIGHT | 0,86 | Redução discreta de luz no Night |
 | DREAM_SHOW_MS / FADE_MS / FIRST_MS | 30000 / 3000 / 1600 | Tempos preservados do slideshow |
@@ -578,3 +578,19 @@ Cores vêm de BACKGROUND, SURFACE, TEXT_PRIMARY, TEXT_SECONDARY, SOFT_DIVIDER e 
 HOME_TAB_RULE_Y=256; HOME_GENRE_BASE_1/2=296/584; HOME_POSTER_OFFSET=32; HOME_GENRE_RULE_OFFSET=16; HOME_TAB_PADDING=16; HOME_TAB_GAP=32; HOME_DETAIL_GAP=32; HOME_META_GAP=24. A aba usa cápsula laranja sem anel externo; sua borda esquerda segue a margem dos pôsteres. Somente as divisórias da Home usam SOFT_DIVIDER, sem alterar a gaveta. Os tokens antigos TAB_FOCUS_GAP/STROKE não são mais consumidos pelo desenho das abas.
 
 Os cards compactos e a transparência do protetor estão em avaliação visual, ainda não aplicados ao DreamView. Ver design-review/PHASE8_RESULTS.md.
+
+
+## Fase 8, screensaver aprovado em 22/10/2026
+
+Opção B aprovada, 10% de transparência apenas nas superfícies, Day e Night. Os dois pontos do relógio, o ícone do clima e a temperatura atual usam ACCENT_ORANGE. Dígitos e data mantêm TEXT_PRIMARY. O accent do clima atende à anotação adicional de Marcel. Texto e ícones não recebem a transparência da superfície. As transições existentes de entrada e troca de legenda continuam funcionando.
+
+| Token | Valor | Uso |
+| --- | --- | --- |
+| DREAM_SURFACE_ALPHA | 230/255 | 90% de opacidade, arredondamento ao alpha de 8 bits, somente Paint do fundo |
+| DREAM_PANEL_PADDING | 24 | Margens internas dos cards |
+| DREAM_CLOCK_CARD_HEIGHT | 272 | Altura sem cotações; cresce 48 com cotações e 76 com aviso de atualização |
+| DREAM_CLOCK_BASELINE | 328 | Base do relógio no Canvas 1920 × 1080 |
+| DREAM_CLOCK_RULE_Y | 168 | Divisória pontilhada abaixo da data |
+| DREAM_HEADER_SIZE / DREAM_META_SIZE | 20 / 20 | Data, temperatura e metadados da legenda |
+
+Card do relógio ancorado em top=96, right=1824; largura616. Legenda com largura640, bottom=984, altura ajustada ao título (até duas linhas). Raio28. Foto mantém inset64, raio48 e movimento existentes. DotDisplay separa os dois pontos em um Path em cache, exclusivamente nas instâncias do screensaver; Home e gaveta preservam o desenho numérico anterior. Sem blur, bibliotecas ou APIs novas. Prévia local é um esquema de layout com foto substituída por uma área neutra; validação visual final depende de instalação autorizada e captura na TV.
