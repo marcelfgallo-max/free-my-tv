@@ -572,3 +572,9 @@ O DreamView passa a compartilhar Day/Night, DotDisplay e os pictogramas da gavet
 | DREAM_SHOW_MS / FADE_MS / FIRST_MS | 30000 / 3000 / 1600 | Tempos preservados do slideshow |
 
 Cores vêm de BACKGROUND, SURFACE, TEXT_PRIMARY, TEXT_SECONDARY, SOFT_DIVIDER e ACCENT. A foto usa BitmapShader e ColorMatrixColorFilter, disponíveis na API 28. Nenhuma biblioteca, blur nativo ou alteração nos serviços de troca de Home foi adicionada.
+
+## Fase 8, grade da Home (compilada, instalação pendente)
+
+HOME_TAB_RULE_Y=256; HOME_GENRE_BASE_1/2=296/584; HOME_POSTER_OFFSET=32; HOME_GENRE_RULE_OFFSET=16; HOME_TAB_PADDING=16; HOME_TAB_GAP=32; HOME_DETAIL_GAP=32; HOME_META_GAP=24. A aba usa cápsula laranja sem anel externo; sua borda esquerda segue a margem dos pôsteres. Somente as divisórias da Home usam SOFT_DIVIDER, sem alterar a gaveta. Os tokens antigos TAB_FOCUS_GAP/STROKE não são mais consumidos pelo desenho das abas.
+
+Os cards compactos e a transparência do protetor estão em avaliação visual, ainda não aplicados ao DreamView. Ver design-review/PHASE8_RESULTS.md.
