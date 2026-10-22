@@ -141,5 +141,156 @@ final class Theme {
             static final float TEAM_BIG_TRACKING = -0.01f;
             static final int M_CELL_MIN_SIZE = 17;
         }
+
+        static final class HomeLayout {
+            private HomeLayout() {}
+            static final float MARGIN = 96f;
+            static final float CONTENT_R = 1824f;
+            static final float HERO_TITLE_W = 900f;
+            static final float SHELF_PAD = 28f;
+            static final float TILE_GAP = 36f;
+            static final float TILE_RADIUS = 22f;
+            static final float TILE_MAX_W = 270f;
+            static final float CAPSULE_TOP = 46f;
+            static final float CAPSULE_H = 68f;
+            static final float BUTTON = 56f;
+            static final float SHIFT = 604f;
+            static final float ROW_TITLE = 482f;
+            static final float ROW_TOP = 510f;
+            static final float ROW_H = 137f;
+            static final float CARDS_TOP = 684f;
+            static final float CARDS_H = 310f;
+            static final float GRID_W = 300f;
+            static final float GRID_H = 169f;
+            static final float GRID_GAP = 40f;
+            static final float GRID_ROW = 239f;
+            static final float GRID_TOP = 196f;
+            static final float GRID_RADIUS = 22f;
+            static final float L_TITLE_BASE = 155f;
+            static final float L_TABBAR_TOP = 176f;
+            static final float L_TABBAR_H = 63f;
+            static final float L_CARDS_TOP = 280f;
+            static final float L_CARD_H = 420f;
+            static final float L_TAB_BASE = 214f;
+            static final float L_TAB_RULE = 239f;
+            static final float L_TAB_GAP = 64f;
+            static final float L_TALL_W = 328f;
+            static final float L_CARD_GAP = 32f;
+            static final float L_BUTTON = 72f;
+            static final float L_BUTTON_GAP = 8f;
+            static final float L_BUTTON_CY = 108f;
+            static final float L_PLATTER_TOP = 848f;
+            static final float L_TILE_H = 120f;
+            static final float L_DATE_BASE = 330f;
+            static final float L_CLOCK_BASE = 540f;
+            static final float L_WEATHER_BASE = 626f;
+            static final float L_QUOTES_BASE = 694f;
+            static final float SHOW_W = 138f;
+            static final float SHOW_H = 207f;
+            static final float SHOW_GAP = 21f;
+            static final float SHOW_LABEL_1 = 300f;
+            static final float SHOW_LABEL_2 = 588f;
+            static final int COLUMNS = 5;
+            static final int VISIBLE_ROWS = 3;
+            static final int SHOW_COLS = 11;
+            static final int DRAWER_GROUP_GAP = 48;
+            static final int WIDGET_LABEL_BASE = 28;
+            static final int WIDGET_RULE_Y = 53;
+            static final int TEMPERATURE_BASE = 231;
+            static final int WEATHER_FOOTER_BASE = 288;
+            static final int WEATHER_HOURS_X = 304;
+            static final int WEATHER_HOUR_BASE = 104;
+            static final int WEATHER_ICON_Y = 158;
+            static final int WEATHER_HOUR_TEMP_BASE = 228;
+            static final int CEC_INSET_X = 16;
+            static final int CEC_INSET_Y = 16;
+            static final int CEC_DOT_RADIUS = 6;
+        }
+
+        static final class HomeMotion {
+            private HomeMotion() {}
+            static final float FOCUS_GROW = 0.2f;
+            static final long TOAST_MS = 6000L;
+            static final long FADE_MS = 800L;
+            static final long HOLD_MS = 500L;
+            static final long WIGGLE_MS = 300L;
+            static final float LIFT_GROW = 0.08f;
+            static final float WIGGLE_DEG = 1.5f;
+            static final float MOVE_LIFT_RESPONSE_S = 0.3f;
+            static final float MOVE_LIFT_DAMPING = 0.72f;
+            static final float HERO_FOCUS_RESPONSE_S = 0.28f;
+            static final float HERO_FOCUS_DAMPING = 0.85f;
+            static final float DRAWER_RESPONSE_S = 0.46f;
+            static final float DRAWER_DAMPING = 0.92f;
+            static final float SHEET_RESPONSE_S = 0.38f;
+            static final float SHEET_DAMPING = 0.9f;
+            static final float SCROLL_RESPONSE_S = 0.34f;
+            static final float SCROLL_DAMPING = 1f;
+            static final float TOP_FOCUS_RESPONSE_S = 0.26f;
+            static final float TOP_FOCUS_DAMPING = 0.85f;
+            static final float CARD_FOCUS_RESPONSE_S = 0.32f;
+            static final float CARD_FOCUS_DAMPING = 0.78f;
+            static final float STATUS_FOCUS_RESPONSE_S = 0.26f;
+            static final float STATUS_FOCUS_DAMPING = 0.85f;
+            static final float TILE_FOCUS_RESPONSE_S = 0.34f;
+            static final float TILE_FOCUS_DAMPING = 0.74f;
+            static final float TILE_SLIDE_RESPONSE_S = 0.32f;
+            static final float TILE_SLIDE_DAMPING = 0.86f;
+            static final float DRAWER_FOCUS_RESPONSE_S = 0.28f;
+            static final float DRAWER_FOCUS_DAMPING = 0.85f;
+            static final float GRID_FOCUS_RESPONSE_S = 0.3f;
+            static final float GRID_FOCUS_DAMPING = 0.82f;
+            static final int TOAST_ENTER_REDRAW_MS = 350;
+            static final int TOAST_EXIT_REDRAW_MS = 450;
+            static final float TOAST_ENTER_S = 0.3f;
+            static final float TOAST_EXIT_S = 0.4f;
+        }
+
+        static final class HomeEffect {
+            private HomeEffect() {}
+            static final float SHADOW_BLUR = 26f;
+            static final float DEEP_BLUR = 30f;
+            static final int SOFT_BLUR = 12;
+            static final int HALO_BLUR = 22;
+            static final int BORDER_STROKE = 2;
+            static final float RIM_STROKE = 2.5f;
+            static final int FOCUS_STROKE = 3;
+            static final float GRID_FOCUS_STROKE = 1.5f;
+            static final float SPARK_STROKE = 2.5f;
+            static final int HERO_TEXT_SHADOW_BLUR = 22;
+            static final int HERO_TEXT_SHADOW_DY = 2;
+            static final int TOOLTIP_SHADOW_BLUR = 16;
+            static final int TOOLTIP_SHADOW_DY = 1;
+            static final int QUOTE_SHADOW_BLUR = 14;
+            static final int QUOTE_SHADOW_DY = 1;
+            static final int FOCUS_GAP = 8;
+            static final float FOCUS_HALF_STROKE = 1.5f;
+            static final float GRID_SHADOW_ALPHA = 0.55f;
+            static final float GRID_VEIL_ALPHA = 0.08f;
+            static final float GRID_RIM_ALPHA = 0.4f;
+        }
+
+        static final class Canvas {
+            private Canvas() {}
+            static final float WIDTH = 1920f;
+        }
+
+        static final class Frame {
+            private Frame() {}
+            static final float FPS = 60f;
+            static final float MAX_STEP_S = 0.05f;
+            static final int IDLE_MS = 1000;
+        }
+
+        static final class Font {
+            private Font() {}
+            static final int DISPLAY_OPTICAL_SIZE = 32;
+            static final int THIN_WEIGHT = 200;
+            static final int LIGHT_WEIGHT = 300;
+            static final int MEDIUM_WEIGHT = 500;
+            static final int SEMIBOLD_WEIGHT = 600;
+            static final int TEXT_OPTICAL_SIZE = 14;
+            static final int REGULAR_WEIGHT = 400;
+        }
     }
 }

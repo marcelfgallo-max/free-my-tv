@@ -596,5 +596,652 @@
       "value": "17",
       "consumer": "HomeView.drawDrawerTile"
     }
+  },
+  "HomeLayout": {
+    "MARGIN": {
+      "type": "float",
+      "value": "96f",
+      "consumer": "HomeView.MARGIN"
+    },
+    "CONTENT_R": {
+      "type": "float",
+      "value": "1824f",
+      "consumer": "HomeView.CONTENT_R"
+    },
+    "HERO_TITLE_W": {
+      "type": "float",
+      "value": "900f",
+      "consumer": "HomeView.HERO_TITLE_W"
+    },
+    "SHELF_PAD": {
+      "type": "float",
+      "value": "28f",
+      "consumer": "HomeView.SHELF_PAD"
+    },
+    "TILE_GAP": {
+      "type": "float",
+      "value": "36f",
+      "consumer": "HomeView.TILE_GAP"
+    },
+    "TILE_RADIUS": {
+      "type": "float",
+      "value": "22f",
+      "consumer": "HomeView.TILE_RADIUS"
+    },
+    "TILE_MAX_W": {
+      "type": "float",
+      "value": "270f",
+      "consumer": "HomeView.TILE_MAX_W"
+    },
+    "CAPSULE_TOP": {
+      "type": "float",
+      "value": "46f",
+      "consumer": "HomeView.CAPSULE_TOP"
+    },
+    "CAPSULE_H": {
+      "type": "float",
+      "value": "68f",
+      "consumer": "HomeView.CAPSULE_H"
+    },
+    "BUTTON": {
+      "type": "float",
+      "value": "56f",
+      "consumer": "HomeView.BUTTON"
+    },
+    "SHIFT": {
+      "type": "float",
+      "value": "604f",
+      "consumer": "HomeView.SHIFT"
+    },
+    "ROW_TITLE": {
+      "type": "float",
+      "value": "482f",
+      "consumer": "HomeView.ROW_TITLE"
+    },
+    "ROW_TOP": {
+      "type": "float",
+      "value": "510f",
+      "consumer": "HomeView.ROW_TOP"
+    },
+    "ROW_H": {
+      "type": "float",
+      "value": "137f",
+      "consumer": "HomeView.ROW_H"
+    },
+    "CARDS_TOP": {
+      "type": "float",
+      "value": "684f",
+      "consumer": "HomeView.CARDS_TOP"
+    },
+    "CARDS_H": {
+      "type": "float",
+      "value": "310f",
+      "consumer": "HomeView.CARDS_H"
+    },
+    "GRID_W": {
+      "type": "float",
+      "value": "300f",
+      "consumer": "HomeView.GRID_W"
+    },
+    "GRID_H": {
+      "type": "float",
+      "value": "169f",
+      "consumer": "HomeView.GRID_H"
+    },
+    "GRID_GAP": {
+      "type": "float",
+      "value": "40f",
+      "consumer": "HomeView.GRID_GAP"
+    },
+    "GRID_ROW": {
+      "type": "float",
+      "value": "239f",
+      "consumer": "HomeView.GRID_ROW"
+    },
+    "GRID_TOP": {
+      "type": "float",
+      "value": "196f",
+      "consumer": "HomeView.GRID_TOP"
+    },
+    "GRID_RADIUS": {
+      "type": "float",
+      "value": "22f",
+      "consumer": "HomeView.GRID_RADIUS"
+    },
+    "L_TITLE_BASE": {
+      "type": "float",
+      "value": "155f",
+      "consumer": "HomeView.L_TITLE_BASE"
+    },
+    "L_TABBAR_TOP": {
+      "type": "float",
+      "value": "176f",
+      "consumer": "HomeView.L_TABBAR_TOP"
+    },
+    "L_TABBAR_H": {
+      "type": "float",
+      "value": "63f",
+      "consumer": "HomeView.L_TABBAR_H"
+    },
+    "L_CARDS_TOP": {
+      "type": "float",
+      "value": "280f",
+      "consumer": "HomeView.L_CARDS_TOP"
+    },
+    "L_CARD_H": {
+      "type": "float",
+      "value": "420f",
+      "consumer": "HomeView.L_CARD_H"
+    },
+    "L_TAB_BASE": {
+      "type": "float",
+      "value": "214f",
+      "consumer": "HomeView.L_TAB_BASE"
+    },
+    "L_TAB_RULE": {
+      "type": "float",
+      "value": "239f",
+      "consumer": "HomeView.L_TAB_RULE"
+    },
+    "L_TAB_GAP": {
+      "type": "float",
+      "value": "64f",
+      "consumer": "HomeView.L_TAB_GAP"
+    },
+    "L_TALL_W": {
+      "type": "float",
+      "value": "328f",
+      "consumer": "HomeView.L_TALL_W"
+    },
+    "L_CARD_GAP": {
+      "type": "float",
+      "value": "32f",
+      "consumer": "HomeView.L_CARD_GAP"
+    },
+    "L_BUTTON": {
+      "type": "float",
+      "value": "72f",
+      "consumer": "HomeView.L_BUTTON"
+    },
+    "L_BUTTON_GAP": {
+      "type": "float",
+      "value": "8f",
+      "consumer": "HomeView.L_BUTTON_GAP"
+    },
+    "L_BUTTON_CY": {
+      "type": "float",
+      "value": "108f",
+      "consumer": "HomeView.L_BUTTON_CY"
+    },
+    "L_PLATTER_TOP": {
+      "type": "float",
+      "value": "848f",
+      "consumer": "HomeView.L_PLATTER_TOP"
+    },
+    "L_TILE_H": {
+      "type": "float",
+      "value": "120f",
+      "consumer": "HomeView.L_TILE_H"
+    },
+    "L_DATE_BASE": {
+      "type": "float",
+      "value": "330f",
+      "consumer": "HomeView.L_DATE_BASE"
+    },
+    "L_CLOCK_BASE": {
+      "type": "float",
+      "value": "540f",
+      "consumer": "HomeView.L_CLOCK_BASE"
+    },
+    "L_WEATHER_BASE": {
+      "type": "float",
+      "value": "626f",
+      "consumer": "HomeView.L_WEATHER_BASE"
+    },
+    "L_QUOTES_BASE": {
+      "type": "float",
+      "value": "694f",
+      "consumer": "HomeView.L_QUOTES_BASE"
+    },
+    "SHOW_W": {
+      "type": "float",
+      "value": "138f",
+      "consumer": "HomeView.SHOW_W"
+    },
+    "SHOW_H": {
+      "type": "float",
+      "value": "207f",
+      "consumer": "HomeView.SHOW_H"
+    },
+    "SHOW_GAP": {
+      "type": "float",
+      "value": "21f",
+      "consumer": "HomeView.SHOW_GAP"
+    },
+    "SHOW_LABEL_1": {
+      "type": "float",
+      "value": "300f",
+      "consumer": "HomeView.SHOW_LABEL_1"
+    },
+    "SHOW_LABEL_2": {
+      "type": "float",
+      "value": "588f",
+      "consumer": "HomeView.SHOW_LABEL_2"
+    },
+    "COLUMNS": {
+      "type": "int",
+      "value": "5",
+      "consumer": "HomeView grid"
+    },
+    "VISIBLE_ROWS": {
+      "type": "int",
+      "value": "3",
+      "consumer": "HomeView grid"
+    },
+    "SHOW_COLS": {
+      "type": "int",
+      "value": "11",
+      "consumer": "HomeView grid"
+    },
+    "DRAWER_GROUP_GAP": {
+      "type": "int",
+      "value": "48",
+      "consumer": "HomeView drawer metrics"
+    },
+    "WIDGET_LABEL_BASE": {
+      "type": "int",
+      "value": "28",
+      "consumer": "HomeView drawer metrics"
+    },
+    "WIDGET_RULE_Y": {
+      "type": "int",
+      "value": "53",
+      "consumer": "HomeView drawer metrics"
+    },
+    "TEMPERATURE_BASE": {
+      "type": "int",
+      "value": "231",
+      "consumer": "HomeView drawer metrics"
+    },
+    "WEATHER_FOOTER_BASE": {
+      "type": "int",
+      "value": "288",
+      "consumer": "HomeView drawer metrics"
+    },
+    "WEATHER_HOURS_X": {
+      "type": "int",
+      "value": "304",
+      "consumer": "HomeView drawer metrics"
+    },
+    "WEATHER_HOUR_BASE": {
+      "type": "int",
+      "value": "104",
+      "consumer": "HomeView drawer metrics"
+    },
+    "WEATHER_ICON_Y": {
+      "type": "int",
+      "value": "158",
+      "consumer": "HomeView drawer metrics"
+    },
+    "WEATHER_HOUR_TEMP_BASE": {
+      "type": "int",
+      "value": "228",
+      "consumer": "HomeView drawer metrics"
+    },
+    "CEC_INSET_X": {
+      "type": "int",
+      "value": "16",
+      "consumer": "HomeView drawer metrics"
+    },
+    "CEC_INSET_Y": {
+      "type": "int",
+      "value": "16",
+      "consumer": "HomeView drawer metrics"
+    },
+    "CEC_DOT_RADIUS": {
+      "type": "int",
+      "value": "6",
+      "consumer": "HomeView drawer metrics"
+    }
+  },
+  "HomeMotion": {
+    "FOCUS_GROW": {
+      "type": "float",
+      "value": "0.2f",
+      "consumer": "HomeView.FOCUS_GROW"
+    },
+    "TOAST_MS": {
+      "type": "long",
+      "value": "6000L",
+      "consumer": "HomeView.TOAST_MS"
+    },
+    "FADE_MS": {
+      "type": "long",
+      "value": "800L",
+      "consumer": "HomeView.FADE_MS"
+    },
+    "HOLD_MS": {
+      "type": "long",
+      "value": "500L",
+      "consumer": "HomeView.HOLD_MS"
+    },
+    "WIGGLE_MS": {
+      "type": "long",
+      "value": "300L",
+      "consumer": "HomeView.WIGGLE_MS"
+    },
+    "LIFT_GROW": {
+      "type": "float",
+      "value": "0.08f",
+      "consumer": "HomeView.LIFT_GROW"
+    },
+    "WIGGLE_DEG": {
+      "type": "float",
+      "value": "1.5f",
+      "consumer": "HomeView.WIGGLE_DEG"
+    },
+    "MOVE_LIFT_RESPONSE_S": {
+      "type": "float",
+      "value": "0.3f",
+      "consumer": "HomeView.moveLift"
+    },
+    "MOVE_LIFT_DAMPING": {
+      "type": "float",
+      "value": "0.72f",
+      "consumer": "HomeView.moveLift"
+    },
+    "HERO_FOCUS_RESPONSE_S": {
+      "type": "float",
+      "value": "0.28f",
+      "consumer": "HomeView.heroFocus"
+    },
+    "HERO_FOCUS_DAMPING": {
+      "type": "float",
+      "value": "0.85f",
+      "consumer": "HomeView.heroFocus"
+    },
+    "DRAWER_RESPONSE_S": {
+      "type": "float",
+      "value": "0.46f",
+      "consumer": "HomeView.drawer"
+    },
+    "DRAWER_DAMPING": {
+      "type": "float",
+      "value": "0.92f",
+      "consumer": "HomeView.drawer"
+    },
+    "SHEET_RESPONSE_S": {
+      "type": "float",
+      "value": "0.38f",
+      "consumer": "HomeView.sheet"
+    },
+    "SHEET_DAMPING": {
+      "type": "float",
+      "value": "0.9f",
+      "consumer": "HomeView.sheet"
+    },
+    "SCROLL_RESPONSE_S": {
+      "type": "float",
+      "value": "0.34f",
+      "consumer": "HomeView.scroll"
+    },
+    "SCROLL_DAMPING": {
+      "type": "float",
+      "value": "1f",
+      "consumer": "HomeView.scroll"
+    },
+    "TOP_FOCUS_RESPONSE_S": {
+      "type": "float",
+      "value": "0.26f",
+      "consumer": "HomeView.topFocus"
+    },
+    "TOP_FOCUS_DAMPING": {
+      "type": "float",
+      "value": "0.85f",
+      "consumer": "HomeView.topFocus"
+    },
+    "CARD_FOCUS_RESPONSE_S": {
+      "type": "float",
+      "value": "0.32f",
+      "consumer": "HomeView.cardFocus"
+    },
+    "CARD_FOCUS_DAMPING": {
+      "type": "float",
+      "value": "0.78f",
+      "consumer": "HomeView.cardFocus"
+    },
+    "STATUS_FOCUS_RESPONSE_S": {
+      "type": "float",
+      "value": "0.26f",
+      "consumer": "HomeView.statusFocus"
+    },
+    "STATUS_FOCUS_DAMPING": {
+      "type": "float",
+      "value": "0.85f",
+      "consumer": "HomeView.statusFocus"
+    },
+    "TILE_FOCUS_RESPONSE_S": {
+      "type": "float",
+      "value": "0.34f",
+      "consumer": "HomeView.tileFocus"
+    },
+    "TILE_FOCUS_DAMPING": {
+      "type": "float",
+      "value": "0.74f",
+      "consumer": "HomeView.tileFocus"
+    },
+    "TILE_SLIDE_RESPONSE_S": {
+      "type": "float",
+      "value": "0.32f",
+      "consumer": "HomeView.tileSlide"
+    },
+    "TILE_SLIDE_DAMPING": {
+      "type": "float",
+      "value": "0.86f",
+      "consumer": "HomeView.tileSlide"
+    },
+    "DRAWER_FOCUS_RESPONSE_S": {
+      "type": "float",
+      "value": "0.28f",
+      "consumer": "HomeView.drawerFocus"
+    },
+    "DRAWER_FOCUS_DAMPING": {
+      "type": "float",
+      "value": "0.85f",
+      "consumer": "HomeView.drawerFocus"
+    },
+    "GRID_FOCUS_RESPONSE_S": {
+      "type": "float",
+      "value": "0.3f",
+      "consumer": "HomeView.gridFocus"
+    },
+    "GRID_FOCUS_DAMPING": {
+      "type": "float",
+      "value": "0.82f",
+      "consumer": "HomeView.gridFocus"
+    },
+    "TOAST_ENTER_REDRAW_MS": {
+      "type": "int",
+      "value": "350",
+      "consumer": "HomeView.tickToast"
+    },
+    "TOAST_EXIT_REDRAW_MS": {
+      "type": "int",
+      "value": "450",
+      "consumer": "HomeView.tickToast"
+    },
+    "TOAST_ENTER_S": {
+      "type": "float",
+      "value": "0.3f",
+      "consumer": "HomeView.drawToast"
+    },
+    "TOAST_EXIT_S": {
+      "type": "float",
+      "value": "0.4f",
+      "consumer": "HomeView.drawToast"
+    }
+  },
+  "HomeEffect": {
+    "SHADOW_BLUR": {
+      "type": "float",
+      "value": "26f",
+      "consumer": "HomeView.SHADOW_BLUR"
+    },
+    "DEEP_BLUR": {
+      "type": "float",
+      "value": "30f",
+      "consumer": "HomeView.DEEP_BLUR"
+    },
+    "SOFT_BLUR": {
+      "type": "int",
+      "value": "12",
+      "consumer": "HomeView.shadowSoft"
+    },
+    "HALO_BLUR": {
+      "type": "int",
+      "value": "22",
+      "consumer": "HomeView.halo"
+    },
+    "BORDER_STROKE": {
+      "type": "int",
+      "value": "2",
+      "consumer": "HomeView.border"
+    },
+    "RIM_STROKE": {
+      "type": "float",
+      "value": "2.5f",
+      "consumer": "HomeView.rim"
+    },
+    "FOCUS_STROKE": {
+      "type": "int",
+      "value": "3",
+      "consumer": "HomeView.rim"
+    },
+    "GRID_FOCUS_STROKE": {
+      "type": "float",
+      "value": "1.5f",
+      "consumer": "HomeView.rim"
+    },
+    "SPARK_STROKE": {
+      "type": "float",
+      "value": "2.5f",
+      "consumer": "HomeView.sparkPaint"
+    },
+    "HERO_TEXT_SHADOW_BLUR": {
+      "type": "int",
+      "value": "22",
+      "consumer": "HomeView.makePaints"
+    },
+    "HERO_TEXT_SHADOW_DY": {
+      "type": "int",
+      "value": "2",
+      "consumer": "HomeView.makePaints"
+    },
+    "TOOLTIP_SHADOW_BLUR": {
+      "type": "int",
+      "value": "16",
+      "consumer": "HomeView.makePaints"
+    },
+    "TOOLTIP_SHADOW_DY": {
+      "type": "int",
+      "value": "1",
+      "consumer": "HomeView.makePaints"
+    },
+    "QUOTE_SHADOW_BLUR": {
+      "type": "int",
+      "value": "14",
+      "consumer": "HomeView.makePaints"
+    },
+    "QUOTE_SHADOW_DY": {
+      "type": "int",
+      "value": "1",
+      "consumer": "HomeView.makePaints"
+    },
+    "FOCUS_GAP": {
+      "type": "int",
+      "value": "8",
+      "consumer": "HomeView app/card/poster outline"
+    },
+    "FOCUS_HALF_STROKE": {
+      "type": "float",
+      "value": "1.5f",
+      "consumer": "HomeView app/card/poster outline"
+    },
+    "GRID_SHADOW_ALPHA": {
+      "type": "float",
+      "value": "0.55f",
+      "consumer": "HomeView.drawAppCard"
+    },
+    "GRID_VEIL_ALPHA": {
+      "type": "float",
+      "value": "0.08f",
+      "consumer": "HomeView.drawAppCard"
+    },
+    "GRID_RIM_ALPHA": {
+      "type": "float",
+      "value": "0.4f",
+      "consumer": "HomeView.drawAppCard"
+    }
+  },
+  "Canvas": {
+    "WIDTH": {
+      "type": "float",
+      "value": "1920f",
+      "consumer": "HomeView and SettingsView scaling"
+    }
+  },
+  "Frame": {
+    "FPS": {
+      "type": "float",
+      "value": "60f",
+      "consumer": "HomeView and SettingsView frame step"
+    },
+    "MAX_STEP_S": {
+      "type": "float",
+      "value": "0.05f",
+      "consumer": "HomeView and SettingsView frame step"
+    },
+    "IDLE_MS": {
+      "type": "int",
+      "value": "1000",
+      "consumer": "HomeView.doFrame"
+    }
+  },
+  "Font": {
+    "DISPLAY_OPTICAL_SIZE": {
+      "type": "int",
+      "value": "32",
+      "consumer": "Ui.init Inter opsz"
+    },
+    "THIN_WEIGHT": {
+      "type": "int",
+      "value": "200",
+      "consumer": "Ui.init Inter wght"
+    },
+    "LIGHT_WEIGHT": {
+      "type": "int",
+      "value": "300",
+      "consumer": "Ui.init Inter wght"
+    },
+    "MEDIUM_WEIGHT": {
+      "type": "int",
+      "value": "500",
+      "consumer": "Ui.init Inter wght"
+    },
+    "SEMIBOLD_WEIGHT": {
+      "type": "int",
+      "value": "600",
+      "consumer": "Ui.init Inter wght"
+    },
+    "TEXT_OPTICAL_SIZE": {
+      "type": "int",
+      "value": "14",
+      "consumer": "Ui.init Inter opsz"
+    },
+    "REGULAR_WEIGHT": {
+      "type": "int",
+      "value": "400",
+      "consumer": "Ui.init Inter wght"
+    }
   }
 }

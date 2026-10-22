@@ -63,43 +63,43 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     // tvOS grid (Human Interface Guidelines): content inside the safe area, 80 px from the sides and 60 from top and
     // bottom; 40 px between items; 7 columns of 217 px (the apps). The shelf glass extends 36 px past the tiles (the
     // same padding on all four sides) and the tile corners are concentric with it (glass radius = radius + padding).
-    private static final float MARGIN = 96, CONTENT_R = 1824;
+    private static final float MARGIN = Theme.Legacy.HomeLayout.MARGIN, CONTENT_R = Theme.Legacy.HomeLayout.CONTENT_R;
     // Hero, anchored at the bottom (a two-line title grows upward).
-    private static final float HERO_TITLE_W = 900;
+    private static final float HERO_TITLE_W = Theme.Legacy.HomeLayout.HERO_TITLE_W;
     // Shelf: tiles with corners concentric with the glass (glass radius = tile radius + padding).
     // Shelf like the tvOS 27 Dock: 5:3 icons (210 × 126) in each brand's color, 48 apart, and the glass bar hugging
     // them with 40 of padding (the focused icon grows 20% without touching its edge).
-    private static final float SHELF_PAD = 28, TILE_GAP = 36;
-    private static final float TILE_RADIUS = 22, TILE_MAX_W = 270;
+    private static final float SHELF_PAD = Theme.Legacy.HomeLayout.SHELF_PAD, TILE_GAP = Theme.Legacy.HomeLayout.TILE_GAP;
+    private static final float TILE_RADIUS = Theme.Legacy.HomeLayout.TILE_RADIUS, TILE_MAX_W = Theme.Legacy.HomeLayout.TILE_MAX_W;
     // Tile focus (Apple TV style): it grows from the center and its shadow drops (it "rises" toward the viewer).
-    private static final float FOCUS_GROW = 0.2f;
+    private static final float FOCUS_GROW = Theme.Legacy.HomeMotion.FOCUS_GROW;
     // Corner capsule.
     // Corner capsule: the height and top offset of the tvOS tab bar (68 and 46).
-    private static final float CAPSULE_TOP = 46, CAPSULE_H = 68, BUTTON = 56;
+    private static final float CAPSULE_TOP = Theme.Legacy.HomeLayout.CAPSULE_TOP, CAPSULE_H = Theme.Legacy.HomeLayout.CAPSULE_H, BUTTON = Theme.Legacy.HomeLayout.BUTTON;
     // Bottom drawer (measured with it open; everything moves up by SHIFT).
-    private static final float SHIFT = 604, ROW_TITLE = 482, ROW_TOP = 510, ROW_H = 137, CARDS_TOP = 684, CARDS_H = 310;
+    private static final float SHIFT = Theme.Legacy.HomeLayout.SHIFT, ROW_TITLE = Theme.Legacy.HomeLayout.ROW_TITLE, ROW_TOP = Theme.Legacy.HomeLayout.ROW_TOP, ROW_H = Theme.Legacy.HomeLayout.ROW_H, CARDS_TOP = Theme.Legacy.HomeLayout.CARDS_TOP, CARDS_H = Theme.Legacy.HomeLayout.CARDS_H;
     // "All Apps" sheet.
-    private static final int COLUMNS = 5, VISIBLE_ROWS = 3;
-    private static final float GRID_W = 300, GRID_H = 169, GRID_GAP = 40, GRID_ROW = 239, GRID_TOP = 196, GRID_RADIUS = 22;
+    private static final int COLUMNS = Theme.Legacy.HomeLayout.COLUMNS, VISIBLE_ROWS = Theme.Legacy.HomeLayout.VISIBLE_ROWS;
+    private static final float GRID_W = Theme.Legacy.HomeLayout.GRID_W, GRID_H = Theme.Legacy.HomeLayout.GRID_H, GRID_GAP = Theme.Legacy.HomeLayout.GRID_GAP, GRID_ROW = Theme.Legacy.HomeLayout.GRID_ROW, GRID_TOP = Theme.Legacy.HomeLayout.GRID_TOP, GRID_RADIUS = Theme.Legacy.HomeLayout.GRID_RADIUS;
     private static final int SMOKE = Theme.Legacy.HomeColor.SMOKE, INK = Theme.Legacy.HomeColor.INK, WHITE = Theme.Legacy.HomeColor.WHITE;
     private static final int UP_COLOR = Theme.Legacy.HomeColor.UP_COLOR, DOWN_COLOR = Theme.Legacy.HomeColor.DOWN_COLOR;
     // Modern 80s: white type on the fields, 55% white hairlines instead of boxes, cyan up and red-orange down.
     private static final int M_INK = Theme.Legacy.HomeColor.M_INK, M_MUTED = Theme.Legacy.HomeColor.M_MUTED, M_HAIRLINE = Theme.Legacy.HomeColor.M_HAIRLINE;
     private static final int M_UP = Theme.Legacy.HomeColor.M_UP, M_DOWN = Theme.Legacy.HomeColor.M_DOWN;
-    private static final long TOAST_MS = 6000, FADE_MS = 800;
+    private static final long TOAST_MS = Theme.Legacy.HomeMotion.TOAST_MS, FADE_MS = Theme.Legacy.HomeMotion.FADE_MS;
     /** Blur radii of the shadow and shadowDeep paints (Shadows needs them to draw the same blur on older TVs). */
-    private static final float SHADOW_BLUR = 26, DEEP_BLUR = 30;
+    private static final float SHADOW_BLUR = Theme.Legacy.HomeEffect.SHADOW_BLUR, DEEP_BLUR = Theme.Legacy.HomeEffect.DEEP_BLUR;
     private static final int SKY = 0, HERO = 1, STATUS = 2, PLATTER = 3, TILES = 4, DRAWER = 5, SHEET = 6, TOAST = 7;
     private static final int Z_STATUS = 0, Z_HERO = 1, Z_SHELF = 2, Z_DRAWER = 3;
     private static final ExecutorService LOADER = Executors.newSingleThreadExecutor();
     // Light design (the L_ constants): title, tab bar, three recommendation cards and the shelf.
     // The tab bar is a 68 px capsule; the cards sit on the 5-column grid (the wide one spans 3).
-    private static final float L_TITLE_BASE = 155, L_TABBAR_TOP = 176, L_TABBAR_H = 63, L_CARDS_TOP = 280, L_CARD_H = 420;
+    private static final float L_TITLE_BASE = Theme.Legacy.HomeLayout.L_TITLE_BASE, L_TABBAR_TOP = Theme.Legacy.HomeLayout.L_TABBAR_TOP, L_TABBAR_H = Theme.Legacy.HomeLayout.L_TABBAR_H, L_CARDS_TOP = Theme.Legacy.HomeLayout.L_CARDS_TOP, L_CARD_H = Theme.Legacy.HomeLayout.L_CARD_H;
     // Modern 80s tab strip: caps labels on a baseline, a hairline under the row, a 3 px segment under the selected one.
-    private static final float L_TAB_BASE = 214, L_TAB_RULE = 239, L_TAB_GAP = 64;
-    private static final float L_TALL_W = 328, L_CARD_GAP = 32, L_BUTTON = 72, L_BUTTON_GAP = 8, L_BUTTON_CY = 108;
-    private static final float L_PLATTER_TOP = 848, L_TILE_H = 120;
-    private static final float L_DATE_BASE = 330, L_CLOCK_BASE = 540, L_WEATHER_BASE = 626, L_QUOTES_BASE = 694;
+    private static final float L_TAB_BASE = Theme.Legacy.HomeLayout.L_TAB_BASE, L_TAB_RULE = Theme.Legacy.HomeLayout.L_TAB_RULE, L_TAB_GAP = Theme.Legacy.HomeLayout.L_TAB_GAP;
+    private static final float L_TALL_W = Theme.Legacy.HomeLayout.L_TALL_W, L_CARD_GAP = Theme.Legacy.HomeLayout.L_CARD_GAP, L_BUTTON = Theme.Legacy.HomeLayout.L_BUTTON, L_BUTTON_GAP = Theme.Legacy.HomeLayout.L_BUTTON_GAP, L_BUTTON_CY = Theme.Legacy.HomeLayout.L_BUTTON_CY;
+    private static final float L_PLATTER_TOP = Theme.Legacy.HomeLayout.L_PLATTER_TOP, L_TILE_H = Theme.Legacy.HomeLayout.L_TILE_H;
+    private static final float L_DATE_BASE = Theme.Legacy.HomeLayout.L_DATE_BASE, L_CLOCK_BASE = Theme.Legacy.HomeLayout.L_CLOCK_BASE, L_WEATHER_BASE = Theme.Legacy.HomeLayout.L_WEATHER_BASE, L_QUOTES_BASE = Theme.Legacy.HomeLayout.L_QUOTES_BASE;
     private static final int L_INK = Theme.Legacy.HomeColor.L_INK, L_DIM = Theme.Legacy.HomeColor.L_DIM, L_FAINT = Theme.Legacy.HomeColor.L_FAINT;
     private static final String[] TABS = {"Explorar", "Filmes", "Séries", "Continuar", "Catálogo"};
     private static final String[] TABS_RU = {"Обзор", "Фильмы", "Сериалы", "Продолжить", "Каталог"};
@@ -111,8 +111,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private static final int TAB_COUNT = TABS.length, NEXT_TAB = 3, CATALOG_TAB = 4;
     private static final int Z_TOP = 4, Z_CARDS = 5;
     // Explore's showcase: two genres, 11 posters (2:3) each, filling the margins exactly (11 × 138 + 10 × 21 = 1728).
-    private static final int SHOW_COLS = 11;
-    private static final float SHOW_W = 138, SHOW_H = 207, SHOW_GAP = 21, SHOW_LABEL_1 = 300, SHOW_LABEL_2 = 588;
+    private static final int SHOW_COLS = Theme.Legacy.HomeLayout.SHOW_COLS;
+    private static final float SHOW_W = Theme.Legacy.HomeLayout.SHOW_W, SHOW_H = Theme.Legacy.HomeLayout.SHOW_H, SHOW_GAP = Theme.Legacy.HomeLayout.SHOW_GAP, SHOW_LABEL_1 = Theme.Legacy.HomeLayout.SHOW_LABEL_1, SHOW_LABEL_2 = Theme.Legacy.HomeLayout.SHOW_LABEL_2;
 
     private final Activity activity;
     private final Scene scene = new Scene();
@@ -196,14 +196,14 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     // Moving apps on the shelf (as on Apple TV): hold OK on a tile, then ← → move it, OK drops it, Back cancels. The
     // lifted tile wiggles; the others slide to their new places (each slot's x offset is a spring that returns to 0).
-    private static final long HOLD_MS = 500, WIGGLE_MS = 300;
-    private static final float LIFT_GROW = 0.08f, WIGGLE_DEG = 1.5f;
+    private static final long HOLD_MS = Theme.Legacy.HomeMotion.HOLD_MS, WIGGLE_MS = Theme.Legacy.HomeMotion.WIGGLE_MS;
+    private static final float LIFT_GROW = Theme.Legacy.HomeMotion.LIFT_GROW, WIGGLE_DEG = Theme.Legacy.HomeMotion.WIGGLE_DEG;
     private boolean reordering, reorderAnim, okHeld, holdArmed;
     private int liftIndex = -1;
     private long reorderAt;
     private float wiggle;
     private Spring[] tileSlide = new Spring[0];
-    private final Spring moveLift = new Spring(0.3f, 0.72f, 0);
+    private final Spring moveLift = new Spring(Theme.Legacy.HomeMotion.MOVE_LIFT_RESPONSE_S, Theme.Legacy.HomeMotion.MOVE_LIFT_DAMPING, 0);
     private List<HomeApps.Item> reorderOrigin;
     private final Runnable holdStart = () -> { if (this.okDown && this.holdArmed) startReorder(); };
 
@@ -220,7 +220,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private int pickIndex, heroSlide = 1;
     private Hero hero, heroFrom;
     private long heroFadeAt;
-    private final Spring heroFocus = new Spring(0.28f, 0.85f, 0);
+    private final Spring heroFocus = new Spring(Theme.Legacy.HomeMotion.HERO_FOCUS_RESPONSE_S, Theme.Legacy.HomeMotion.HERO_FOCUS_DAMPING, 0);
     private final RectF heroButton = new RectF();
 
     // Bottom drawer
@@ -229,7 +229,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private Spring[] drawerFocus = new Spring[0];
     private RectF[] drawerRects = new RectF[0];
     private final RectF weatherCard = new RectF(), quotesCard = new RectF();
-    private final Spring drawer = new Spring(0.46f, 0.92f, 0);
+    private final Spring drawer = new Spring(Theme.Legacy.HomeMotion.DRAWER_RESPONSE_S, Theme.Legacy.HomeMotion.DRAWER_DAMPING, 0);
     private boolean drawerOpen;
     private int drawerIndex;
 
@@ -237,8 +237,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private List<HomeApps.Item> others = new ArrayList<>();
     private Spring[] gridFocus = new Spring[0];
     private String[] gridLabels;
-    private final Spring sheet = new Spring(0.38f, 0.9f, 0);
-    private final Spring scroll = new Spring(0.34f, 1f, 0);
+    private final Spring sheet = new Spring(Theme.Legacy.HomeMotion.SHEET_RESPONSE_S, Theme.Legacy.HomeMotion.SHEET_DAMPING, 0);
+    private final Spring scroll = new Spring(Theme.Legacy.HomeMotion.SCROLL_RESPONSE_S, Theme.Legacy.HomeMotion.SCROLL_DAMPING, 0);
     private final RectF focusedCell = new RectF();
     private boolean sheetOpen;
     private int gridIndex;
@@ -416,11 +416,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         setContentDescription("Free My TV");
         drawerLayer.setVisibility(INVISIBLE);
         for (int i = 0; i < topFocus.length; i++) {
-            topFocus[i] = new Spring(0.26f, 0.85f, 0);
+            topFocus[i] = new Spring(Theme.Legacy.HomeMotion.TOP_FOCUS_RESPONSE_S, Theme.Legacy.HomeMotion.TOP_FOCUS_DAMPING, 0);
             topRects[i] = new RectF();
         }
         for (int i = 0; i < cardFocus.length; i++) {
-            cardFocus[i] = new Spring(0.32f, 0.78f, 0);
+            cardFocus[i] = new Spring(Theme.Legacy.HomeMotion.CARD_FOCUS_RESPONSE_S, Theme.Legacy.HomeMotion.CARD_FOCUS_DAMPING, 0);
             cardRects[i] = new RectF();
         }
         makeLightButtons();
@@ -557,7 +557,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     @Override protected void onMeasure(int widthSpec, int heightSpec) {
         int width = MeasureSpec.getSize(widthSpec), height = MeasureSpec.getSize(heightSpec);
-        float kk = width / 1920f;
+        float kk = width / Theme.Legacy.Canvas.WIDTH;
         measure(sky, width, height);
         measure(heroLayer, width, Math.round(850 * kk));   // down to the showcase's second row
         measure(status, Math.round(1160 * kk), Math.round(240 * kk));
@@ -578,7 +578,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int width = r - l, height = b - t;
-        float kk = width / 1920f;
+        float kk = width / Theme.Legacy.Canvas.WIDTH;
         sky.layout(0, 0, width, height);
         place(heroLayer, 0, 0);
         place(status, width - status.getMeasuredWidth(), 0);
@@ -598,7 +598,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     @Override protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
         w = width;
         h = height;
-        k = w / 1920f;
+        k = w / Theme.Legacy.Canvas.WIDTH;
         screen.set(0, 0, w, h);
         scene.setSize(w, h);
         makePaints();
@@ -625,7 +625,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         metaPaint.setLetterSpacing(Theme.Legacy.HomeText.META_PAINT_TRACKING);
         clockPaint = Ui.numbers(Ui.thin, Theme.Legacy.HomeText.CLOCK_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AFF);
         clockPaint.setLetterSpacing(Theme.Legacy.HomeText.CLOCK_PAINT_TRACKING);
-        for (Paint p : new Paint[] {labelPaint, titlePaint, metaPaint, clockPaint}) p.setShadowLayer(22 * k, 0, 2 * k, Theme.Legacy.Palette.BLACK_A59);
+        for (Paint p : new Paint[] {labelPaint, titlePaint, metaPaint, clockPaint}) p.setShadowLayer(Theme.Legacy.HomeEffect.HERO_TEXT_SHADOW_BLUR * k, 0, Theme.Legacy.HomeEffect.HERO_TEXT_SHADOW_DY * k, Theme.Legacy.Palette.BLACK_A59);
         // Modern 80s: the clock big and tight, caps tabs and titles in Inter Display at 500.
         lTitle = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.L_TITLE_SIZE * k, M_INK);
         lTitle.setLetterSpacing(Theme.Legacy.HomeText.L_TITLE_TRACKING);
@@ -651,10 +651,10 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         capsuleText = Ui.numbers(Ui.medium, Theme.Legacy.HomeText.CAPSULE_TEXT_SIZE * k, Theme.Legacy.Palette.WHITE_AF2);
         tipPaint = Ui.text(Ui.semibold, Theme.Legacy.HomeText.TIP_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AF2);
         tipPaint.setTextAlign(Paint.Align.CENTER);
-        tipPaint.setShadowLayer(16 * k, 0, 1 * k, Theme.Legacy.Palette.BLACK_A99);
+        tipPaint.setShadowLayer(Theme.Legacy.HomeEffect.TOOLTIP_SHADOW_BLUR * k, 0, Theme.Legacy.HomeEffect.TOOLTIP_SHADOW_DY * k, Theme.Legacy.Palette.BLACK_A99);
         // Quotes: a subtle detail, smaller and dimmer than the rest.
         quotePaint = Ui.numbers(Ui.regular, Theme.Legacy.HomeText.QUOTE_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AB8);
-        quotePaint.setShadowLayer(14 * k, 0, 1 * k, Theme.Legacy.Palette.BLACK_A99);
+        quotePaint.setShadowLayer(Theme.Legacy.HomeEffect.QUOTE_SHADOW_BLUR * k, 0, Theme.Legacy.HomeEffect.QUOTE_SHADOW_DY * k, Theme.Legacy.Palette.BLACK_A99);
         staleQuote = Ui.text(Ui.medium, Theme.Legacy.HomeText.STALE_QUOTE_SIZE * k, Theme.Legacy.Palette.WHITE_A99);
         staleQuote.setTextAlign(Paint.Align.RIGHT);
         rowTitle = Ui.text(Ui.semibold, Theme.Legacy.HomeText.ROW_TITLE_SIZE * k, Theme.Legacy.Palette.WHITE_AB3);
@@ -680,13 +680,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         gridLabel.setTextAlign(Paint.Align.CENTER);
         toastPaint = new TextPaint(Ui.text(Ui.medium, Theme.Legacy.HomeText.TOAST_PAINT_SIZE * k, Theme.Legacy.Palette.WHITE_AF2));
         shadow.setMaskFilter(new BlurMaskFilter(SHADOW_BLUR * k, BlurMaskFilter.Blur.NORMAL));
-        shadowSoft.setMaskFilter(new BlurMaskFilter(12 * k, BlurMaskFilter.Blur.NORMAL));
+        shadowSoft.setMaskFilter(new BlurMaskFilter(Theme.Legacy.HomeEffect.SOFT_BLUR * k, BlurMaskFilter.Blur.NORMAL));
         shadowDeep.setMaskFilter(new BlurMaskFilter(DEEP_BLUR * k, BlurMaskFilter.Blur.NORMAL));
-        halo.setMaskFilter(new BlurMaskFilter(22 * k, BlurMaskFilter.Blur.NORMAL));
+        halo.setMaskFilter(new BlurMaskFilter(Theme.Legacy.HomeEffect.HALO_BLUR * k, BlurMaskFilter.Blur.NORMAL));
         border.setStyle(Paint.Style.STROKE);
-        border.setStrokeWidth(2 * k);
+        border.setStrokeWidth(Theme.Legacy.HomeEffect.BORDER_STROKE * k);
         rim.setStyle(Paint.Style.STROKE);
-        rim.setStrokeWidth(2.5f * k);
+        rim.setStrokeWidth(Theme.Legacy.HomeEffect.RIM_STROKE * k);
         // Modern 80s: Inter Display at 500, tight; labels in caps.
         mLabel = Ui.text(Ui.displayMedium, Theme.Legacy.HomeText.M_LABEL_SIZE * k, M_INK);
         mLabel.setLetterSpacing(Theme.Legacy.HomeText.M_LABEL_TRACKING);
@@ -791,7 +791,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     @Override public void doFrame(long frameTimeNanos) {
         if (!running) return;
-        float dt = lastNanos == 0 ? 1 / 60f : Math.min(0.05f, (frameTimeNanos - lastNanos) / 1e9f);
+        float dt = lastNanos == 0 ? 1 / Theme.Legacy.Frame.FPS : Math.min(Theme.Legacy.Frame.MAX_STEP_S, (frameTimeNanos - lastNanos) / 1e9f);
         lastNanos = frameTimeNanos;
         long up = SystemClock.uptimeMillis();
 
@@ -840,7 +840,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 || drawerOpen || drawer.value > 0.001f || toast != null || !toasts.isEmpty();
         idle = !busy;
         if (busy) Choreographer.getInstance().postFrameCallback(this);
-        else Choreographer.getInstance().postFrameCallbackDelayed(this, 1000);
+        else Choreographer.getInstance().postFrameCallbackDelayed(this, Theme.Legacy.Frame.IDLE_MS);
     }
 
     private void wake() {
@@ -1102,7 +1102,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             statusRects = new RectF[list.size()];
             int index = Math.min(statusIndex, Math.max(0, list.size() - 1));
             for (int i = 0; i < statusFocus.length; i++) {
-                statusFocus[i] = new Spring(0.26f, 0.85f, 0);
+                statusFocus[i] = new Spring(Theme.Legacy.HomeMotion.STATUS_FOCUS_RESPONSE_S, Theme.Legacy.HomeMotion.STATUS_FOCUS_DAMPING, 0);
                 statusRects[i] = new RectF();
                 if (list.get(i).key.equals(focusedKey)) index = i;   // a device came on: keep focus on the same button
             }
@@ -1159,8 +1159,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             tileSlide = new Spring[list.size()];
             tileRects = new RectF[list.size()];
             for (int i = 0; i < tileFocus.length; i++) {
-                tileFocus[i] = new Spring(0.34f, 0.74f, 0);
-                tileSlide[i] = new Spring(0.32f, 0.86f, 0);
+                tileFocus[i] = new Spring(Theme.Legacy.HomeMotion.TILE_FOCUS_RESPONSE_S, Theme.Legacy.HomeMotion.TILE_FOCUS_DAMPING, 0);
+                tileSlide[i] = new Spring(Theme.Legacy.HomeMotion.TILE_SLIDE_RESPONSE_S, Theme.Legacy.HomeMotion.TILE_SLIDE_DAMPING, 0);
                 tileRects[i] = new RectF();
             }
             shelfIndex = Math.min(shelfIndex, Math.max(0, list.size() - 1));
@@ -1357,11 +1357,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             c.drawBitmap(it.tile, null, cell, bitmapPaint);
         }
         if (f > 0.01f) {
-            float out = 8 * k + 1.5f * k;
+            float out = Theme.Legacy.HomeEffect.FOCUS_GAP * k + Theme.Legacy.HomeEffect.FOCUS_HALF_STROKE * k;
             tmp.set(cell.left - out, cell.top - out, cell.right + out, cell.bottom + out);
             rim.setShader(null);
             rim.setColor(Ui.alpha(M_INK, f));
-            rim.setStrokeWidth(3 * k);
+            rim.setStrokeWidth(Theme.Legacy.HomeEffect.FOCUS_STROKE * k);
             c.drawRect(tmp, rim);
         }
     }
@@ -1479,7 +1479,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             drawerFocus = new Spring[list.size()];
             drawerRects = new RectF[list.size()];
             for (int i = 0; i < drawerFocus.length; i++) {
-                drawerFocus[i] = new Spring(0.28f, 0.85f, 0);
+                drawerFocus[i] = new Spring(Theme.Legacy.HomeMotion.DRAWER_FOCUS_RESPONSE_S, Theme.Legacy.HomeMotion.DRAWER_FOCUS_DAMPING, 0);
                 drawerRects[i] = new RectF();
             }
             drawerIndex = Math.min(drawerIndex, Math.max(0, list.size() - 1));
@@ -1493,7 +1493,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         int n = drawerItems.size();
         float left = MARGIN * k, right = CONTENT_R * k;
         // Inputs and shortcuts: two equal halves 48 px apart, each split evenly into cells (no gaps: hairlines).
-        float groupGap = 48 * k, top = ROW_TOP * k;
+        float groupGap = Theme.Legacy.HomeLayout.DRAWER_GROUP_GAP * k, top = ROW_TOP * k;
         int groups = drawerInputs > 0 && drawerInputs < n ? 2 : 1;
         float half = groups == 2 ? (right - left - groupGap) / 2 : right - left;
         for (int i = 0; i < n; i++) {
@@ -1599,7 +1599,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             // The device on this port is on (HDMI-CEC): a dot at the top right (cyan: the system has no green).
             fill.setShader(null);
             fill.setColor(f > 0.5f ? Theme.Legacy.Palette.CEC_FOCUSED : M_UP);
-            c.drawCircle(cellRect.right - 16 * k, cellRect.top + 16 * k, 6 * k, fill);
+            c.drawCircle(cellRect.right - Theme.Legacy.HomeLayout.CEC_INSET_X * k, cellRect.top + Theme.Legacy.HomeLayout.CEC_INSET_Y * k, Theme.Legacy.HomeLayout.CEC_DOT_RADIUS * k, fill);
         }
     }
 
@@ -1612,7 +1612,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     private void drawWeather(Canvas c, RectF r) {
         refreshDrawerText();
-        float x = r.left, labelBase = r.top + 28 * k, rule = r.top + 53 * k;
+        float x = r.left, labelBase = r.top + Theme.Legacy.HomeLayout.WIDGET_LABEL_BASE * k, rule = r.top + Theme.Legacy.HomeLayout.WIDGET_RULE_Y * k;
         c.drawText(caps(weatherTitle), x, labelBase, mLabel);
         hairline(c, r.left, r.right, rule);
         HomeData.Weather wx = textWeather;
@@ -1626,22 +1626,22 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         Symbols.drawSharp(getContext(), c, symbol, r.right - sw / 2, labelBase - Ui.halfCap(mLabel), 26 * k, M_INK);
         c.drawText(condition, r.right - sw - 12 * k, labelBase, mLabelRight);
         // The number big and tight, its degree sign small at the top (like a superscript).
-        float tempBase = r.top + 231 * k, tx = x - Ui.leftBearing(mBig, nowDigits);
+        float tempBase = r.top + Theme.Legacy.HomeLayout.TEMPERATURE_BASE * k, tx = x - Ui.leftBearing(mBig, nowDigits);
         c.drawText(nowDigits, tx, tempBase, mBig);
         if (nowDigits.length() < nowTemp.length()) {
             c.drawText("°", tx + mBig.measureText(nowDigits) + 4 * k, tempBase - Ui.cap(mBig) + Ui.cap(mBigDegree) * 0.9f, mBigDegree);
         }
-        c.drawText(highLow, x, r.top + 288 * k, mMuted);
+        c.drawText(highLow, x, r.top + Theme.Legacy.HomeLayout.WEATHER_FOOTER_BASE * k, mMuted);
         int hours = weatherHours();
-        float hx = r.left + 304 * k, hw = (r.right - hx) / hours;
+        float hx = r.left + Theme.Legacy.HomeLayout.WEATHER_HOURS_X * k, hw = (r.right - hx) / hours;
         for (int i = 0; i < wx.hours.size() && i < hours; i++) {
             float hc = hx + hw * (i + 0.5f);
             if (i > 0) vline(c, hx + hw * i, r.top + 76 * k, r.top + 251 * k);
-            c.drawText(hourText[i], hc, r.top + 104 * k, mHour);
-            Symbols.drawSharp(getContext(), c, Symbols.weather(wx.hourCode.get(i), wx.hourDay.get(i)), hc, r.top + 158 * k, 32 * k, M_INK);
-            c.drawText(hourTempText[i], hc, r.top + 228 * k, mHourTemp);
+            c.drawText(hourText[i], hc, r.top + Theme.Legacy.HomeLayout.WEATHER_HOUR_BASE * k, mHour);
+            Symbols.drawSharp(getContext(), c, Symbols.weather(wx.hourCode.get(i), wx.hourDay.get(i)), hc, r.top + Theme.Legacy.HomeLayout.WEATHER_ICON_Y * k, 32 * k, M_INK);
+            c.drawText(hourTempText[i], hc, r.top + Theme.Legacy.HomeLayout.WEATHER_HOUR_TEMP_BASE * k, mHourTemp);
         }
-        c.drawText(sunLine, hx, r.top + 288 * k, mMuted);
+        c.drawText(sunLine, hx, r.top + Theme.Legacy.HomeLayout.WEATHER_FOOTER_BASE * k, mMuted);
     }
 
     /** Next hours in the weather card: five beside the quotes card, six with the whole width. */
@@ -1753,7 +1753,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private void drawPrices(Canvas c, RectF r) {
         float x = r.left, right = r.right;
         refreshDrawerText();
-        float labelBase = r.top + 28 * k;
+        float labelBase = r.top + Theme.Legacy.HomeLayout.WIDGET_LABEL_BASE * k;
         c.drawText(caps(quotesTitle()), x, labelBase, mLabel);
         c.drawText(caps(staleText), right, labelBase, mLabelRight);
         hairline(c, r.left, r.right, r.top + 53 * k);
@@ -1807,7 +1807,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             py = cy;
         }
         sparkPaint.setStyle(Paint.Style.STROKE);
-        sparkPaint.setStrokeWidth(2.5f * k);
+        sparkPaint.setStrokeWidth(Theme.Legacy.HomeEffect.SPARK_STROKE * k);
         sparkPaint.setStrokeCap(Paint.Cap.ROUND);
         sparkPaint.setColor(color);
         c.drawLines(sparkPoints, 0, n, sparkPaint);
@@ -1851,7 +1851,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private void setOthers(List<HomeApps.Item> list) {
         others = list;
         gridFocus = new Spring[list.size()];
-        for (int i = 0; i < gridFocus.length; i++) gridFocus[i] = new Spring(0.3f, 0.82f, 0);
+        for (int i = 0; i < gridFocus.length; i++) gridFocus[i] = new Spring(Theme.Legacy.HomeMotion.GRID_FOCUS_RESPONSE_S, Theme.Legacy.HomeMotion.GRID_FOCUS_DAMPING, 0);
         gridLabels = null;
         gridIndex = Math.min(gridIndex, Math.max(0, list.size() - 1));
         retargetGrid(true);
@@ -1928,7 +1928,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if (f > 0.01f) {
             tmp.set(cell);
             tmp.offset(0, 16 * k * f);
-            shadow.setColor(Ui.alpha(Theme.Legacy.Palette.BLACK_AFF, 0.55f * fc));
+            shadow.setColor(Ui.alpha(Theme.Legacy.Palette.BLACK_AFF, Theme.Legacy.HomeEffect.GRID_SHADOW_ALPHA * fc));
             shadows.draw(c, tmp, r, SHADOW_BLUR * k, shadow);
         }
         if (image != null) roundImage(c, image, cell, r);
@@ -1949,17 +1949,17 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             c.restore();
         }
         if (fc < 0.99f) {
-            veil.setColor(Ui.alpha(Theme.Legacy.Palette.BLACK_AFF, 0.08f * (1 - fc)));
+            veil.setColor(Ui.alpha(Theme.Legacy.Palette.BLACK_AFF, Theme.Legacy.HomeEffect.GRID_VEIL_ALPHA * (1 - fc)));
             c.drawRoundRect(cell, r, r, veil);
         }
         border.setColor(Theme.Legacy.Palette.WHITE_A14);
         c.drawRoundRect(cell, r, r, border);
         if (f > 0.01f) {
             rim.setShader(null);
-            rim.setColor(Ui.alpha(Theme.Legacy.Palette.WHITE_AFF, 0.4f * fc));
-            rim.setStrokeWidth(1.5f * k);
+            rim.setColor(Ui.alpha(Theme.Legacy.Palette.WHITE_AFF, Theme.Legacy.HomeEffect.GRID_RIM_ALPHA * fc));
+            rim.setStrokeWidth(Theme.Legacy.HomeEffect.GRID_FOCUS_STROKE * k);
             c.drawRoundRect(cell, r, r, rim);
-            rim.setStrokeWidth(2.5f * k);
+            rim.setStrokeWidth(Theme.Legacy.HomeEffect.RIM_STROKE * k);
         }
     }
 
@@ -1986,7 +1986,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         }
         if (toast == null) return false;
         long age = up - toastAt;
-        boolean fading = age < 350 || age > TOAST_MS - 450;
+        boolean fading = age < Theme.Legacy.HomeMotion.TOAST_ENTER_REDRAW_MS || age > TOAST_MS - Theme.Legacy.HomeMotion.TOAST_EXIT_REDRAW_MS;
         if (fading) toastLayer.invalidate();
         return fading;
     }
@@ -1994,7 +1994,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private void drawToast(Canvas c) {
         if (toast == null) return;
         float age = (SystemClock.uptimeMillis() - toastAt) / 1000f;
-        float a = Math.min(Ui.clamp(age / 0.3f), Ui.clamp((TOAST_MS / 1000f - age) / 0.4f));
+        float a = Math.min(Ui.clamp(age / Theme.Legacy.HomeMotion.TOAST_ENTER_S), Ui.clamp((TOAST_MS / 1000f - age) / Theme.Legacy.HomeMotion.TOAST_EXIT_S));
         if (a <= 0) return;
         float padX = 28 * k, padY = 18 * k, icon = 26 * k, iconW = Symbols.width(getContext(), "bell", icon);
         float tw = toast.getWidth() + iconW + 16 * k, th = toast.getHeight();
@@ -2967,11 +2967,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             c.drawRect(cell, fill);
         }
         if (f > 0.01f) {
-            float out = 8 * k + 1.5f * k;
+            float out = Theme.Legacy.HomeEffect.FOCUS_GAP * k + Theme.Legacy.HomeEffect.FOCUS_HALF_STROKE * k;
             tmp.set(cell.left - out, cell.top - out, cell.right + out, cell.bottom + out);
             rim.setShader(null);
             rim.setColor(Ui.alpha(M_INK, f));
-            rim.setStrokeWidth(3 * k);
+            rim.setStrokeWidth(Theme.Legacy.HomeEffect.FOCUS_STROKE * k);
             c.drawRect(tmp, rim);
         }
         if (p == null) return;
@@ -3027,11 +3027,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 }
                 float f = Ui.clamp(cardFocus[i].value);
                 if (f > 0.01f) {
-                    float out = 8 * k + 1.5f * k;
+                    float out = Theme.Legacy.HomeEffect.FOCUS_GAP * k + Theme.Legacy.HomeEffect.FOCUS_HALF_STROKE * k;
                     tmp.set(r.left - out, r.top - out, r.right + out, r.bottom + out);
                     rim.setShader(null);
                     rim.setColor(Ui.alpha(M_INK, f));
-                    rim.setStrokeWidth(3 * k);
+                    rim.setStrokeWidth(Theme.Legacy.HomeEffect.FOCUS_STROKE * k);
                     c.drawRect(tmp, rim);
                 }
             }

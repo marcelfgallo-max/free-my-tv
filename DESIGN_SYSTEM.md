@@ -188,6 +188,163 @@ Frost, Backdrop, Shadows, Scene e os assets não são alterados nesta etapa. A p
 | TEAM_BIG_TRACKING | float | -0.01f | HomeView.teamBig |
 | M_CELL_MIN_SIZE | int | 17 | HomeView.drawDrawerTile |
 
+### Theme.Legacy.HomeLayout
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| MARGIN | float | 96f | HomeView.MARGIN |
+| CONTENT_R | float | 1824f | HomeView.CONTENT_R |
+| HERO_TITLE_W | float | 900f | HomeView.HERO_TITLE_W |
+| SHELF_PAD | float | 28f | HomeView.SHELF_PAD |
+| TILE_GAP | float | 36f | HomeView.TILE_GAP |
+| TILE_RADIUS | float | 22f | HomeView.TILE_RADIUS |
+| TILE_MAX_W | float | 270f | HomeView.TILE_MAX_W |
+| CAPSULE_TOP | float | 46f | HomeView.CAPSULE_TOP |
+| CAPSULE_H | float | 68f | HomeView.CAPSULE_H |
+| BUTTON | float | 56f | HomeView.BUTTON |
+| SHIFT | float | 604f | HomeView.SHIFT |
+| ROW_TITLE | float | 482f | HomeView.ROW_TITLE |
+| ROW_TOP | float | 510f | HomeView.ROW_TOP |
+| ROW_H | float | 137f | HomeView.ROW_H |
+| CARDS_TOP | float | 684f | HomeView.CARDS_TOP |
+| CARDS_H | float | 310f | HomeView.CARDS_H |
+| GRID_W | float | 300f | HomeView.GRID_W |
+| GRID_H | float | 169f | HomeView.GRID_H |
+| GRID_GAP | float | 40f | HomeView.GRID_GAP |
+| GRID_ROW | float | 239f | HomeView.GRID_ROW |
+| GRID_TOP | float | 196f | HomeView.GRID_TOP |
+| GRID_RADIUS | float | 22f | HomeView.GRID_RADIUS |
+| L_TITLE_BASE | float | 155f | HomeView.L_TITLE_BASE |
+| L_TABBAR_TOP | float | 176f | HomeView.L_TABBAR_TOP |
+| L_TABBAR_H | float | 63f | HomeView.L_TABBAR_H |
+| L_CARDS_TOP | float | 280f | HomeView.L_CARDS_TOP |
+| L_CARD_H | float | 420f | HomeView.L_CARD_H |
+| L_TAB_BASE | float | 214f | HomeView.L_TAB_BASE |
+| L_TAB_RULE | float | 239f | HomeView.L_TAB_RULE |
+| L_TAB_GAP | float | 64f | HomeView.L_TAB_GAP |
+| L_TALL_W | float | 328f | HomeView.L_TALL_W |
+| L_CARD_GAP | float | 32f | HomeView.L_CARD_GAP |
+| L_BUTTON | float | 72f | HomeView.L_BUTTON |
+| L_BUTTON_GAP | float | 8f | HomeView.L_BUTTON_GAP |
+| L_BUTTON_CY | float | 108f | HomeView.L_BUTTON_CY |
+| L_PLATTER_TOP | float | 848f | HomeView.L_PLATTER_TOP |
+| L_TILE_H | float | 120f | HomeView.L_TILE_H |
+| L_DATE_BASE | float | 330f | HomeView.L_DATE_BASE |
+| L_CLOCK_BASE | float | 540f | HomeView.L_CLOCK_BASE |
+| L_WEATHER_BASE | float | 626f | HomeView.L_WEATHER_BASE |
+| L_QUOTES_BASE | float | 694f | HomeView.L_QUOTES_BASE |
+| SHOW_W | float | 138f | HomeView.SHOW_W |
+| SHOW_H | float | 207f | HomeView.SHOW_H |
+| SHOW_GAP | float | 21f | HomeView.SHOW_GAP |
+| SHOW_LABEL_1 | float | 300f | HomeView.SHOW_LABEL_1 |
+| SHOW_LABEL_2 | float | 588f | HomeView.SHOW_LABEL_2 |
+| COLUMNS | int | 5 | HomeView grid |
+| VISIBLE_ROWS | int | 3 | HomeView grid |
+| SHOW_COLS | int | 11 | HomeView grid |
+| DRAWER_GROUP_GAP | int | 48 | HomeView drawer metrics |
+| WIDGET_LABEL_BASE | int | 28 | HomeView drawer metrics |
+| WIDGET_RULE_Y | int | 53 | HomeView drawer metrics |
+| TEMPERATURE_BASE | int | 231 | HomeView drawer metrics |
+| WEATHER_FOOTER_BASE | int | 288 | HomeView drawer metrics |
+| WEATHER_HOURS_X | int | 304 | HomeView drawer metrics |
+| WEATHER_HOUR_BASE | int | 104 | HomeView drawer metrics |
+| WEATHER_ICON_Y | int | 158 | HomeView drawer metrics |
+| WEATHER_HOUR_TEMP_BASE | int | 228 | HomeView drawer metrics |
+| CEC_INSET_X | int | 16 | HomeView drawer metrics |
+| CEC_INSET_Y | int | 16 | HomeView drawer metrics |
+| CEC_DOT_RADIUS | int | 6 | HomeView drawer metrics |
+
+### Theme.Legacy.HomeMotion
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| FOCUS_GROW | float | 0.2f | HomeView.FOCUS_GROW |
+| TOAST_MS | long | 6000L | HomeView.TOAST_MS |
+| FADE_MS | long | 800L | HomeView.FADE_MS |
+| HOLD_MS | long | 500L | HomeView.HOLD_MS |
+| WIGGLE_MS | long | 300L | HomeView.WIGGLE_MS |
+| LIFT_GROW | float | 0.08f | HomeView.LIFT_GROW |
+| WIGGLE_DEG | float | 1.5f | HomeView.WIGGLE_DEG |
+| MOVE_LIFT_RESPONSE_S | float | 0.3f | HomeView.moveLift |
+| MOVE_LIFT_DAMPING | float | 0.72f | HomeView.moveLift |
+| HERO_FOCUS_RESPONSE_S | float | 0.28f | HomeView.heroFocus |
+| HERO_FOCUS_DAMPING | float | 0.85f | HomeView.heroFocus |
+| DRAWER_RESPONSE_S | float | 0.46f | HomeView.drawer |
+| DRAWER_DAMPING | float | 0.92f | HomeView.drawer |
+| SHEET_RESPONSE_S | float | 0.38f | HomeView.sheet |
+| SHEET_DAMPING | float | 0.9f | HomeView.sheet |
+| SCROLL_RESPONSE_S | float | 0.34f | HomeView.scroll |
+| SCROLL_DAMPING | float | 1f | HomeView.scroll |
+| TOP_FOCUS_RESPONSE_S | float | 0.26f | HomeView.topFocus |
+| TOP_FOCUS_DAMPING | float | 0.85f | HomeView.topFocus |
+| CARD_FOCUS_RESPONSE_S | float | 0.32f | HomeView.cardFocus |
+| CARD_FOCUS_DAMPING | float | 0.78f | HomeView.cardFocus |
+| STATUS_FOCUS_RESPONSE_S | float | 0.26f | HomeView.statusFocus |
+| STATUS_FOCUS_DAMPING | float | 0.85f | HomeView.statusFocus |
+| TILE_FOCUS_RESPONSE_S | float | 0.34f | HomeView.tileFocus |
+| TILE_FOCUS_DAMPING | float | 0.74f | HomeView.tileFocus |
+| TILE_SLIDE_RESPONSE_S | float | 0.32f | HomeView.tileSlide |
+| TILE_SLIDE_DAMPING | float | 0.86f | HomeView.tileSlide |
+| DRAWER_FOCUS_RESPONSE_S | float | 0.28f | HomeView.drawerFocus |
+| DRAWER_FOCUS_DAMPING | float | 0.85f | HomeView.drawerFocus |
+| GRID_FOCUS_RESPONSE_S | float | 0.3f | HomeView.gridFocus |
+| GRID_FOCUS_DAMPING | float | 0.82f | HomeView.gridFocus |
+| TOAST_ENTER_REDRAW_MS | int | 350 | HomeView.tickToast |
+| TOAST_EXIT_REDRAW_MS | int | 450 | HomeView.tickToast |
+| TOAST_ENTER_S | float | 0.3f | HomeView.drawToast |
+| TOAST_EXIT_S | float | 0.4f | HomeView.drawToast |
+
+### Theme.Legacy.HomeEffect
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| SHADOW_BLUR | float | 26f | HomeView.SHADOW_BLUR |
+| DEEP_BLUR | float | 30f | HomeView.DEEP_BLUR |
+| SOFT_BLUR | int | 12 | HomeView.shadowSoft |
+| HALO_BLUR | int | 22 | HomeView.halo |
+| BORDER_STROKE | int | 2 | HomeView.border |
+| RIM_STROKE | float | 2.5f | HomeView.rim |
+| FOCUS_STROKE | int | 3 | HomeView.rim |
+| GRID_FOCUS_STROKE | float | 1.5f | HomeView.rim |
+| SPARK_STROKE | float | 2.5f | HomeView.sparkPaint |
+| HERO_TEXT_SHADOW_BLUR | int | 22 | HomeView.makePaints |
+| HERO_TEXT_SHADOW_DY | int | 2 | HomeView.makePaints |
+| TOOLTIP_SHADOW_BLUR | int | 16 | HomeView.makePaints |
+| TOOLTIP_SHADOW_DY | int | 1 | HomeView.makePaints |
+| QUOTE_SHADOW_BLUR | int | 14 | HomeView.makePaints |
+| QUOTE_SHADOW_DY | int | 1 | HomeView.makePaints |
+| FOCUS_GAP | int | 8 | HomeView app/card/poster outline |
+| FOCUS_HALF_STROKE | float | 1.5f | HomeView app/card/poster outline |
+| GRID_SHADOW_ALPHA | float | 0.55f | HomeView.drawAppCard |
+| GRID_VEIL_ALPHA | float | 0.08f | HomeView.drawAppCard |
+| GRID_RIM_ALPHA | float | 0.4f | HomeView.drawAppCard |
+
+### Theme.Legacy.Canvas
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| WIDTH | float | 1920f | HomeView and SettingsView scaling |
+
+### Theme.Legacy.Frame
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| FPS | float | 60f | HomeView and SettingsView frame step |
+| MAX_STEP_S | float | 0.05f | HomeView and SettingsView frame step |
+| IDLE_MS | int | 1000 | HomeView.doFrame |
+
+### Theme.Legacy.Font
+
+| Token | Tipo | Valor atual | Consumidor |
+|---|---|---|---|
+| DISPLAY_OPTICAL_SIZE | int | 32 | Ui.init Inter opsz |
+| THIN_WEIGHT | int | 200 | Ui.init Inter wght |
+| LIGHT_WEIGHT | int | 300 | Ui.init Inter wght |
+| MEDIUM_WEIGHT | int | 500 | Ui.init Inter wght |
+| SEMIBOLD_WEIGHT | int | 600 | Ui.init Inter wght |
+| TEXT_OPTICAL_SIZE | int | 14 | Ui.init Inter opsz |
+| REGULAR_WEIGHT | int | 400 | Ui.init Inter wght |
+
 ## Verificação e instalação
 
 Compilar sempre com JDK 17 e ./build.sh. Depois executar python3 tools/verify_theme_extraction.py.

@@ -44,13 +44,13 @@ final class Ui {
         loaded = true;
         app = c.getApplicationContext();
         AssetManager a = c.getAssets();
-        thin = font(a, 32, 200);
-        light = font(a, 32, 300);
-        displayMedium = font(a, 32, 500);
-        displaySemibold = font(a, 32, 600);
-        regular = font(a, 14, 400);
-        medium = font(a, 14, 500);
-        semibold = font(a, 14, 600);
+        thin = font(a, Theme.Legacy.Font.DISPLAY_OPTICAL_SIZE, Theme.Legacy.Font.THIN_WEIGHT);
+        light = font(a, Theme.Legacy.Font.DISPLAY_OPTICAL_SIZE, Theme.Legacy.Font.LIGHT_WEIGHT);
+        displayMedium = font(a, Theme.Legacy.Font.DISPLAY_OPTICAL_SIZE, Theme.Legacy.Font.MEDIUM_WEIGHT);
+        displaySemibold = font(a, Theme.Legacy.Font.DISPLAY_OPTICAL_SIZE, Theme.Legacy.Font.SEMIBOLD_WEIGHT);
+        regular = font(a, Theme.Legacy.Font.TEXT_OPTICAL_SIZE, Theme.Legacy.Font.REGULAR_WEIGHT);
+        medium = font(a, Theme.Legacy.Font.TEXT_OPTICAL_SIZE, Theme.Legacy.Font.MEDIUM_WEIGHT);
+        semibold = font(a, Theme.Legacy.Font.TEXT_OPTICAL_SIZE, Theme.Legacy.Font.SEMIBOLD_WEIGHT);
     }
 
     /** Inter at an optical size (14 = text, 32 = display) and weight; the system font if the file is missing. */
