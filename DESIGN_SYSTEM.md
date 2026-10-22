@@ -16,9 +16,9 @@ Build e comparação de instruções: design-review/phase1-verification.json. Ho
 
 Capturas reais e 32 verificações de pixels registradas em design-review/PHASE5_RESULTS.md e phase5-pixel-check.json. A confirmação da escolha salva é do usuário; não foi testada após reinício da TV ou encerramento do processo. Commits de implementação: f2d381a e 233083f. Sem push ou merge.
 
-## Fase 6 preparada, aguardando instalação
+## Fase 6 instalada, aguardando validação visual
 
-Números pontilhados no relógio e temperatura, divisórias dos logos, fonte monoespaçada e cards arredondados na gaveta, em Day e Night. Build JDK 17, API 28, assinatura e testes de geometria aprovados. A TV permanece com a fase 5 até nova autorização. Detalhes e limites em design-review/PHASE6_RESULTS.md.
+Números pontilhados no relógio e temperatura, divisórias dos logos, fonte monoespaçada e cards arredondados na gaveta, em Day e Night. Build JDK 17, API 28, assinatura e testes de geometria aprovados. Instalação autorizada em 22/10/2026, com retorno Success. Conferência visual da Home e gaveta em ambos os modos pendente. Detalhes e limites em design-review/PHASE6_RESULTS.md.
 
 ## Contrato dos tokens
 
@@ -168,7 +168,7 @@ A lista de ajustes passa a ter 12 linhas na configuração BRL, dentro das 12 mo
 
 DotDisplay guarda a geometria dos números e a refaz somente quando valor ou tamanho muda; a tinta acompanha o tema sem refazer o Path. Há fallback de texto para símbolos não suportados. Temperaturas negativas e com três dígitos têm limite de largura. O desenho é original e baseado nas referências, sem identificação ou incorporação de uma fonte proprietária. Os rótulos abreviados dos controles ficam em cache. O cache de bitmaps dos widgets no Android 9 permanece ativo; os fundos dos cards usam drawRoundRect, sem blur.
 
-DrawerSymbols desenha pictogramas utilitários originais com Paths montados uma vez, traços arredondados e proporções consistentes. Os assets Material Symbols existentes continuam como fallback dos símbolos não cobertos. Na gaveta, o ícone focado é branco sobre laranja, e o texto pequeno permanece escuro para contraste. O algarismo 1 da temperatura tem avanço compacto; os dígitos do relógio têm avanço fixo. O modo Day/Night, o timer, os dados e as ações permanecem os da fase 5. A prévia local foi inspecionada em Day e Night com os renderizadores numéricos e de ícones. A validação visual na TV desta etapa aguarda instalação autorizada.
+DrawerSymbols desenha pictogramas utilitários originais com Paths montados uma vez, traços arredondados e proporções consistentes. Os assets Material Symbols existentes continuam como fallback dos símbolos não cobertos. Na gaveta, o ícone focado é branco sobre laranja, e o texto pequeno permanece escuro para contraste. O algarismo 1 da temperatura tem avanço compacto; os dígitos do relógio têm avanço fixo. O modo Day/Night, o timer, os dados e as ações permanecem os da fase 5. A prévia local foi inspecionada em Day e Night com os renderizadores numéricos e de ícones. A instalação foi autorizada e concluída. A validação visual na TV desta etapa aguarda capturas da Home e gaveta.
 
 ## Catálogo implementado
 

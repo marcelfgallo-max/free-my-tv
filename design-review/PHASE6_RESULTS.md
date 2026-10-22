@@ -30,8 +30,8 @@ As prévias Day e Night foram rasterizadas offline e inspecionadas. São exemplo
 
 A pedido de Marcel antes de dormir, o trabalho ficou pronto para a próxima revisão. Não foi feita instalação, captura ou qualquer comando na TV nesta continuação.
 
-## Instalação e validação visual pendentes
+## Instalação concluída, validação visual pendente
 
-APK preparado, ainda não instalado. Pedir autorização específica antes de instalar, evitando conflito com Claude Code. Capturar a Home antes, instalar e conferir Home e gaveta em Day e Night pelo controle. Conferir o relógio, divisórias dos logos, foco de entrada/atalho, temperatura, linhas pontilhadas e legibilidade de rótulos. Somente depois registrar capturas como resultado real.
+Marcel autorizou a instalação em 22/10/2026. O hash do APK conferiu com o build validado, e adb install -r retornou Success. O APK contém d7a30f3 e 9beb764. A captura imediatamente anterior mostrou o protetor de tela, portanto não serve de comparação da Home; serão usadas as capturas verificadas da fase 5 como referência. Aguardando abertura da Home pelo controle para conferir Home e gaveta em Day e Night. Conferir o relógio, divisórias dos logos, foco de entrada/atalho, temperatura, linhas pontilhadas e legibilidade de rótulos. Somente depois registrar capturas como resultado real.
 
 Sem push ou merge. A branch sony-bravia-tweaks e o checkout do Claude Code não foram alterados.
