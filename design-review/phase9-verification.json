@@ -1,0 +1,33 @@
+{
+  "base": "c20fae7",
+  "build": "JDK17 build.sh passed",
+  "api28": "All modified production sources compile against android-28.jar",
+  "signature": "apksigner verify --min-sdk-version28 passed",
+  "apk_sha256": "d5bd2dd202b208b1fd5d9f6661611205f1b83458c50026fc7b8eb7f5132955e4",
+  "tests": {
+    "ThemeMode": 18,
+    "ThemeSchedule": 3264063
+  },
+  "defaults": {
+    "day": "07:00",
+    "night": "19:00",
+    "step_minutes": 30
+  },
+  "updates_seconds": {
+    "home": 15,
+    "screensaver": 60
+  },
+  "protected_files_unchanged": [
+    "CLAUDE.md",
+    "WISHLIST.md",
+    "app/src/io/freemytv/HomeMode.java",
+    "app/src/io/freemytv/Adb.java",
+    "app/src/io/freemytv/ModeJob.java",
+    "app/src/io/freemytv/Watchdog.java"
+  ],
+  "installation": "Not installed. Awaiting explicit authorization.",
+  "limitations": [
+    "TV dialog navigation and persisted settings not yet checked on device.",
+    "Actual scheduled transition while visible not yet observed on TV."
+  ]
+}

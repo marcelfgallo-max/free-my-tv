@@ -63,13 +63,13 @@ final class Theme {
     static final float DREAM_PHOTO_SATURATION_DAY = .95f, DREAM_PHOTO_SATURATION_NIGHT = .85f;
     static final float DREAM_PHOTO_BRIGHTNESS_NIGHT = .86f;
 
-    static final String MODE_DAY = "day", MODE_NIGHT = "night";
+    static final String MODE_DAY = "day", MODE_NIGHT = "night", MODE_AUTO = "auto";
     static final int TEXT_PRIMARY = 7, TEXT_SECONDARY = 8, DIVIDER = 9, DISABLED = 10;
     static final int POSITIVE = 11, NEGATIVE = 12, PLACEHOLDER = 13, CEC_ACTIVE = 14;
 
     /** Unset or unrecognized settings keep the installed Night appearance. */
     static String normalizeMode(String value) {
-        return MODE_DAY.equals(value) ? MODE_DAY : MODE_NIGHT;
+        return MODE_AUTO.equals(value) ? MODE_AUTO : MODE_DAY.equals(value) ? MODE_DAY : MODE_NIGHT;
     }
 
     /** Endpoint colors only. Switching is immediate, avoiding a per-frame theme crossfade. */

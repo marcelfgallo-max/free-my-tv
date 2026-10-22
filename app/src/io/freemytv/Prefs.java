@@ -61,6 +61,30 @@ final class Prefs {
 
     static void setThemeMode(String value) { put("theme", Theme.normalizeMode(value)); }
 
+    static int themeDayStart() {
+        int day = app == null ? ThemeSchedule.DAY_START : sp().getInt("themeDayStart", ThemeSchedule.DAY_START);
+        int night = app == null ? ThemeSchedule.NIGHT_START : sp().getInt("themeNightStart", ThemeSchedule.NIGHT_START);
+        return ThemeSchedule.valid(day, night) ? day : ThemeSchedule.DAY_START;
+    }
+
+    static int themeNightStart() {
+        int day = app == null ? ThemeSchedule.DAY_START : sp().getInt("themeDayStart", ThemeSchedule.DAY_START);
+        int night = app == null ? ThemeSchedule.NIGHT_START : sp().getInt("themeNightStart", ThemeSchedule.NIGHT_START);
+        return ThemeSchedule.valid(day, night) ? night : ThemeSchedule.NIGHT_START;
+    }
+
+    static boolean setThemeSchedule(int day, int night) {
+        if (!ThemeSchedule.valid(day, night)) return false;
+        sp().edit().putInt("themeDayStart", day).putInt("themeNightStart", night).apply();
+        version++;
+        return true;
+    }
+
+    static boolean themeIsNight() {
+        return ThemeSchedule.at(themeMode(), themeDayStart(), themeNightStart(),
+                System.currentTimeMillis(), java.util.TimeZone.getDefault());
+    }
+
     // MARK: - Language and units
 
     /** "auto", "pt", "en", "es", "de" or "ru". */

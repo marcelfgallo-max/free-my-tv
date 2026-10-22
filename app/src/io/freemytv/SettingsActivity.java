@@ -674,6 +674,7 @@ public class SettingsActivity extends Activity {
 
         // MARK: - Home Settings and Remote Buttons
 
+        private static final String[] THEMES = {Theme.MODE_DAY, Theme.MODE_NIGHT, Theme.MODE_AUTO};
         private static final String[] LANGUAGES = {"auto", "pt", "en", "es", "de", "ru"}, UNITS = {"auto", "C", "F"};
         /** Home Settings: language, temperature, theme, weather, city, quotes, then one row per coin. */
         private static final int THEME_ROW = 2, WEATHER_ROW = 3, CITY_ROW = 4, QUOTES_ROW = 5, COIN_ROWS = 6;
@@ -698,7 +699,8 @@ public class SettingsActivity extends Activity {
                     : lang.equals("de") ? "Deutsch" : lang.equals("ru") ? "Русский" : Ui.tr("Automático", "Automatic");
             String unit = Prefs.temperature();
             v[1] = unit.equals("C") ? "°C" : unit.equals("F") ? "°F" : Ui.tr("Automática", "Automatic");
-            v[THEME_ROW] = Theme.MODE_DAY.equals(Prefs.themeMode()) ? "Day" : "Night";
+            v[THEME_ROW] = Theme.MODE_AUTO.equals(Prefs.themeMode()) ? Ui.tr("Automático", "Automatic")
+                    : Theme.MODE_DAY.equals(Prefs.themeMode()) ? "Day" : "Night";
             v[WEATHER_ROW] = onOff(Prefs.weather());
             v[CITY_ROW] = !cityStatus.isEmpty() ? cityStatus : Prefs.city().isEmpty() ? "—" : Prefs.city();
             v[QUOTES_ROW] = !Prefs.quotes() ? onOff(false) : Prefs.quotesTop() ? onOff(true) : Ui.tr("Só na gaveta", "Drawer only");
@@ -773,9 +775,12 @@ public class SettingsActivity extends Activity {
                     Prefs.setTemperature(UNITS[(at + dir + UNITS.length) % UNITS.length]);
                     break;
                 }
-                case THEME_ROW:
-                    Prefs.setThemeMode(Theme.MODE_DAY.equals(Prefs.themeMode()) ? Theme.MODE_NIGHT : Theme.MODE_DAY);
-                    break;
+                case THEME_ROW: {
+                    int at = java.util.Arrays.asList(THEMES).indexOf(Prefs.themeMode());
+                    Prefs.setThemeMode(THEMES[(at + dir + THEMES.length) % THEMES.length]);
+                    invalidate();
+                    return; // Theme changes do not require a weather/quotes refresh.
+                }
                 case WEATHER_ROW: Prefs.setWeather(!Prefs.weather()); break;
                 case CITY_ROW: return;
                 case QUOTES_ROW: {
@@ -794,6 +799,57 @@ public class SettingsActivity extends Activity {
                 }
             }
             HomeData.get(getContext()).settingsChanged();
+        }
+
+        private String scheduleTime(int minute) {
+            return String.format(Locale.ROOT, "%02d:%02d", minute / 60, minute % 60);
+        }
+
+        private void askTheme() {
+            String[] modes = {"Day", "Night", Ui.tr("Automático", "Automatic")};
+            int selected = java.util.Arrays.asList(THEMES).indexOf(Prefs.themeMode());
+            new AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+                    .setTitle(Ui.tr("Tema", "Theme"))
+                    .setSingleChoiceItems(modes, selected, (dialog, which) -> {
+                        Prefs.setThemeMode(THEMES[which]);
+                        invalidate();
+                        dialog.dismiss();
+                    })
+                    .setNeutralButton(Ui.tr("Horários", "Schedule"), (dialog, which) -> askThemeSchedule())
+                    .setNegativeButton(Ui.tr("Cancelar", "Cancel"), null).show();
+        }
+
+        private void askThemeSchedule() {
+            String[] times = {"Day: " + scheduleTime(Prefs.themeDayStart()),
+                    "Night: " + scheduleTime(Prefs.themeNightStart())};
+            new AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+                    .setTitle(Ui.tr("Horários do tema (hora da TV)", "Theme schedule (TV time)"))
+                    .setItems(times, (dialog, which) -> askThemeTime(which == 0))
+                    .setNegativeButton(Ui.tr("Voltar", "Back"), (dialog, which) -> askTheme()).show();
+        }
+
+        private void askThemeTime(boolean day) {
+            String[] times = new String[1440 / ThemeSchedule.STEP];
+            for (int i = 0; i < times.length; i++) times[i] = scheduleTime(i * ThemeSchedule.STEP);
+            int current = day ? Prefs.themeDayStart() : Prefs.themeNightStart();
+            new AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+                    .setTitle(day ? Ui.tr("Day começa às", "Day starts at") : Ui.tr("Night começa às", "Night starts at"))
+                    .setSingleChoiceItems(times, current / ThemeSchedule.STEP, (dialog, which) -> {
+                        int value = which * ThemeSchedule.STEP;
+                        boolean saved = Prefs.setThemeSchedule(day ? value : Prefs.themeDayStart(),
+                                day ? Prefs.themeNightStart() : value);
+                        if (!saved) {
+                            android.widget.Toast.makeText(activity,
+                                    Ui.tr("Escolha horários diferentes para Day e Night.", "Choose different times for Day and Night."),
+                                    android.widget.Toast.LENGTH_LONG).show();
+                            ((AlertDialog) dialog).getListView().setItemChecked(current / ThemeSchedule.STEP, true);
+                            return;
+                        }
+                        invalidate();
+                        dialog.dismiss();
+                        askThemeSchedule();
+                    })
+                    .setNegativeButton(Ui.tr("Cancelar", "Cancel"), (dialog, which) -> askThemeSchedule()).show();
         }
 
         private void askCity() {
@@ -989,7 +1045,9 @@ public class SettingsActivity extends Activity {
                 c.drawText(values[i], rowRect.right - Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, base, rowValue);
             }
             float hy = (LIST_TOP + 20 + labels.length * (rowH + LIST_ROW_GAP) + 36) * k;
-            c.drawText(Ui.tr("OK ou as setas mudam o valor.", "OK or the arrows change the value."), LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, hy, hint);
+            c.drawText(!keys && focus == THEME_ROW
+                    ? Ui.tr("OK: tema e horários. Setas: mudar tema.", "OK: theme and schedule. Arrows: change theme.")
+                    : Ui.tr("OK ou as setas mudam o valor.", "OK or the arrows change the value."), LIST_X * k + Theme.Legacy.SettingsLayout.ROW_PADDING_X * k, hy, hint);
             if (keys) {
                 c.drawText(RemoteKeys.VESTEL ? Ui.tr("YouTube, Prime Video e Google Play: a própria TV controla esses botões.",
                         "YouTube, Prime Video and Google Play: the TV itself controls those buttons.")
@@ -1028,6 +1086,9 @@ public class SettingsActivity extends Activity {
                 return;
             } else if (screen == REMOTE_KEYS) {
                 openPicker(focus + 1);
+            } else if (screen == HOME_SETTINGS && focus == THEME_ROW) {
+                askTheme();
+                return;
             } else if (screen == HOME_SETTINGS && focus == CITY_ROW) {
                 askCity();
                 return;

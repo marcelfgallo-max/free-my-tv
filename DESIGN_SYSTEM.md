@@ -594,3 +594,14 @@ Opção B aprovada, 10% de transparência apenas nas superfícies, Day e Night. 
 | DREAM_HEADER_SIZE / DREAM_META_SIZE | 20 / 20 | Data, temperatura e metadados da legenda |
 
 Card do relógio ancorado em top=96, right=1824; largura616. Legenda com largura640, bottom=984, altura ajustada ao título (até duas linhas). Raio28. Foto mantém inset64, raio48 e movimento existentes. DotDisplay separa os dois pontos em um Path em cache, exclusivamente nas instâncias do screensaver; Home e gaveta preservam o desenho numérico anterior. Sem blur, bibliotecas ou APIs novas. Prévia local é um esquema de layout com foto substituída por uma área neutra; validação visual final depende de instalação autorizada e captura na TV.
+
+
+## Fase 9, Day/Night automático
+
+Tema oferece Day, Night e Automático. Os valores day/night já salvos permanecem manuais; auto é opt-in. Sem preferência ou com valor desconhecido, continua Night. A agenda inicial é Day07:00 e Night19:00, configurável em intervalos de30min em Ajustes do Início > Tema > Horários. OK abre opções, setas alternam os três modos. Editar horários não ativa Automático sozinho.
+
+ThemeSchedule resolve o intervalo Day com começo inclusivo e fim exclusivo, inclusive quando atravessa meia-noite. Horários iguais são recusados; pares persistidos inválidos usam07:00/19:00. Prefs salva os dois minutos do dia juntos e expõe themeIsNight(), separado da preferência themeMode(). O relógio e o fuso locais da TV são a referência. Não depende de clima, localização, nascer do sol ou internet.
+
+Home e gaveta reavaliam no retorno à Home e no tick existente de15s. Screensaver reavalia ao abrir e no tick de60s. Ao retornar depois de standby, usa o horário atual, sem tentar executar mudanças perdidas. Não adiciona serviço, alarme, wakelock ou polling por frame. O desenho dos dois temas é preservado. Alterações manuais da hora ou fuso são consideradas na próxima avaliação.
+
+Verificação local: 18checks de tema, 3264063checks da agenda (todos os pares selecionáveis, todos os minutos, limites, modos manuais, fuso e transições de horário de verão), build JDK17, compilação API28 e assinatura. Navegação dos diálogos, persistência e troca no aparelho ainda pendentes de instalação autorizada.

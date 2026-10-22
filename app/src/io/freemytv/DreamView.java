@@ -90,6 +90,7 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
     private final Runnable tick = new Runnable() {
         @Override public void run() {
             if (!running) return;
+            if (night != Prefs.themeIsNight()) updateTheme();
             data.refreshIfStale();
             recs.refreshIfStale();
             recs.prefetchAll();
@@ -105,7 +106,7 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
         data = HomeData.get(c);
         recs = Recs.get(c);
         content.setUseCompositingLayer(true, null);
-        night = Theme.MODE_NIGHT.equals(Prefs.themeMode());
+        night = Prefs.themeIsNight();
     }
 
     void start() {
@@ -193,7 +194,7 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
 
     private void updateTheme() {
         prefsVersion = Prefs.version;
-        night = Theme.MODE_NIGHT.equals(Prefs.themeMode());
+        night = Prefs.themeIsNight();
         ink = Theme.color(Theme.TEXT_PRIMARY, night);
         muted = Theme.color(Theme.TEXT_SECONDARY, night);
         background.setColor(Theme.color(Theme.BACKGROUND, night));

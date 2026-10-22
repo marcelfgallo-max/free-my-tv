@@ -13,6 +13,14 @@ final class Russian {
 
     static String text(String english) {
         switch (english) {
+            case "Back": return "Назад";
+            case "Schedule": return "Расписание";
+            case "Theme schedule (TV time)": return "Расписание темы (время ТВ)";
+            case "Day starts at": return "Day начинается в";
+            case "Night starts at": return "Night начинается в";
+            case "Choose different times for Day and Night.": return "Выберите разное время для Day и Night.";
+            case "OK: theme and schedule. Arrows: change theme.": return "OK: тема и расписание. Стрелки: сменить тему.";
+
             case "Live TV": return "Телеканалы";
             case "All Apps": return "Приложения";
             case "Settings": return "Настройки";

@@ -21,6 +21,7 @@ public final class ThemeModeTest {
     public static void main(String[] args) {
         check(Theme.MODE_NIGHT.equals(Theme.normalizeMode(null)), "new install remains Night");
         check(Theme.MODE_NIGHT.equals(Theme.normalizeMode("obsolete")), "unknown persisted mode fallback");
+        check(Theme.MODE_AUTO.equals(Theme.normalizeMode("auto")), "Automatic restore");
         check(Theme.MODE_DAY.equals(Theme.normalizeMode("day")), "Day restore");
         check(Theme.MODE_NIGHT.equals(Theme.normalizeMode("night")), "Night restore");
         check(Theme.color(Theme.TEXT_PRIMARY, true) == Theme.Legacy.HomeColor.M_INK, "Night primary preserved");
@@ -37,6 +38,6 @@ public final class ThemeModeTest {
         boolean rejected = false;
         try { Theme.color(999, false); } catch (IllegalArgumentException expected) { rejected = true; }
         check(rejected, "unknown role rejected");
-        System.out.println("ThemeMode: 17 checks passed");
+        System.out.println("ThemeMode: 18 checks passed");
     }
 }

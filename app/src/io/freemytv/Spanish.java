@@ -6,6 +6,14 @@ final class Spanish {
 
     static String text(String english) {
         switch (english) {
+            case "Back": return "Volver";
+            case "Schedule": return "Horario";
+            case "Theme schedule (TV time)": return "Horario del tema (hora del TV)";
+            case "Day starts at": return "Day comienza a las";
+            case "Night starts at": return "Night comienza a las";
+            case "Choose different times for Day and Night.": return "Elige horas distintas para Day y Night.";
+            case "OK: theme and schedule. Arrows: change theme.": return "OK: tema y horario. Flechas: cambiar tema.";
+
             case "Live TV": return "TV en vivo";
             case "All Apps": return "Todas las apps";
             case "Settings": return "Ajustes";

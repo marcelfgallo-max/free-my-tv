@@ -954,9 +954,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         scene.setGlassImage(neutralGlassPx);
     }
 
-    /** Apply saved Home appearance on resume; no animation or repeated disk reads while drawing. */
+    /** Apply saved or scheduled appearance on resume and the existing 15-second tick. */
     private void checkNight(boolean unusedAnimate) {
-        boolean target = Theme.MODE_NIGHT.equals(Prefs.themeMode());
+        boolean target = Prefs.themeIsNight();
         if (themeInitialized && nightTarget == target) return;
         themeInitialized = true;
         nightTarget = target;
