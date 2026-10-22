@@ -175,19 +175,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private Spring[] tileFocus = new Spring[0];
     private RectF[] tileRects = new RectF[0];
     private final Map<String, Bitmap> crispLogos = new HashMap<>();   // logos already sized for the focused tile
-    /** Each app's tile like its Apple TV icon: brand colors (top, bottom) and logo (0 = as is, 1 = white, 2 = dark). */
-    private static final Map<String, int[]> TILE_STYLE = new HashMap<>();
-    static {
-        TILE_STYLE.put("netflix", new int[] {Theme.Legacy.AppColor.NETFLIX_TOP, Theme.Legacy.AppColor.NETFLIX_BOTTOM, 0});
-        TILE_STYLE.put("youtube", new int[] {Theme.Legacy.AppColor.YOUTUBE_TOP, Theme.Legacy.AppColor.YOUTUBE_BOTTOM, 0});
-        TILE_STYLE.put("globoplay", new int[] {Theme.Legacy.AppColor.GLOBOPLAY_TOP, Theme.Legacy.AppColor.GLOBOPLAY_BOTTOM, 1});
-        TILE_STYLE.put("prime", new int[] {Theme.Legacy.AppColor.PRIME_TOP, Theme.Legacy.AppColor.PRIME_BOTTOM, 1});
-        TILE_STYLE.put("disney", new int[] {Theme.Legacy.AppColor.DISNEY_TOP, Theme.Legacy.AppColor.DISNEY_BOTTOM, 0});
-        TILE_STYLE.put("max", new int[] {Theme.Legacy.AppColor.MAX_TOP, Theme.Legacy.AppColor.MAX_BOTTOM, 0});
-        TILE_STYLE.put("appletv", new int[] {Theme.Legacy.AppColor.APPLETV_TOP, Theme.Legacy.AppColor.APPLETV_BOTTOM, 0});
-    }
-    private final android.graphics.PorterDuffColorFilter whiteLogo =
-            new android.graphics.PorterDuffColorFilter(Theme.Legacy.Palette.WHITE_AFF, android.graphics.PorterDuff.Mode.SRC_IN);
+    private final android.graphics.PorterDuffColorFilter nightLogo =
+            new android.graphics.PorterDuffColorFilter(Theme.LOGO_NIGHT, android.graphics.PorterDuff.Mode.SRC_IN);
+    private final android.graphics.PorterDuffColorFilter dayLogo =
+            new android.graphics.PorterDuffColorFilter(Theme.LOGO_DAY, android.graphics.PorterDuff.Mode.SRC_IN);
+    private final android.graphics.ColorMatrixColorFilter grayscale = new android.graphics.ColorMatrixColorFilter(
+            new float[] {0.213f, 0.715f, 0.072f, 0, 0, 0.213f, 0.715f, 0.072f, 0, 0,
+                    0.213f, 0.715f, 0.072f, 0, 0, 0, 0, 0, 1, 0});
     private final RectF platterRect = new RectF();
     private int shelfIndex;
 
@@ -277,14 +271,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private final Paint sheen = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint veil = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint fill = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Paint tileFill = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path clip = new Path();
     private final RectF tmp = new RectF(), cell = new RectF(), screen = new RectF();
     private final TextPaint fitPaint = new TextPaint();
     private final RectF gridCell = new RectF();
-    private LinearGradient[] tileShaders = new LinearGradient[0];
     private LinearGradient tileGlow, cardSheen;
-    private float tileShaderH, cardSheenH;
+    private float cardSheenH;
     private LinearGradient[] lightSheens = new LinearGradient[0], lightRims = new LinearGradient[0];
     private float[] lightShaderW = new float[0];
     private HomeData.Weather textWeather;
@@ -1122,7 +1114,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private void setShelf(List<HomeApps.Item> list) {
         wake();
         cancelReorder(true);    // the list changed under the move (an app installed or removed)
-        tileShaders = new LinearGradient[0];
         boolean same = list.size() == shelf.size();
         for (int i = 0; same && i < list.size(); i++) same = list.get(i).key.equals(shelf.get(i).key);
         shelf = list;
@@ -1294,7 +1285,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     }
 
     /**
-     * App tile: the brand color edge to edge with the logo, square. Focused: a 3 px white outline 8 px outside it
+     * App tile: monochrome logo on the continuous dock. Focused: a rounded orange outline outside it
      * (legible from across the room, without relying on color). Lifted to be moved: a little bigger.
      */
     private void drawShelfTile(Canvas c, int i) {
@@ -1304,31 +1295,15 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         RectF base = tileRects[i];
         float bw = base.width(), bh = base.height(), cx = base.centerX(), cy = base.centerY();
         cell.set(cx - bw * s / 2, cy - bh * s / 2, cx + bw * s / 2, cy + bh * s / 2);
-        int[] style = TILE_STYLE.get(it.key);
-        if (it.logo != null && style != null) {
-            if (tileShaders.length != shelf.size() || tileShaderH != bh) {
-                tileShaders = new LinearGradient[shelf.size()];
-                tileShaderH = bh;
-            }
-            if (tileShaders[i] == null) {
-                tileShaders[i] = new LinearGradient(0, -bh / 2, 0, bh / 2, style[0], style[1], Shader.TileMode.CLAMP);
-            }
-            c.save();
-            c.translate(cx, cy);
-            c.scale(s, s);
-            tileFill.setShader(tileShaders[i]);
-            tileFill.setAlpha(255);
-            c.drawRect(-bw / 2, -bh / 2, bw / 2, bh / 2, tileFill);
-            tileFill.setShader(null);
-            c.restore();
-            drawLogo(c, it, cell, s, style[2]);
-        } else if (it.logo != null) {
-            tileFill.setShader(null);
-            tileFill.setColor(Theme.Legacy.Palette.APP_FALLBACK);
-            c.drawRect(cell, tileFill);
-            drawLogo(c, it, cell, s, 0);
+        if (it.logo != null) {
+            drawLogo(c, it, cell, s);
         } else if (it.tile != null) {
-            c.drawBitmap(it.tile, null, cell, bitmapPaint);
+            // If extraction is unavailable, retain recognizable TV art in grayscale.
+            bitmapPaint.setColorFilter(grayscale);
+            imageFill.setColorFilter(grayscale);
+            roundImage(c, it.tile, cell, Theme.POSTER_RADIUS * k);
+            bitmapPaint.setColorFilter(null);
+            imageFill.setColorFilter(null);
         }
         if (f > 0.01f) {
             float out = Theme.Legacy.HomeEffect.FOCUS_GAP * k + Theme.Legacy.HomeEffect.FOCUS_HALF_STROKE * k;
@@ -1336,7 +1311,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             rim.setShader(null);
             rim.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), f));
             rim.setStrokeWidth(Theme.Legacy.HomeEffect.FOCUS_STROKE * k);
-            c.drawRect(tmp, rim);
+            float radius = Theme.APP_FOCUS_RADIUS * k * s;
+            c.drawRoundRect(tmp, radius, radius, rim);
         }
     }
 
@@ -1373,8 +1349,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
      * of the tile), centered and already filtered down to the focused tile size: when focused it is drawn pixel for
      * pixel, without resampling.
      */
-    private void drawLogo(Canvas c, HomeApps.Item it, RectF box, float s, int mode) {
-        Bitmap logo = crispLogo(it, mode == 2 && it.logoDark != null);
+    private void drawLogo(Canvas c, HomeApps.Item it, RectF box, float s) {
+        Bitmap logo = crispLogo(it);
         if (logo == null) return;
         float scale = s;   // made at the tile's own size: drawn pixel for pixel at rest
         float dw = logo.getWidth() * scale, dh = logo.getHeight() * scale;
@@ -1384,13 +1360,13 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             top = Math.round(top);
         }
         tmp.set(left, top, left + dw, top + dh);
-        bitmapPaint.setColorFilter(mode == 1 ? whiteLogo : null);
+        bitmapPaint.setColorFilter(it.monochromeLogo == null ? grayscale : (night >= 0.5f ? nightLogo : dayLogo));
         c.drawBitmap(logo, null, tmp, bitmapPaint);
         bitmapPaint.setColorFilter(null);
     }
 
-    private Bitmap crispLogo(HomeApps.Item it, boolean dark) {
-        Bitmap src = dark ? it.logoDark : it.logo;
+    private Bitmap crispLogo(HomeApps.Item it) {
+        Bitmap src = it.monochromeLogo != null ? it.monochromeLogo : it.logo;
         if (tileRects.length == 0) return src;
         String key = it.key + "@" + System.identityHashCode(src) + "@" + Math.round(tileRects[0].width());
         Bitmap cached = crispLogos.get(key);
@@ -2383,11 +2359,6 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         float d = tileRects[i].left - tileRects[j].left;
         tileSlide[j].value += d;
         tileSlide[i].value -= d;
-        if (tileShaders.length == shelf.size()) {
-            LinearGradient g = tileShaders[i];
-            tileShaders[i] = tileShaders[j];
-            tileShaders[j] = g;
-        }
         shelfIndex = liftIndex = j;
         reorderAnim = true;
         wake();
@@ -2436,18 +2407,15 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             if (reorderOrigin != null && reorderOrigin.size() == n) {
                 HomeApps.Item lifted = shelf.get(shelfIndex);
                 Spring[] focus = new Spring[n], slide = new Spring[n];
-                LinearGradient[] shaders = tileShaders.length == n ? new LinearGradient[n] : tileShaders;
                 for (int a = 0; a < n; a++) {
                     int b = shelf.indexOf(reorderOrigin.get(a));
                     focus[a] = tileFocus[b];
                     slide[a] = tileSlide[b];
                     slide[a].value += tileRects[b].left - tileRects[a].left;
-                    if (shaders != tileShaders) shaders[a] = tileShaders[b];
                 }
                 shelf = reorderOrigin;
                 tileFocus = focus;
                 tileSlide = slide;
-                tileShaders = shaders;
                 shelfIndex = liftIndex = shelf.indexOf(lifted);
             }
             reorderOrigin = null;
@@ -2923,11 +2891,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         Backdrop b = p == null ? null : recs.backdrop(p);
         Bitmap img = b == null ? null : (i == 0 ? b.wide : b.tall);
         if (img != null) {
-            c.drawBitmap(img, null, cell, bitmapPaint);
+            roundImage(c, img, cell, Theme.POSTER_RADIUS * k);
         } else {
             fill.setShader(null);
             fill.setColor(Theme.Legacy.Palette.WHITE_A14);
-            c.drawRect(cell, fill);
+            c.drawRoundRect(cell, Theme.POSTER_RADIUS * k, Theme.POSTER_RADIUS * k, fill);
         }
         if (f > 0.01f) {
             float out = Theme.Legacy.HomeEffect.FOCUS_GAP * k + Theme.Legacy.HomeEffect.FOCUS_HALF_STROKE * k;
@@ -2935,7 +2903,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             rim.setShader(null);
             rim.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), f));
             rim.setStrokeWidth(Theme.Legacy.HomeEffect.FOCUS_STROKE * k);
-            c.drawRect(tmp, rim);
+            c.drawRoundRect(tmp, Theme.POSTER_RADIUS * k + out, Theme.POSTER_RADIUS * k + out, rim);
         }
         if (p == null) return;
         if (p.progress >= 0) drawProgress(c, cell, p.progress, 1);
@@ -2982,11 +2950,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 RectF r = cardRects[i];
                 Bitmap poster = genres.poster(cards.get(i), Math.round(r.width()), Math.round(r.height()));
                 if (poster != null) {
-                    c.drawBitmap(poster, null, r, bitmapPaint);
+                    roundImage(c, poster, r, Theme.POSTER_RADIUS * k);
                 } else {
                     fill.setShader(null);
                     fill.setColor(Theme.Legacy.Palette.WHITE_A14);
-                    c.drawRect(r, fill);
+                    c.drawRoundRect(r, Theme.POSTER_RADIUS * k, Theme.POSTER_RADIUS * k, fill);
                 }
                 float f = Ui.clamp(cardFocus[i].value);
                 if (f > 0.01f) {
@@ -2995,7 +2963,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                     rim.setShader(null);
                     rim.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), f));
                     rim.setStrokeWidth(Theme.Legacy.HomeEffect.FOCUS_STROKE * k);
-                    c.drawRect(tmp, rim);
+                    c.drawRoundRect(tmp, Theme.POSTER_RADIUS * k + out, Theme.POSTER_RADIUS * k + out, rim);
                 }
             }
         }
@@ -3081,7 +3049,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     }
 
     /**
-     * Live TV, HDMI Inputs and Settings: square cells with a hairline border; the focused one uses orange with a dark
+     * Live TV, HDMI Inputs and Settings: round surfaces within the existing hit regions; the focused one uses orange with a dark
      * symbol and its name appears below it.
      */
     private void drawLightButtons(Canvas c) {
@@ -3089,15 +3057,10 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         for (int i = 0; i < 3; i++) {
             RectF r = topRects[TAB_COUNT + i];
             float f = Ui.clamp(topFocus[TAB_COUNT + i].value);
-            hairline(c, r.left, r.right, r.top);
-            hairline(c, r.left, r.right, r.bottom - 1);
-            vline(c, r.left, r.top, r.bottom);
-            vline(c, r.right - 1, r.top, r.bottom);
-            if (f > 0.01f) {
-                fill.setShader(null);
-                fill.setColor(Ui.alpha(Theme.color(Theme.FOCUS, night >= 0.5f), f));
-                c.drawRect(r, fill);
-            }
+            float radius = Math.min(r.width(), r.height()) / 2f;
+            fill.setShader(null);
+            fill.setColor(blend(Theme.color(Theme.SURFACE, night >= 0.5f), Theme.color(Theme.FOCUS, night >= 0.5f), f));
+            c.drawRoundRect(r, radius, radius, fill);
             Symbols.drawSharp(getContext(), c, lightButtons.get(i).symbol, r.centerX(), r.centerY(), 27 * k,
                     blend(M_INK, Theme.color(Theme.ON_ACCENT_SMALL, night >= 0.5f), f));
             if (f > 0.01f) {

@@ -22,6 +22,11 @@ final class Theme {
     static final int SURFACE_DAY = 0xFFFAF9FB;
     static final int SURFACE_NIGHT = 0xFF2B2C2F;
     static final float DOCK_RADIUS = 48f;
+    static final float POSTER_RADIUS = 12f;
+    static final float APP_FOCUS_RADIUS = 24f;
+    static final int LOGO = 6;
+    static final int LOGO_DAY = 0xFF292B2E;
+    static final int LOGO_NIGHT = 0xFFF5F5F7;
 
     /** Endpoint colors only. The home remains night-only until the Day phase. */
     static int color(int role, boolean night) {
@@ -32,6 +37,7 @@ final class Theme {
             case FOCUS: return ACCENT_ORANGE;
             case ON_ACCENT: return ACCENT_INK_LARGE;
             case ON_ACCENT_SMALL: return ACCENT_INK_SMALL;
+            case LOGO: return night ? LOGO_NIGHT : LOGO_DAY;
             default: throw new IllegalArgumentException("Unknown theme color role: " + role);
         }
     }

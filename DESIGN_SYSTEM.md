@@ -4,6 +4,8 @@
 
 Fase 1 concluída para o primeiro lote de 293 tokens, com validação visual da Home. Fase 2 instalada com autorização de Marcel: fundo grafite e superfície da barra de apps na Home e na gaveta. Cores confirmadas nas capturas reais. Fase 3 aprovada e compilada: seleção de aba e foco laranja. Fase 3 instalada com autorização específica e validada na Home: Explore mantém a cápsula laranja com o pôster focado, e o anel externo aparece quando o foco está na aba. Demais consumidores de foco ainda sem captura específica.
 
+
+Fase 4 aprovada e compilada: logos monocromáticos no dock, pôsteres e foco com cantos suaves, botões circulares. Instalação e validação visual desta fase aguardam nova autorização.
 Base: 8569d2127ac1577921764e6ea541dd798f085cb9. Trabalho exclusivo no worktree free-my-tv-design, branch design-system.
 Build e comparação de instruções: design-review/phase1-verification.json. Home validada com capturas reais antes/depois: zero diferença em 1.911.600 pixels fora do cabeçalho dinâmico de relógio e saudação. Gaveta e ajustes ainda não possuem capturas pareadas. Build sozinho não comprova equivalência de pixels.
 
@@ -78,6 +80,28 @@ A aba ativa, inclusive Explore, mantém a cápsula laranja quando o foco sai del
 Pôsteres, cards de conteúdo e apps do dock recebem contorno laranja, mantendo suas medidas anteriores. Os controles de utilidade, entradas e atalhos da gaveta usam preenchimento laranja e texto/símbolo escuro. A grade Todos os Apps usa o contorno laranja com alpha igual ao progresso de foco, chegando a 100%, em vez dos 40% brancos anteriores. As molas, durações, ações, bounds de navegação e tamanhos de arte permanecem iguais. As cores do indicador HDMI-CEC e das cotações continuam com seus próprios significados.
 
 Ajustes continua com o visual da fase 1. Day ainda não é selecionável. Os contrastes estáticos são aproximadamente 3,12:1 para branco/laranja e 4,55:1 para texto escuro/laranja. A leitura à distância e os estados animados precisam ser conferidos na TV. Os raios dos pôsteres e botões redondos pertencem às próximas etapas.
+
+
+### Fase 4, logos e cantos
+
+| Token ou regra | Valor | Consumidor |
+|---|---|---|
+| LOGO | papel 6 | Cor semântica do logo sobre a superfície |
+| LOGO_NIGHT / LOGO_DAY | #F5F5F7 / #292B2E | Filtros de cor dos logos, instanciados uma vez por HomeView |
+| POSTER_RADIUS | 12 | Pôsteres, cards de conteúdo e banner de fallback no dock |
+| APP_FOCUS_RADIUS | 24 | Contorno de foco dos apps no dock, acompanha a escala de reorder existente |
+| Raio do foco de pôster | POSTER_RADIUS × k + afastamento existente | Contorno acompanha a curva sem alterar seus bounds |
+| Botão circular | Metade do menor lado da região existente | Botões de TV, entradas e ajustes, 72 × 72 no layout atual |
+
+Os logos recortados ficam sobre a superfície contínua #2B2C2F, sem os retângulos e gradientes coloridos por serviço. A máscara preserva o alpha da arte existente. No YouTube, a região vermelha delimita a conversão do triângulo branco em espaço transparente; o nome fora dessa região permanece visível. Não há redesenho do símbolo nem novos assets.
+
+HomeApps prepara e guarda as máscaras em memória no carregador de segundo plano. Na primeira carga, antes de a máscara estar pronta, o logo aparece em escala de cinza. Apps adicionados pelo usuário, como BladeTV, passam pelo extrator existente de logo; se a extração falhar, o banner continua reconhecível em escala de cinza e com cantos arredondados. O resultado específico depende da arte fornecida pelo app instalado e precisa de validação na TV.
+
+roundImage reutiliza BitmapShader em cache no Android 9. Não foi acrescentado blur, biblioteca ou API nova. A lógica de redimensionamento óptico existente foi mantida. A remoção do cache de gradientes também removeu apenas seu acompanhamento durante reorder; as ações e molas continuam iguais.
+
+Os botões circulares mantêm seus centros e regiões de navegação de 72 unidades. A proposta de tamanho 88 não entra nesta etapa para evitar mudanças de posição junto das formas. Cards de clima/cotações e entradas da gaveta, grade Todos os Apps e ajustes ainda não recebem este redesenho. O dock compartilhado muda tanto na Home quanto na gaveta. Day continua reservado.
+
+Validação local: build JDK 17, quatro fontes novas/alteradas compiladas contra API 28, assinatura do APK e nove verificações de transparência/recorte. A confirmação visual dos logos e cantos permanece pendente da instalação autorizada.
 
 
 ## Catálogo implementado

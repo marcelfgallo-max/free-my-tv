@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 /**
  * What shows up on the home screen and in the "All Apps" sheet, and how to open each thing.
  *
- * On the home shelf, each app is its colored logo on a dark card: the official logo in assets/logos/<key>.png
+ * On the home shelf, each app uses a monochrome mask of its existing logo: the official logo in assets/logos/<key>.png
  * (downloaded from Wikimedia Commons by tools/logos.py) or, without one, the logo lifted from the app's TV art (the
  * Android TV "banner"), saved to disk after the first time. In "All Apps", 16:9 cards with the whole TV art (or the
  * icon on a dark card). Shortcuts (live TV, inputs, All Apps, settings) are icon buttons.
@@ -68,6 +68,7 @@ final class HomeApps {
         String symbol;      // icon for the shortcuts and special cards
         Bitmap tile;        // 16:9 card (apps and specials)
         Bitmap logo;        // colored logo with no background (shelf); null = use the card
+        Bitmap monochromeLogo; // cached alpha mask, prepared on the loader thread
         Bitmap logoDark;    // version for a light background (YouTube's white icon), if any
         float logoInk;      // fraction of the logo with ink (thin logos are drawn larger, with the same "weight")
         float logoScale = 1; // size tweak by eye (compact logos need more)
@@ -116,6 +117,8 @@ final class HomeApps {
     private static final Map<String, Bitmap> TILES = new HashMap<>();   // key → ready card
     private static final Map<String, Bitmap> LOGOS = new HashMap<>();   // key → colored logo with no background
 
+    private static final Map<Bitmap, Bitmap> MONO_LOGOS = new java.util.WeakHashMap<>();
+
     /**
      * Home screen apps. `extract`: also lifts the logos that are not on disk yet (slow: background only); without it,
      * those apps keep their TV art until the next load.
@@ -136,7 +139,9 @@ final class HomeApps {
                 // An app picked in Settings > Shelf that isn't in SHELF: its own name and TV art.
                 it.key = pkg;
                 it.label = ri != null ? String.valueOf(ri.loadLabel(pm)) : pkg;
-                it.tile = appTile(c, null, pkg, 0);
+                it.logo = shelfLogo(c, pkg, pkg, "", extract);
+                if (it.logo == null) it.tile = appTile(c, null, pkg, 0);
+                else it.logoInk = ink(it.logo);
             } else {
                 it.key = d[0];
                 it.label = d[1];
@@ -146,6 +151,7 @@ final class HomeApps {
                 it.logoDark = ownLogoCached(c, d[0] + "-dark");
                 it.logoScale = Float.parseFloat(d[5]);
             }
+            if (it.logo != null) it.monochromeLogo = monochromeLogo(it.logo, "youtube".equals(it.key), extract);
             items.add(it);
         }
         return items;
@@ -486,6 +492,21 @@ final class HomeApps {
             LOGOS.put(key, logo);
         }
         return logo;
+    }
+
+    private static Bitmap monochromeLogo(Bitmap source, boolean youtube, boolean prepare) {
+        synchronized (MONO_LOGOS) {
+            Bitmap cached = MONO_LOGOS.get(source);
+            if (cached != null || !prepare) return cached;
+            int width = source.getWidth(), height = source.getHeight();
+            int[] pixels = new int[width * height];
+            source.getPixels(pixels, 0, width, 0, 0, width, height);
+            LogoMask.white(pixels, width, height, youtube);
+            Bitmap mask = Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888);
+            mask.setHasMipMap(true);
+            MONO_LOGOS.put(source, mask);
+            return mask;
+        }
     }
 
     /** File for the logo lifted from the TV art: it changes when the app is updated (the art may have changed). */
