@@ -27,8 +27,8 @@
   ],
   "installation": "Authorized explicitly by Marcel on 2026-10-22. APK SHA256 matched verification record; adb install -r returned Success. On-device checks pending.",
   "limitations": [
-    "TV dialog navigation and persisted settings not yet checked on device.",
-    "Actual scheduled transition while visible not yet observed on TV."
+    "An actual time-boundary transition while visible has not yet been observed on TV.",
+    "Custom schedule editing, persistence after process restart and scheduled screensaver switching have not been exercised on device; schedule logic passed host tests."
   ],
   "implementation_commit": "96ed3b8",
   "first_device_check": {
@@ -41,5 +41,10 @@
     "capture": "screenshots/phase9-automatic-selected.png",
     "observed": "Theme dialog with Automatic radio selected; underlying settings row also reads Automatic. Schedule button visible at bottom left.",
     "status": "Saved mode visually confirmed after reopening. Schedule values and timed transition pending."
+  },
+  "schedule_device_check": {
+    "capture": "screenshots/phase9-schedule-confirmed.png",
+    "observed": "Theme schedule (TV time): Day 07:00 and Night 19:00. Underlying Theme row shows Automatic.",
+    "status": "Automatic preference and default schedule visually confirmed on TV."
   }
 }

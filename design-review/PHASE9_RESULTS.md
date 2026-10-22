@@ -37,3 +37,10 @@ Marcel informou ter selecionado Automatic. A captura mostrou a gaveta em Day, co
 ## Automatic confirmado visualmente
 
 A captura mostra a janela Theme com Automatic selecionado e a linha de ajustes ao fundo também exibindo Automatic, após reabrir os ajustes. A escolha salva foi confirmada visualmente. Botão Schedule disponível no canto inferior esquerdo; a janela de horários ainda não foi capturada.
+
+
+## Agenda confirmada na TV
+
+Captura real da janela Theme schedule (TV time): Day07:00 e Night19:00. A linha Theme ao fundo confirma Automatic. Pode sair dos ajustes mantendo essa configuração. A gaveta em Day foi observada anteriormente.
+
+Implementação e instalação concluídas, modo salvo e agenda padrão conferidos. A virada de horário em execução ainda não foi observada na TV; edição de horários personalizados, persistência após reinício do processo e troca programada no screensaver também não foram exercitadas no aparelho. Os testes locais cobrem a lógica de horários, limites, fusos e modos manuais. Não há monitoramento agendado nem push desta fase.
