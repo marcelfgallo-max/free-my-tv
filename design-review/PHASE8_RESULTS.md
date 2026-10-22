@@ -21,3 +21,7 @@ Comparação solicitada: A com superfícies opacas, B com 10% de transparência 
 As imagens geradas são estudos de aparência. Elas não são capturas da TV e não comprovam 90% de alpha exato. O valor exato será aplicado em Canvas após a escolha. DreamView permanece igual à versão instalada nesta etapa. O primeiro lote de edição por imagem foi recusado pela ferramenta; a tentativa seguinte simplifica a edição aos cards.
 
 Sem instalação, push ou merge. A escolha do screensaver e a autorização para instalar permanecem separadas.
+
+## Prévia entregue
+
+Quatro estudos gerados e inspecionados: Day opaco, Day com transparência sutil, Night opaco e Night com transparência sutil. Houve variações de fonte e de enquadramento na geração, sobretudo na moldura Day. A implementação deverá manter a moldura arredondada atual e usar dimensões, fontes e alpha definidos em código. Proposta recomendada: 90% de opacidade no fundo dos cards, conteúdos opacos e dois pontos laranja. Nenhuma dessas opções foi instalada. Home compilada no commit e2891b4.

@@ -28,5 +28,17 @@
   "limitations": [
     "Home visual check on TV pending",
     "Generated image previews are illustrative and do not prove exact alpha blending or Android typography"
-  ]
+  ],
+  "implementation_commit": "e2891b4",
+  "previews": {
+    "day": [
+      "day-opaco.png",
+      "day-transparente.png"
+    ],
+    "night": [
+      "night-opaco.png",
+      "night-transparente.png"
+    ],
+    "scope": "Generated visual studies, not screenshots or exact layout/alpha measurements. Original photo frame remains required in production."
+  }
 }
