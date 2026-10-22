@@ -43,3 +43,7 @@ Captura real em screenshots/phase6-home-day.png, após reconectar o ADB. Relógi
 ## Gaveta Day capturada na TV
 
 Captura real em screenshots/phase6-drawer-day.png. Confirmados cards arredondados, pictogramas novos, foco laranja na entrada Apple TV com ícone branco e texto escuro, temperatura 18° pontilhada, textos monoespaçados, painéis de clima/cotações e divisórias pontilhadas. Os seis separadores do dock também aparecem. Os widgets cabem na tela. O rótulo PlayStation está abreviado por reticências; fica registrado para melhorar o encaixe, preservando o nome configurado e a navegação. A captura anterior ainda mostrava a Home e não foi usada como evidência da gaveta. Night segue pendente.
+
+## Gaveta Night capturada na TV
+
+Captura real em screenshots/phase6-drawer-night.png. Fundo grafite, dock e cards um pouco mais claros, logos e pictogramas brancos, foco laranja na entrada PlayStation, temperatura e divisórias pontilhadas confirmados. Widgets e rodapés cabem na tela. O rótulo PlayStation também aparece abreviado neste modo. Resta a captura da Home Night. Nenhuma reinstalação foi necessária para alternar o tema.

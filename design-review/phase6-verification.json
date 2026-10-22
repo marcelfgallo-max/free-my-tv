@@ -16,11 +16,11 @@
   "geometry_tests": "108913 assertions over all 1440 minutes in 12/24-hour formats, signed temperatures -99 through 199, compact temperature spacing, fallback values and drawer bounds",
   "mode_color_tests": "17 checks passed, including neutral Night market ink and preserved CEC indicator",
   "assets_resources_and_protected_files_unchanged": true,
-  "installation": "Explicitly authorized by Marcel on 2026-10-22. Validated APK installed successfully. Day Home and drawer screenshots verified; Night checks pending.",
+  "installation": "Explicitly authorized by Marcel on 2026-10-22. Validated APK installed successfully. Day Home and Day/Night drawers verified; Night Home capture pending.",
   "limitations": [
     "Dots are an original Canvas recreation from the visual reference, not the original font file",
     "Drawer uses Android Typeface.MONOSPACE; exact glyph appearance depends on Android font rendering",
-    "Day Home and drawer captured on TV. Night checks pending; no frame-time measurements",
+    "Day Home and Day/Night drawers captured on TV. Night Home capture pending; no frame-time measurements",
     "No system settings or home-switch logic changed",
     "Native browser file URL opening blocked by browser policy; static SVG specimens inspected offline instead, without browser/network access."
   ],
@@ -42,6 +42,11 @@
       "observed": "Rounded input and shortcut cards, original pictograms, orange Apple TV focus with white icon and dark label, dotted 18 degree temperature, monospace text, rounded widget panels and dotted rules. Six dock separators visible.",
       "follow_up": "PlayStation label ellipsized. Improve fit without changing configured name or navigation."
     },
-    "night": "pending"
+    "night": {
+      "screenshot": "screenshots/phase6-drawer-night.png",
+      "observed": "Graphite background, subtly lighter dock/cards, white pictograms, orange PlayStation focus, dotted temperature and dotted widget separators. Layout fully visible.",
+      "pending": "Night Home capture",
+      "follow_up": "PlayStation label ellipsized, also in Night."
+    }
   }
 }
