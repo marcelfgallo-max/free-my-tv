@@ -27,3 +27,8 @@ Após autorização para instalar: abrir Theme e selecionar Automatic, conferir 
 ## Instalação autorizada
 
 22/10/2026, Marcel confirmou que Claude Code não estava instalando e autorizou a instalação. SHA256 conferido contra o registro de build; adb install -r retornou Success. Captura anterior em screenshots/phase9-before.png. Aguardando ativação manual de Automatic e conferência da agenda pelo controle.
+
+
+## Primeira captura após ativação informada
+
+Marcel informou ter selecionado Automatic. A captura mostrou a gaveta em Day, com cards e logos visíveis. A janela de horários não estava aberta; os valores da agenda e a seleção salva ainda precisam de confirmação visual. Captura em screenshots/phase9-day-drawer.png.

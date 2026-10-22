@@ -30,5 +30,11 @@
     "TV dialog navigation and persisted settings not yet checked on device.",
     "Actual scheduled transition while visible not yet observed on TV."
   ],
-  "implementation_commit": "96ed3b8"
+  "implementation_commit": "96ed3b8",
+  "first_device_check": {
+    "user_report": "Automatic selected, schedule visible",
+    "actual_capture": "screenshots/phase9-day-drawer.png",
+    "observed": "Drawer in Day, with normal cards and logos. Schedule dialog was not visible.",
+    "status": "Schedule values and saved Automatic selection still need visual confirmation."
+  }
 }
