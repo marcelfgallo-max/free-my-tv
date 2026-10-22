@@ -47,3 +47,9 @@ Captura real em screenshots/phase6-drawer-day.png. Confirmados cards arredondado
 ## Gaveta Night capturada na TV
 
 Captura real em screenshots/phase6-drawer-night.png. Fundo grafite, dock e cards um pouco mais claros, logos e pictogramas brancos, foco laranja na entrada PlayStation, temperatura e divisórias pontilhadas confirmados. Widgets e rodapés cabem na tela. O rótulo PlayStation também aparece abreviado neste modo. Resta a captura da Home Night. Nenhuma reinstalação foi necessária para alternar o tema.
+
+## Conferência visual final, 22/10/2026
+
+Home Night capturada em screenshots/phase6-home-night.png: relógio 07:44 branco pontilhado, fundo grafite, dock um pouco mais claro, seis divisórias, logos monocromáticos, Explore laranja e contorno no pôster. Sem sobreposição visível com a saudação. As quatro telas foram conferidas na TV: Home e gaveta em Day e Night. A TV ficou em Night.
+
+Verificação adicional em phase6-pixel-check.json: oito amostras de fundo e dock coincidem exatamente com os tokens. Quatro amostras nas divisórias não coincidem com a tinta opaca, pois o traço de 1,5 pixel tem antialiasing; são compatíveis com cobertura de 75%, com tolerância de um nível RGB. Não é comparação integral de pixels: catálogo, foco, horário e cotações mudam. Não houve medição de desempenho ou legibilidade à distância. Refinamento pendente: encaixe do rótulo PlayStation, abreviado nos dois temas. Qualquer APK corrigido precisa de nova autorização antes de instalar.

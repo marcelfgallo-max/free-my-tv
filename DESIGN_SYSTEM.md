@@ -16,9 +16,9 @@ Build e comparação de instruções: design-review/phase1-verification.json. Ho
 
 Capturas reais e 32 verificações de pixels registradas em design-review/PHASE5_RESULTS.md e phase5-pixel-check.json. A confirmação da escolha salva é do usuário; não foi testada após reinício da TV ou encerramento do processo. Commits de implementação: f2d381a e 233083f. Sem push ou merge.
 
-## Fase 6 instalada, aguardando validação visual
+## Fase 6 instalada e conferida em Day e Night
 
-Números pontilhados no relógio e temperatura, divisórias dos logos, fonte monoespaçada e cards arredondados na gaveta, em Day e Night. Build JDK 17, API 28, assinatura e testes de geometria aprovados. Instalação autorizada em 22/10/2026, com retorno Success. Conferência visual da Home e gaveta em ambos os modos pendente. Detalhes e limites em design-review/PHASE6_RESULTS.md.
+Números pontilhados no relógio e temperatura, divisórias dos logos, fonte monoespaçada e cards arredondados na gaveta, em Day e Night. Build JDK 17, API 28, assinatura e testes de geometria aprovados. Instalação autorizada em 22/10/2026, com retorno Success. Home e gaveta capturadas e conferidas em ambos os modos. O rótulo PlayStation fica abreviado e requer refinamento de encaixe; desempenho não foi medido. Detalhes e limites em design-review/PHASE6_RESULTS.md.
 
 ## Contrato dos tokens
 

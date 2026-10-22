@@ -1,0 +1,262 @@
+{
+  "scope": "8 exact solid-color samples and 4 antialiased separator samples. Not a whole-image or performance test.",
+  "checks": [
+    {
+      "screen": "home-day",
+      "sample": "background",
+      "xy": [
+        20,
+        20
+      ],
+      "expected": [
+        230,
+        229,
+        232
+      ],
+      "actual": [
+        230,
+        229,
+        232
+      ],
+      "passed": true
+    },
+    {
+      "screen": "home-day",
+      "sample": "dock",
+      "xy": [
+        100,
+        940
+      ],
+      "expected": [
+        250,
+        249,
+        251
+      ],
+      "actual": [
+        250,
+        249,
+        251
+      ],
+      "passed": true
+    },
+    {
+      "screen": "home-day",
+      "sample": "separator",
+      "xy": [
+        330,
+        930
+      ],
+      "expected": [
+        215,
+        215,
+        221
+      ],
+      "actual": [
+        224,
+        223,
+        228
+      ],
+      "exact_token_match": false,
+      "note": "Exact token comparison does not apply to the edge of a centered 1.5px stroke. Approximately 75% coverage blends ink with the dock.",
+      "expected_75_percent_coverage": [
+        224,
+        224,
+        228
+      ],
+      "coverage_consistent_within_1_level": true
+    },
+    {
+      "screen": "drawer-day",
+      "sample": "background",
+      "xy": [
+        20,
+        20
+      ],
+      "expected": [
+        230,
+        229,
+        232
+      ],
+      "actual": [
+        230,
+        229,
+        232
+      ],
+      "passed": true
+    },
+    {
+      "screen": "drawer-day",
+      "sample": "dock",
+      "xy": [
+        100,
+        250
+      ],
+      "expected": [
+        250,
+        249,
+        251
+      ],
+      "actual": [
+        250,
+        249,
+        251
+      ],
+      "passed": true
+    },
+    {
+      "screen": "drawer-day",
+      "sample": "separator",
+      "xy": [
+        330,
+        230
+      ],
+      "expected": [
+        215,
+        215,
+        221
+      ],
+      "actual": [
+        224,
+        223,
+        228
+      ],
+      "exact_token_match": false,
+      "note": "Exact token comparison does not apply to the edge of a centered 1.5px stroke. Approximately 75% coverage blends ink with the dock.",
+      "expected_75_percent_coverage": [
+        224,
+        224,
+        228
+      ],
+      "coverage_consistent_within_1_level": true
+    },
+    {
+      "screen": "home-night",
+      "sample": "background",
+      "xy": [
+        20,
+        20
+      ],
+      "expected": [
+        32,
+        33,
+        36
+      ],
+      "actual": [
+        32,
+        33,
+        36
+      ],
+      "passed": true
+    },
+    {
+      "screen": "home-night",
+      "sample": "dock",
+      "xy": [
+        100,
+        940
+      ],
+      "expected": [
+        43,
+        44,
+        47
+      ],
+      "actual": [
+        43,
+        44,
+        47
+      ],
+      "passed": true
+    },
+    {
+      "screen": "home-night",
+      "sample": "separator",
+      "xy": [
+        330,
+        930
+      ],
+      "expected": [
+        72,
+        73,
+        77
+      ],
+      "actual": [
+        65,
+        66,
+        70
+      ],
+      "exact_token_match": false,
+      "note": "Exact token comparison does not apply to the edge of a centered 1.5px stroke. Approximately 75% coverage blends ink with the dock.",
+      "expected_75_percent_coverage": [
+        65,
+        66,
+        70
+      ],
+      "coverage_consistent_within_1_level": true
+    },
+    {
+      "screen": "drawer-night",
+      "sample": "background",
+      "xy": [
+        20,
+        20
+      ],
+      "expected": [
+        32,
+        33,
+        36
+      ],
+      "actual": [
+        32,
+        33,
+        36
+      ],
+      "passed": true
+    },
+    {
+      "screen": "drawer-night",
+      "sample": "dock",
+      "xy": [
+        100,
+        250
+      ],
+      "expected": [
+        43,
+        44,
+        47
+      ],
+      "actual": [
+        43,
+        44,
+        47
+      ],
+      "passed": true
+    },
+    {
+      "screen": "drawer-night",
+      "sample": "separator",
+      "xy": [
+        330,
+        230
+      ],
+      "expected": [
+        72,
+        73,
+        77
+      ],
+      "actual": [
+        65,
+        66,
+        69
+      ],
+      "exact_token_match": false,
+      "note": "Exact token comparison does not apply to the edge of a centered 1.5px stroke. Approximately 75% coverage blends ink with the dock.",
+      "expected_75_percent_coverage": [
+        65,
+        66,
+        70
+      ],
+      "coverage_consistent_within_1_level": true
+    }
+  ],
+  "summary": "8 solid samples match exactly. 4 separator samples differ from the opaque token and are consistent within one RGB level with 75% antialias coverage."
+}
