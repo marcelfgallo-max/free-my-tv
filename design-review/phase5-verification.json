@@ -50,12 +50,28 @@
   "protected_files_unchanged": true,
   "legacy_tokens_unchanged": true,
   "settings_storage": "Existing settings SharedPreferences, string key theme; day/night; default and unrecognized values resolve to night",
-  "installation": "Pending new explicit user authorization",
-  "screenshots": [],
+  "installation": "Explicitly authorized by Marcel; APK includes requested football-widget removal; adb install -r returned Success",
+  "screenshots": [
+    "screenshots/phase5-night-before.png",
+    "screenshots/phase5-night-after.png",
+    "screenshots/phase5-day-home.png",
+    "screenshots/phase5-day-drawer.png",
+    "screenshots/phase5-day-restored.png"
+  ],
   "limitations": [
-    "TV visual verification and persisted-choice reopening check pending",
+    "Saved-choice reopening and round trip confirmed by user; no reboot or process termination persistence test",
     "Theme applies to Home and drawer; Settings, screensaver and dark All Apps overlay retain their existing appearance",
     "Manual Day/Night selection only; no automatic schedule or crossfade"
   ],
-  "football_widget": "Removed from Home with its refresh/listener; user requested removal before authorized installation"
+  "football_widget": "Removed from Home with its refresh/listener; user requested removal before authorized installation",
+  "implementation_commits": [
+    "f2d381a",
+    "233083f"
+  ],
+  "visual_validation": "Home Night and Day, football removal, Day drawer and final Day Home confirmed in actual TV captures. 32 pixel checks passed.",
+  "persisted_choice_validation": {
+    "source": "User confirmation",
+    "result": "Marcel confirmed switching back to Night and then Day, with both selections saving correctly. Final TV capture confirms Day.",
+    "limitations": "No screenshot of Theme row or intermediate return to Night. No TV reboot or process termination test."
+  }
 }

@@ -9,11 +9,12 @@ Fase 4 aprovada e compilada: logos monocromáticos no dock, pôsteres e foco com
 Base: 8569d2127ac1577921764e6ea541dd798f085cb9. Trabalho exclusivo no worktree free-my-tv-design, branch design-system.
 Build e comparação de instruções: design-review/phase1-verification.json. Home validada com capturas reais antes/depois: zero diferença em 1.911.600 pixels fora do cabeçalho dinâmico de relógio e saudação. Gaveta e ajustes ainda não possuem capturas pareadas. Build sozinho não comprova equivalência de pixels.
 
-## Pendência confirmada por Marcel, 22/10/2026
+## Fase 5 concluída, 22/10/2026
 
-- [ ] Validar na TV os modos Day e Night restaurados na fase 5, incluindo alternância, gaveta e escolha persistente. Implementação compilada; instalação e validação pendentes.
+- [x] Restaurar Day e Night em Ajustes do Início > Tema, instalar com autorização e conferir Home e gaveta Day. Marcel confirmou a alternância Day/Night e o salvamento das escolhas ao reabrir. A TV ficou em Day.
+- [x] Remover o placar e o próximo jogo do cabeçalho, conforme pedido de Marcel.
 
-Fase 5 implementa a troca por Ajustes do Início > Tema, com Day e Night. A versão instalada permanece na fase 4 até autorização de nova instalação. Verificar ambos os modos, a gaveta e a persistência ao reabrir antes de concluir esta pendência.
+Capturas reais e 32 verificações de pixels registradas em design-review/PHASE5_RESULTS.md e phase5-pixel-check.json. A confirmação da escolha salva é do usuário; não foi testada após reinício da TV ou encerramento do processo. Commits de implementação: f2d381a e 233083f. Sem push ou merge.
 
 ## Contrato dos tokens
 
@@ -58,12 +59,12 @@ A especificação completa de valores alvo, estados, contrastes e sequência est
 | SURFACE | papel 1 | HomeView.drawPlatter |
 | BACKGROUND_NIGHT | 0xFF202124 | Fundo sólido da Home e da gaveta |
 | SURFACE_NIGHT | 0xFF2B2C2F | Superfície opaca da barra de apps |
-| BACKGROUND_DAY | 0xFFE6E5E8 | Endpoint reservado; Day ainda não está ativo |
-| SURFACE_DAY | 0xFFFAF9FB | Endpoint reservado; Day ainda não está ativo |
+| BACKGROUND_DAY | 0xFFE6E5E8 | Endpoint Day ativo desde a fase 5 |
+| SURFACE_DAY | 0xFFFAF9FB | Endpoint Day ativo desde a fase 5 |
 | DOCK_RADIUS | 48 unidades lógicas | Cantos da barra; bounds e posições dos apps preservados |
 | color(role, night) | int ARGB | Retorna endpoint Day/Night sem alocação no caminho normal |
 
-A seleção de endpoint usa night >= 0.5f, com night fixo em 1 no comportamento atual. Não há transição Day/Night implementada. O helper rejeita papéis desconhecidos. drawRect e drawRoundRect são compatíveis com API 28. Não há blur ou sombra no novo fundo/dock.
+A seleção de endpoint usa night >= 0.5f. Na fase 2 o valor era fixo em 1; desde a fase 5 ele acompanha a preferência Day/Night, sem transição animada. O helper rejeita papéis desconhecidos. drawRect e drawRoundRect são compatíveis com API 28. Não há blur ou sombra no novo fundo/dock.
 
 A Home não decodifica mais fields/ember.png e fields/ultra.png. Os assets continuam no projeto para consumidores existentes, inclusive ajustes. Pôsteres, logos, ícones, foco, ações e layout permanecem nesta etapa com os valores anteriores.
 
@@ -85,7 +86,7 @@ A aba ativa, inclusive Explore, mantém a cápsula laranja quando o foco sai del
 
 Pôsteres, cards de conteúdo e apps do dock recebem contorno laranja, mantendo suas medidas anteriores. Os controles de utilidade, entradas e atalhos da gaveta usam preenchimento laranja e texto/símbolo escuro. A grade Todos os Apps usa o contorno laranja com alpha igual ao progresso de foco, chegando a 100%, em vez dos 40% brancos anteriores. As molas, durações, ações, bounds de navegação e tamanhos de arte permanecem iguais. As cores do indicador HDMI-CEC e das cotações continuam com seus próprios significados.
 
-Ajustes continua com o visual da fase 1. Day ainda não é selecionável. Os contrastes estáticos são aproximadamente 3,12:1 para branco/laranja e 4,55:1 para texto escuro/laranja. A leitura à distância e os estados animados precisam ser conferidos na TV. Os raios dos pôsteres e botões redondos pertencem às próximas etapas.
+Ajustes continua com o visual da fase 1. Day passou a ser selecionável na fase 5. Os contrastes estáticos são aproximadamente 3,12:1 para branco/laranja e 4,55:1 para texto escuro/laranja. A leitura à distância e os estados animados precisam ser conferidos na TV. Os raios dos pôsteres e botões redondos foram aplicados na fase 4.
 
 
 ### Fase 4, logos e cantos
@@ -105,7 +106,7 @@ HomeApps prepara e guarda as máscaras em memória no carregador de segundo plan
 
 roundImage reutiliza BitmapShader em cache no Android 9. Não foi acrescentado blur, biblioteca ou API nova. A lógica de redimensionamento óptico existente foi mantida. A remoção do cache de gradientes também removeu apenas seu acompanhamento durante reorder; as ações e molas continuam iguais.
 
-Os botões circulares mantêm seus centros e regiões de navegação de 72 unidades. A proposta de tamanho 88 não entra nesta etapa para evitar mudanças de posição junto das formas. Cards de clima/cotações e entradas da gaveta, grade Todos os Apps e ajustes ainda não recebem este redesenho. O dock compartilhado muda tanto na Home quanto na gaveta. Day continua reservado.
+Os botões circulares mantêm seus centros e regiões de navegação de 72 unidades. A proposta de tamanho 88 não entra nesta etapa para evitar mudanças de posição junto das formas. Cards de clima/cotações e entradas da gaveta, grade Todos os Apps e ajustes ainda não recebem este redesenho. O dock compartilhado muda tanto na Home quanto na gaveta. A fase 5 ativa também o Day.
 
 Validação local: build JDK 17, quatro fontes novas/alteradas compiladas contra API 28, assinatura do APK e nove verificações de transparência/recorte. A instalação foi autorizada e concluída. Capturas reais confirmaram os sete logos da TV, o recorte do YouTube, os cantos dos pôsteres e o foco sobre YouTube. Não houve captura separada da gaveta ou de botão circular focado.
 
@@ -131,11 +132,11 @@ A preferência de tema não existia neste branch. Foi acrescentada ao armazename
 
 Os endpoints Night de tinta, divisores e indicadores preservam os valores já instalados. Eles ainda diferem da paleta alvo completa em PROPOSTA-TOKENS.md; não foram normalizados durante a restauração. O indicador CEC focado conserva o azul anterior, e a barra de progresso sobre a arte permanece branca nas duas variantes.
 
-Consumidores: título/relógio, saudação, abas não selecionadas, metadados, placar, separadores, nomes e ícones das entradas, clima, cotações e placeholders. Os logos já tinham os dois filtros preparados. O cache dos widgets inclui o modo e a versão das preferências, para não reutilizar texto claro depois da troca para Day.
+Consumidores: título/relógio, saudação, abas não selecionadas, metadados, separadores, nomes e ícones das entradas, clima, cotações e placeholders. Os logos já tinham os dois filtros preparados. O cache dos widgets inclui o modo e a versão das preferências, para não reutilizar texto claro depois da troca para Day.
 
 Home e ajustes executam no processo :home. A preferência é lida ao criar/retomar a Home, fora do desenho por frame. Night continua o padrão de instalações anteriores. O tema não muda configurações do Android, launcher padrão ou horários do protetor de tela. Ajustes, screensaver e sobreposição Todos os Apps conservam sua aparência própria nesta fase. Não há modo automático nem crossfade nesta restauração.
 
-A lista de ajustes passa a ter 12 linhas na configuração BRL, dentro das 12 molas de foco existentes, usando a altura reduzida já prevista. Cidade, clima e cotações tiveram seus índices deslocados para preservar as ações corretas. Build, API 28, assinatura e 15 testes de modo/contraste passaram. A persistência real ao reabrir e a aparência dos dois modos precisam do checkpoint na TV.
+A lista de ajustes passa a ter 12 linhas na configuração BRL, dentro das 12 molas de foco existentes, usando a altura reduzida já prevista. Cidade, clima e cotações tiveram seus índices deslocados para preservar as ações corretas. Build, API 28, assinatura e 15 testes de modo/contraste passaram. Home Day/Night, gaveta Day e estado final Day conferidos por capturas reais. Marcel confirmou a escolha salva e a alternância nos ajustes; não houve teste após reinício da TV ou encerramento do processo.
 
 
 ## Catálogo implementado
