@@ -25,9 +25,10 @@
     "app/src/io/freemytv/ModeJob.java",
     "app/src/io/freemytv/Watchdog.java"
   ],
-  "installation": "Not installed. Awaiting explicit authorization.",
+  "installation": "Authorized explicitly by Marcel on 2026-10-22. APK SHA256 matched verification record; adb install -r returned Success. On-device checks pending.",
   "limitations": [
     "TV dialog navigation and persisted settings not yet checked on device.",
     "Actual scheduled transition while visible not yet observed on TV."
-  ]
+  ],
+  "implementation_commit": "96ed3b8"
 }

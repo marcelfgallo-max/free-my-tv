@@ -22,3 +22,8 @@ CLAUDE.md, WISHLIST.md e arquivos protegidos comparados com a base e preservados
 ## Conferência pendente na TV
 
 Após autorização para instalar: abrir Theme e selecionar Automatic, conferir os horários07:00/19:00 e aparência correspondente. Testar edição e retorno às configurações para confirmar persistência. Conferir Home, gaveta e screensaver. Testar troca temporariamente com horário próximo e depois restaurar os horários desejados, sem alterar a hora do sistema.
+
+
+## Instalação autorizada
+
+22/10/2026, Marcel confirmou que Claude Code não estava instalando e autorizou a instalação. SHA256 conferido contra o registro de build; adb install -r retornou Success. Captura anterior em screenshots/phase9-before.png. Aguardando ativação manual de Automatic e conferência da agenda pelo controle.
