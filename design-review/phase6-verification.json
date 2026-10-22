@@ -16,11 +16,11 @@
   "geometry_tests": "108913 assertions over all 1440 minutes in 12/24-hour formats, signed temperatures -99 through 199, compact temperature spacing, fallback values and drawer bounds",
   "mode_color_tests": "17 checks passed, including neutral Night market ink and preserved CEC indicator",
   "assets_resources_and_protected_files_unchanged": true,
-  "installation": "Explicitly authorized by Marcel on 2026-10-22. Validated APK installed successfully. Day Home screenshot verified; drawer and Night checks pending.",
+  "installation": "Explicitly authorized by Marcel on 2026-10-22. Validated APK installed successfully. Day Home and drawer screenshots verified; Night checks pending.",
   "limitations": [
     "Dots are an original Canvas recreation from the visual reference, not the original font file",
     "Drawer uses Android Typeface.MONOSPACE; exact glyph appearance depends on Android font rendering",
-    "Day Home captured on TV. Drawer and Night checks pending; no frame-time measurements",
+    "Day Home and drawer captured on TV. Night checks pending; no frame-time measurements",
     "No system settings or home-switch logic changed",
     "Native browser file URL opening blocked by browser policy; static SVG specimens inspected offline instead, without browser/network access."
   ],
@@ -37,7 +37,11 @@
       "screenshot": "screenshots/phase6-home-day.png",
       "observed": "07:34 dotted clock, orange Explore capsule, orange poster outline, six dock separators, monochrome logos, rounded posters and no football widget. No visible clock/greeting overlap."
     },
-    "day_drawer": "pending",
+    "day_drawer": {
+      "screenshot": "screenshots/phase6-drawer-day.png",
+      "observed": "Rounded input and shortcut cards, original pictograms, orange Apple TV focus with white icon and dark label, dotted 18 degree temperature, monospace text, rounded widget panels and dotted rules. Six dock separators visible.",
+      "follow_up": "PlayStation label ellipsized. Improve fit without changing configured name or navigation."
+    },
     "night": "pending"
   }
 }

@@ -39,3 +39,7 @@ Sem push ou merge. A branch sony-bravia-tweaks e o checkout do Claude Code não 
 ## Home Day capturada na TV
 
 Captura real em screenshots/phase6-home-day.png, após reconectar o ADB. Relógio 07:34 pontilhado, sem sobreposição com a saudação; Explore laranja, contorno laranja no pôster de Super Mario, seis divisórias no dock, logos monocromáticos e cantos arredondados confirmados visualmente. Placar ausente. A gaveta e o Night ainda aguardam captura. O catálogo mudou, portanto não é uma comparação de pixels com a fase 5.
+
+## Gaveta Day capturada na TV
+
+Captura real em screenshots/phase6-drawer-day.png. Confirmados cards arredondados, pictogramas novos, foco laranja na entrada Apple TV com ícone branco e texto escuro, temperatura 18° pontilhada, textos monoespaçados, painéis de clima/cotações e divisórias pontilhadas. Os seis separadores do dock também aparecem. Os widgets cabem na tela. O rótulo PlayStation está abreviado por reticências; fica registrado para melhorar o encaixe, preservando o nome configurado e a navegação. A captura anterior ainda mostrava a Home e não foi usada como evidência da gaveta. Night segue pendente.
