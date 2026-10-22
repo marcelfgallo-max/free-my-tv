@@ -32,3 +32,8 @@ Após autorização para instalar: abrir Theme e selecionar Automatic, conferir 
 ## Primeira captura após ativação informada
 
 Marcel informou ter selecionado Automatic. A captura mostrou a gaveta em Day, com cards e logos visíveis. A janela de horários não estava aberta; os valores da agenda e a seleção salva ainda precisam de confirmação visual. Captura em screenshots/phase9-day-drawer.png.
+
+
+## Automatic confirmado visualmente
+
+A captura mostra a janela Theme com Automatic selecionado e a linha de ajustes ao fundo também exibindo Automatic, após reabrir os ajustes. A escolha salva foi confirmada visualmente. Botão Schedule disponível no canto inferior esquerdo; a janela de horários ainda não foi capturada.

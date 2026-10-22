@@ -36,5 +36,10 @@
     "actual_capture": "screenshots/phase9-day-drawer.png",
     "observed": "Drawer in Day, with normal cards and logos. Schedule dialog was not visible.",
     "status": "Schedule values and saved Automatic selection still need visual confirmation."
+  },
+  "automatic_selection": {
+    "capture": "screenshots/phase9-automatic-selected.png",
+    "observed": "Theme dialog with Automatic radio selected; underlying settings row also reads Automatic. Schedule button visible at bottom left.",
+    "status": "Saved mode visually confirmed after reopening. Schedule values and timed transition pending."
   }
 }
