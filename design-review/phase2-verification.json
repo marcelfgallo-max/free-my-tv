@@ -31,6 +31,15 @@
   ],
   "assets_unchanged": true,
   "protected_files_unchanged": true,
-  "installation": "pending user approval",
-  "screenshots": "not captured for phase 2 yet"
+  "installation": "authorized by Marcel; adb install -r returned Success",
+  "screenshots": [
+    "screenshots/phase2-home-before.png",
+    "screenshots/phase2-home-after.png",
+    "screenshots/phase2-drawer-after.png"
+  ],
+  "theme_compiles_against_api_28": true,
+  "apk_signature_verified_min_api_28": true,
+  "apk_sha256": "e9cfbdc4c6df644c0923597c9f62442434f7c7ee442f3b29f88592c5762eadb7",
+  "implementation_commit": "01f6093",
+  "pixel_check": "Background #202124 and dock #2B2C2F confirmed in Home and drawer. Tile regions are not pixel-identical; see phase2-pixel-check.json. No claim of pixel equality for this visual change."
 }

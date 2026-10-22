@@ -1,0 +1,472 @@
+{
+  "resolution": [
+    1920,
+    1080
+  ],
+  "samples": {
+    "home_background": {
+      "point": [
+        10,
+        10
+      ],
+      "rgb": [
+        32,
+        33,
+        36
+      ],
+      "hex": "#202124"
+    },
+    "home_dock": {
+      "point": [
+        1000,
+        860
+      ],
+      "rgb": [
+        43,
+        44,
+        47
+      ],
+      "hex": "#2B2C2F"
+    },
+    "home_dock_corner": {
+      "point": [
+        69,
+        849
+      ],
+      "rgb": [
+        32,
+        33,
+        36
+      ],
+      "hex": "#202124"
+    },
+    "drawer_background": {
+      "point": [
+        10,
+        10
+      ],
+      "rgb": [
+        32,
+        33,
+        36
+      ],
+      "hex": "#202124"
+    },
+    "drawer_dock": {
+      "point": [
+        1000,
+        250
+      ],
+      "rgb": [
+        43,
+        44,
+        47
+      ],
+      "hex": "#2B2C2F"
+    }
+  },
+  "regions": [
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 0,
+      "identical": false,
+      "changed_pixels": 17130,
+      "max_channel_difference": 15,
+      "region": [
+        96,
+        330,
+        234,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 1,
+      "identical": false,
+      "changed_pixels": 13347,
+      "max_channel_difference": 18,
+      "region": [
+        255,
+        330,
+        393,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 2,
+      "identical": false,
+      "changed_pixels": 10400,
+      "max_channel_difference": 14,
+      "region": [
+        414,
+        330,
+        552,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 3,
+      "identical": false,
+      "changed_pixels": 11342,
+      "max_channel_difference": 13,
+      "region": [
+        573,
+        330,
+        711,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 4,
+      "identical": false,
+      "changed_pixels": 9108,
+      "max_channel_difference": 18,
+      "region": [
+        732,
+        330,
+        870,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 5,
+      "identical": false,
+      "changed_pixels": 10481,
+      "max_channel_difference": 19,
+      "region": [
+        891,
+        330,
+        1029,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 6,
+      "identical": false,
+      "changed_pixels": 13240,
+      "max_channel_difference": 18,
+      "region": [
+        1050,
+        330,
+        1188,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 7,
+      "identical": false,
+      "changed_pixels": 17475,
+      "max_channel_difference": 18,
+      "region": [
+        1209,
+        330,
+        1347,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 8,
+      "identical": false,
+      "changed_pixels": 11200,
+      "max_channel_difference": 16,
+      "region": [
+        1368,
+        330,
+        1506,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 9,
+      "identical": false,
+      "changed_pixels": 11972,
+      "max_channel_difference": 17,
+      "region": [
+        1527,
+        330,
+        1665,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 0,
+      "column": 10,
+      "identical": false,
+      "changed_pixels": 6102,
+      "max_channel_difference": 17,
+      "region": [
+        1686,
+        330,
+        1824,
+        537
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 0,
+      "identical": false,
+      "changed_pixels": 16926,
+      "max_channel_difference": 15,
+      "region": [
+        96,
+        618,
+        234,
+        825
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 1,
+      "identical": false,
+      "changed_pixels": 16683,
+      "max_channel_difference": 16,
+      "region": [
+        255,
+        618,
+        393,
+        825
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 2,
+      "identical": false,
+      "changed_pixels": 14221,
+      "max_channel_difference": 18,
+      "region": [
+        414,
+        618,
+        552,
+        825
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 3,
+      "identical": false,
+      "changed_pixels": 8591,
+      "max_channel_difference": 16,
+      "region": [
+        573,
+        618,
+        711,
+        825
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 4,
+      "identical": false,
+      "changed_pixels": 15199,
+      "max_channel_difference": 16,
+      "region": [
+        732,
+        618,
+        870,
+        825
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 5,
+      "identical": false,
+      "changed_pixels": 16755,
+      "max_channel_difference": 17,
+      "region": [
+        891,
+        618,
+        1029,
+        825
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 6,
+      "identical": false,
+      "changed_pixels": 8016,
+      "max_channel_difference": 14,
+      "region": [
+        1050,
+        618,
+        1188,
+        825
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 7,
+      "identical": false,
+      "changed_pixels": 12867,
+      "max_channel_difference": 15,
+      "region": [
+        1209,
+        618,
+        1347,
+        825
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 8,
+      "identical": false,
+      "changed_pixels": 15014,
+      "max_channel_difference": 15,
+      "region": [
+        1368,
+        618,
+        1506,
+        825
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 9,
+      "identical": false,
+      "changed_pixels": 13210,
+      "max_channel_difference": 14,
+      "region": [
+        1527,
+        618,
+        1665,
+        825
+      ]
+    },
+    {
+      "kind": "poster",
+      "row": 1,
+      "column": 10,
+      "identical": false,
+      "changed_pixels": 17193,
+      "max_channel_difference": 19,
+      "region": [
+        1686,
+        618,
+        1824,
+        825
+      ]
+    },
+    {
+      "kind": "app",
+      "column": 0,
+      "identical": false,
+      "changed_pixels": 1398,
+      "max_channel_difference": 18,
+      "region": [
+        96,
+        876,
+        312,
+        996
+      ]
+    },
+    {
+      "kind": "app",
+      "column": 1,
+      "identical": false,
+      "changed_pixels": 2128,
+      "max_channel_difference": 16,
+      "region": [
+        348,
+        876,
+        564,
+        996
+      ]
+    },
+    {
+      "kind": "app",
+      "column": 2,
+      "identical": false,
+      "changed_pixels": 2585,
+      "max_channel_difference": 19,
+      "region": [
+        600,
+        876,
+        816,
+        996
+      ]
+    },
+    {
+      "kind": "app",
+      "column": 3,
+      "identical": false,
+      "changed_pixels": 4162,
+      "max_channel_difference": 16,
+      "region": [
+        852,
+        876,
+        1068,
+        996
+      ]
+    },
+    {
+      "kind": "app",
+      "column": 4,
+      "identical": false,
+      "changed_pixels": 3698,
+      "max_channel_difference": 14,
+      "region": [
+        1104,
+        876,
+        1320,
+        996
+      ]
+    },
+    {
+      "kind": "app",
+      "column": 5,
+      "identical": false,
+      "changed_pixels": 2048,
+      "max_channel_difference": 17,
+      "region": [
+        1356,
+        876,
+        1572,
+        996
+      ]
+    },
+    {
+      "kind": "app",
+      "column": 6,
+      "identical": false,
+      "changed_pixels": 1928,
+      "max_channel_difference": 29,
+      "region": [
+        1608,
+        876,
+        1824,
+        996
+      ]
+    }
+  ],
+  "identical_regions": 0,
+  "total_regions": 29,
+  "note": "Cores do fundo e dock confirmadas. As 29 regi\u00f5es de artes n\u00e3o s\u00e3o pixel-identical. Assets e m\u00e9todos de layout/desenho de p\u00f4steres e apps n\u00e3o foram alterados; a causa exata das diferen\u00e7as de rasteriza\u00e7\u00e3o n\u00e3o foi isolada. N\u00e3o usar este relat\u00f3rio como prova de identidade das artes. Gaveta possui apenas captura depois."
+}

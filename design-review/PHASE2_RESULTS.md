@@ -2,7 +2,7 @@
 
 Base validada: 9497a90. Worktree free-my-tv-design, branch design-system.
 
-## Mudança preparada
+## Mudança instalada
 
 - Fundo sólido #202124 na Home e na gaveta.
 - Barra de apps opaca #2B2C2F, com raio de 48 unidades lógicas nos cantos.
@@ -20,7 +20,18 @@ Nenhum valor de Theme.Legacy foi trocado pelos valores novos. A verificação de
 
 ## Checkpoint na TV
 
-Instalação ainda não realizada. Aguardar autorização de Marcel antes de instalar.
-Capturar a Home da fase 1 antes da instalação, repetir o mesmo foco depois e conferir o fundo e a barra. Conferir também a gaveta pelo controle, pois o fundo acompanha as duas telas.
+Instalação autorizada por Marcel, realizada com adb install -r e retorno Success. Commit de implementação: 01f6093.
+
+Home capturada antes (23:29) e depois (23:31), com o pôster John Candy selecionado. Gaveta aberta pelo controle e capturada depois. Os pontos amostrados confirmaram #202124 no fundo e #2B2C2F na barra nas duas telas. O canto externo da barra também foi confirmado com a cor do fundo.
+
+![Home antes](screenshots/phase2-home-before.png)
+
+![Home depois](screenshots/phase2-home-after.png)
+
+![Gaveta depois](screenshots/phase2-drawer-after.png)
+
+Esta etapa altera o visual intencionalmente. As 29 regiões de artes comparadas também apresentaram diferenças de pixels; a causa exata dessas diferenças não foi isolada. Não há afirmação de identidade pixel a pixel das artes nesta fase. A revisão do código confirmou que assets, layouts, tratamento das imagens, foco e ações não foram modificados. A gaveta não tem captura pareada anterior nesta etapa.
+
+Amostras e métricas: phase2-pixel-check.json. Validações de build e instalação: phase2-verification.json. Próximo checkpoint: abas e foco laranja, apenas após o OK de Marcel. Antes da próxima instalação, pedir nova autorização.
 
 Não há medição de desempenho na TV. A redução de carga de bitmaps é uma mudança de implementação, não uma promessa de ganho de FPS.

@@ -2,7 +2,7 @@
 
 ## Estado da implementação
 
-Fase 1 concluída para o primeiro lote de 293 tokens, com validação visual da Home. Fase 2 em preparação para instalar: fundo grafite e superfície da barra de apps na Home e na gaveta. Aprovação de instalação ainda pendente.
+Fase 1 concluída para o primeiro lote de 293 tokens, com validação visual da Home. Fase 2 instalada com autorização de Marcel: fundo grafite e superfície da barra de apps na Home e na gaveta. Cores confirmadas nas capturas reais; aguardar o próximo OK antes de aplicar foco laranja.
 
 Base: 8569d2127ac1577921764e6ea541dd798f085cb9. Trabalho exclusivo no worktree free-my-tv-design, branch design-system.
 Build e comparação de instruções: design-review/phase1-verification.json. Home validada com capturas reais antes/depois: zero diferença em 1.911.600 pixels fora do cabeçalho dinâmico de relógio e saudação. Gaveta e ajustes ainda não possuem capturas pareadas. Build sozinho não comprova equivalência de pixels.
