@@ -91,15 +91,12 @@ final class Backdrop {
         return new Backdrop(gpu(out), frost, glass, null, null, null, null, null, null);
     }
 
-    /** How many times smaller the screensaver photo's frosted version is (the glass math uses the same number). */
-    static final int PHOTO_FROST = 6;
-
     /**
-     * Screensaver: the whole original from disk at w × h (center-cropped to that aspect ratio), filtered down, plus the
-     * frosted version (1/6, blurred) for the glass clock. `light` receives the luminance (0 to 1) where the caption
-     * (bottom left) and the clock (top right) sit, for the scrims. Returns {photo (mutable), frosted}.
+     * Screensaver: the whole original from disk at w × h (center-cropped to that aspect ratio), filtered down. `light`
+     * receives the luminance (0 to 1) where the caption (bottom left) and the clock (top right) sit, for the scrims.
+     * Returns the photo, mutable (the scrims are painted onto it).
      */
-    static Bitmap[] photo(java.io.File f, int w, int h, float[] light) throws java.io.IOException {
+    static Bitmap photo(java.io.File f, int w, int h, float[] light) throws java.io.IOException {
         android.graphics.BitmapFactory.Options bounds = new android.graphics.BitmapFactory.Options();
         bounds.inJustDecodeBounds = true;
         android.graphics.BitmapFactory.decodeFile(f.getPath(), bounds);
@@ -125,14 +122,12 @@ final class Backdrop {
             light[0] = luminance(out, 0, 0.6f, 0.5f, 0.95f);
             light[1] = luminance(out, 0.62f, 0.04f, 0.96f, 0.36f);
         }
-        int fw = w / PHOTO_FROST, fh = h / PHOTO_FROST;
-        Bitmap frost = Bitmap.createBitmap(reduce(out, fw, fh, 3, 2), fw, fh, Bitmap.Config.ARGB_8888);
         if (!out.isMutable()) {
             Bitmap copy = out.copy(Bitmap.Config.ARGB_8888, true);
             out.recycle();
             out = copy;
         }
-        return new Bitmap[] {out, frost};
+        return out;
     }
 
     /** The center of the photo at the card's aspect ratio, filtered down (halving while possible) to the exact size. */
